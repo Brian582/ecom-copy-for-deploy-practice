@@ -1,0 +1,13 @@
+.signin{
+  position: relative;
+  background-color: white;
+  top: 2em;
+  margin: auto;
+  width: 140px;
+  height: 100px;
+  padding: 70px;
+}
+
+.sign form{
+  position: absolute;
+}

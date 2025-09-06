@@ -1,4 +1,21 @@
-nav {
-  width: 50%;
-  margin: 0 auto;
+.navbar {
+  display: flex;
+  height: 30px;
+  width: 100%;
+  background-color: orange;
+  justify-content: center;
+  gap: 5px;
+  align-items: center;
+}
+
+/*makes navigation bar cover the entire width of the page */
+body{
+  margin: 0;
+  padding: 0;
+}
+
+.navbar button{
+  background-color: orange;
+  color: white;
+  border: none;
 }

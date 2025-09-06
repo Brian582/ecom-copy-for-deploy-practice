@@ -3,32 +3,31 @@ import cart from './images/cart.png';
 import './Navbar.css'
 
 export default function NavBar() {
-  const navItems = [
-      { route: "/food", name: "Food"},
-      { route: "/order", name: "Order"},
-      { route: "/signin", name: "Sign in"},
-      { route: "/about", name: "About"},
-      { route: "/contact", name: "Contact Us"},
-      { route: "/", name: "cart"},
-    ]
-
   return (
-    <nav>
-        {navItems.map( (item, index) => {   
-          if(item.name=="cart"){
-            return (
-              <button key={index}>
-              <img src={cart} alt="Cart Icon" width="15" height="15" />
-              </button>
-            )
-          }
-          else { 
-            return (         
-            <Link key={index} to={item.route}>
-            <button>{item.name}</button>
-            </Link>  )  
-            }
-        })}
+    <nav className='navbar'> 
+      <Link to="/">
+        <button>Home</button>
+      </Link>
+      <Link to="/food">
+        <button>Food</button>
+      </Link>
+      <Link to="/order">
+        <button>Order</button>
+      </Link>
+      <Link to="/signin">
+        <button>Sign in</button>
+      </Link>
+      <Link to="/about">
+        <button>About</button>
+      </Link>
+      <Link to="/contact">
+        <button>Contact Us</button>
+      </Link>
+      <Link to="/">
+        <button>
+          <img src={cart} alt="Cart Icon" width="15" height="15" />
+        </button>
+      </Link>
     </nav>
   )
 }

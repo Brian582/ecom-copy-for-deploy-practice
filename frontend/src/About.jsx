@@ -1,7 +1,7 @@
 export default function About(){
   return ( 
     <>
-    <p>Step into a place where bold flavors, 
+      <p>Step into a place where bold flavors, 
       fresh ingredients, and a dash of fun come together. 
       Our restaurant serves up all your favorite Chinese dishes—from sizzling stir-fries 
       and savory noodles to fluffy dumplings and crispy egg rolls—made fresh and full of flavor. 

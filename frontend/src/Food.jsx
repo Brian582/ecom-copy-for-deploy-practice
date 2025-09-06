@@ -5,10 +5,11 @@ import chowmein from './images/food/chowmein.jpg';
 import lomein from './images/food/lomein.jpg';
 import generaltsochicken from './images/food/GeneralTsoChicken.jpg';
 import eggrolls from './images/food/eggrolls.jpg';
+import wontonsoup from './images/food/WontonSoup.jpg';
+import chickenwithbroccoli from './images/food/chickenwithbroccoli.avif';
 import './food.css'
 
 export default function Food(){
-
   return ( 
     <>
       <section className='row'>
@@ -43,13 +44,15 @@ export default function Food(){
 
       <section className='row' >
         <div>
-          <img src={eggrolls} alt="eggrolls}" />
+          <img src={eggrolls} alt="eggrolls" />
           <p>Egg rolls</p>
         </div>
         <div>
+          <img src={wontonsoup} alt="wontonsoup" />
           <p>Wonton soup</p>
         </div>
         <div>
+          <img src={chickenwithbroccoli} alt="chickenwithbroccoli" />
           <p>Chicken with Broccoli</p>
         </div>
       </section>

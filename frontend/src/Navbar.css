@@ -1,12 +1,13 @@
 .navbar {
   display: flex;
-  height: 30px;
+  height: 27px;
   width: 100%;
   background-color: orange;
   justify-content: center;
   position: relative;
-  gap: 5px; 
+  gap: 5px;
   align-items: center;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.2);
 }
 
 /*makes navigation bar cover the entire width of the page */
@@ -23,7 +24,12 @@ body{
 }
 
 /* designs the cart counter*/
-.cart-counter {
+.navbar button:hover {
+  cursor: pointer;
+}
+
+/* designs the cart icon*/
+.cart-icon {
   display: inline-block;
   position: absolute;
   background-color: red;
@@ -32,4 +38,9 @@ body{
   padding: 1px 2px;
   font-size: 7px;
   font-weight: bold;
+}
+
+/* adjusts icon size*/
+.icon-size{
+  font-size: 18px;
 }

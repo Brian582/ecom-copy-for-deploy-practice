@@ -1,37 +1,51 @@
+:root {
+  --size-base: 190px;
+}
+
 .row {
   display: flex;
   gap: 20px; 
   margin-top: 30px;
-  margin-left: 30px;
-  margin-right: 20px;
+  margin-left: 90px;
   margin-bottom: 40px; 
   text-align: center;
 }
 
 .row button {
   background-color: tan;
-  width: 220px; 
-  height: 215px;
-  padding: 30px;
+  /* width: 220px; 
+  height: 215px; */
+  width: var(--size-base);
+  height: calc(var(--size-base) - 5px);
+  padding: 27px;
   border-radius: 10px; 
   border: 2px solid black;
+  /* border-color: black; */
+  /* padding-right: 15px; */
 }
 
 .row button:hover {
   cursor: pointer;
   border: 2px solid red;
+  /* padding: 40px; */
 }
 
 .row img {
-  width: 165px; 
-  height: 150px;
-  margin: auto;
+  /* width: 165px; 
+  height: 150px; */
+  width: calc(var(--size-base) - 55px);
+  height: calc(var(--size-base) - 65px);
+  /* margin: auto; */
+  margin-top: -10px;
 }
 
 .row p {
-  margin-top: 0px;
+  line-height: 10px;
+  font-size: 11.8px;
+  /* font-size: .87em; */
 }
 
 h2 {
   text-align: center;
+  line-height: 10px;
 }

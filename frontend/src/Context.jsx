@@ -1,7 +1,7 @@
 // this file is needed to define useContext
 import {createContext, useState}  from 'react';
 
-// defines the context
+// defines the Context
 // eslint-disable-next-line react-refresh/only-export-components
 export const ThemeContext = createContext(null);
 

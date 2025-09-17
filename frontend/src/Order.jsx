@@ -18,6 +18,8 @@ export default function Order(){
   return ( 
     <>
       <h2>Choose a meal to start your order</h2>
+
+      {/* first row of meals */}
       <section className='row'>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={dumplings} alt="dumplings" />
@@ -25,14 +27,15 @@ export default function Order(){
         </button>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={kungpaochicken} alt="kungpaochicken" />
-          <p>Kung pao chicken</p>
+          <p>Kung Pao Chicken</p>
         </button>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={sweetsourchicken} alt="sweetsourchicken" />
-          <p>Sweet and sour chicken</p>
+          <p>Sweet and Sour Chicken</p>
         </button>
       </section>
 
+      {/* second row of meals */}
       <section className='row'>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={chowmein} alt="chowmein"/>
@@ -40,22 +43,23 @@ export default function Order(){
         </button>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={lomein} alt="lomein"/>
-          <p>Chow mein</p>
+          <p>Lo Mein</p>
         </button>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={generaltsochicken} alt="generaltsochicken" />
-          <p>General Tso chicken</p>
+          <p>General Tso Chicken</p>
         </button>
       </section>
 
+      {/* third row of meals */}
       <section className='row' >
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={eggrolls} alt="eggrolls" />
-          <p>Egg rolls</p>
+          <p>Egg Rolls</p>
         </button>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={wontonsoup} alt="wontonsoup" />
-          <p>Wonton soup</p>
+          <p>Wonton Soup</p>
         </button>
         <button onClick={()=>{updatecartItemcount()}}>
           <img src={chickenwithbroccoli} alt="chickenwithbroccoli" />
@@ -63,5 +67,5 @@ export default function Order(){
         </button>
       </section>
     </>
-    )
+  )
 }

@@ -1,48 +1,52 @@
 import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
 eggrolls, wontonsoup, chickenwithbroccoli } from './images/food/foodimages.js';
 import './food.css'
+import "./data/menu.json"
 
 export default function Food(){
   return ( 
     <>
-      <section className='row'>
+      {/* first row of meals */}
+      <section className='meal-row'>
         <div>
           <img src={dumplings} alt="dumplings"  />
           <p>Dumplings</p>
         </div>
         <div>
           <img src={kungpaochicken} alt="kungpaochicken"  />
-          <p>Kung pao chicken</p>
+          <p>Kung Pao Chicken</p>
         </div>
           <div>
           <img src={sweetsourchicken} alt="sweetsourchicken" />
-        <p>Sweet and sour chicken</p>
+        <p>Sweet and Sour Chicken</p>
         </div>
       </section>
 
-      <section className='row'>
+      {/* second row of meals */}
+      <section className='meal-row'>
         <div>
           <img src={chowmein} alt="chowmein"/>
-          <p>Chow mein</p>
+          <p>Chow Mein</p>
         </div>
         <div>
           <img src={lomein} alt="lomein"/>
-          <p>Chow mein</p>
+          <p>Lo Mein</p>
         </div>
         <div>
           <img src={generaltsochicken} alt="generaltsochicken" />
-          <p>General Tso chicken</p>
+          <p>General Tso Chicken</p>
         </div>
       </section>
 
-      <section className='row' >
+      {/* third row of meals */}
+      <section className='meal-row'>
         <div>
           <img src={eggrolls} alt="eggrolls" />
-          <p>Egg rolls</p>
+          <p>Egg Rolls</p>
         </div>
         <div>
           <img src={wontonsoup} alt="wontonsoup" />
-          <p>Wonton soup</p>
+          <p>Wonton Soup</p>
         </div>
         <div>
           <img src={chickenwithbroccoli} alt="chickenwithbroccoli" />

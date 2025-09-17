@@ -1,12 +1,5 @@
-import dumplings from './images/food/dumplings.jpg';
-import kungpaochicken from './images/food/kungpaochicken.webp';
-import sweetsourchicken from './images/food/sweetsourchicken.webp';
-import chowmein from './images/food/chowmein.jpg';
-import lomein from './images/food/lomein.jpg';
-import generaltsochicken from './images/food/GeneralTsoChicken.jpg';
-import eggrolls from './images/food/eggrolls.jpg';
-import wontonsoup from './images/food/WontonSoup.jpg';
-import chickenwithbroccoli from './images/food/chickenwithbroccoli.avif';
+import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
+eggrolls, wontonsoup, chickenwithbroccoli } from './images/food/foodimages.js';
 import './food.css'
 
 export default function Food(){

@@ -7,10 +7,12 @@ import Contact from './Contact.jsx'
 import About from './About.jsx'
 import Layout from './Layout.jsx'
 import NotFound from './Notfound.jsx'
+import { ThemeProvider } from "./Context";
 
 export default function App() {
   return (
     <>
+      <ThemeProvider>
       <Layout>
         <Routes>
           <Route exact path="/" element={<Index />} />
@@ -24,7 +26,8 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
           <Route path="/NotFound" element={<NotFound />} /> 
         </Routes> 
-      </Layout>  
+      </Layout> 
+      </ThemeProvider> 
     </>
   )
 }

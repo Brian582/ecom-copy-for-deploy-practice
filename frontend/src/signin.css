@@ -8,6 +8,12 @@
   padding: 70px;
 }
 
-.sign form{
-  position: absolute;
+.username{
+  position: relative;
+  bottom: 15px; 
 }
+
+.password{
+  margin-bottom: 10px;
+}
+

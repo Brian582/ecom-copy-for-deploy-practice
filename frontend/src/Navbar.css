@@ -4,7 +4,8 @@
   width: 100%;
   background-color: orange;
   justify-content: center;
-  gap: 5px;
+  position: relative;
+  gap: 5px; 
   align-items: center;
 }
 
@@ -14,8 +15,21 @@ body{
   padding: 0;
 }
 
+/* styles all buttons in navigation bar*/
 .navbar button{
   background-color: orange;
   color: white;
   border: none;
+}
+
+/* designs the cart counter*/
+.cart-counter {
+  display: inline-block;
+  position: absolute;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 1px 2px;
+  font-size: 7px;
+  font-weight: bold;
 }

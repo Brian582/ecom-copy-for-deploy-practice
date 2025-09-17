@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import "./signin.css"
+import "./signin.css";
 
 export default function Signin(){
-
   const [formData, setFormData] = useState({ user: '', password: '' });
 
   //updates the form's data based on input
@@ -10,18 +9,18 @@ export default function Signin(){
     setFormData( {...formData, [event.target.name]: event.target.value}  )
   }
 
-  // function handleSubmit(event){
-  // }
-
   return ( 
-    // <form onSubmit={handleSubmit}>
     <div className='signin'>
       <form >
-          <label htmlFor="user"> Username: </label>
-          <input type="text" id="user" name="user" value={formData.username} onChange={handleChange} required/>
+          <div className='username'>
+            <label htmlFor="user"> Username: </label>
+            <input type="text" id="user" name="user" value={formData.username} onChange={handleChange} required/>
+          </div>
 
-          <label htmlFor="password"> Password: </label>
-          <input type="password" id="password" name="password" value={formData.username} onChange={handleChange} required/>
+          <div className='password'>
+            <label htmlFor="password"> Password: </label>
+            <input type="password" id="password" name="password" value={formData.username} onChange={handleChange} required/>
+          </div>
 
           <button type="submit">Sign in</button>
       </form>

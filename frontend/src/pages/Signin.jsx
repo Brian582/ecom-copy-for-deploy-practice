@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import "./signin.css";
+import "../styles/signin.css";
 
 export default function Signin(){
   const [formData, setFormData] = useState({ user: '', password: '' });

@@ -1,0 +1,83 @@
+{
+  "items" : 
+    [
+      [
+      {
+        "name": "Dumpling",
+        "image" : "/food/dumplings.jpg",
+        "alt": "dumplings",
+        "price": "$10.00"
+      },
+      {
+        "name": "Kung Pao Chicken",
+        "image" : "/food/kungpaochicken.webp",
+        "alt": "kung pao chicken",
+        "price": "$9.00"
+      },
+      {
+        "name": "Sweet and Sour Chicken",
+        "image" : "/food/sweetsourchicken.webp",
+        "alt": "sweet and sour chicken",
+        "price": "$11.00"
+      }],
+      [
+      {
+        "name": "Chow mein",
+        "image" : "/food/chowmein.jpg",
+        "alt": "chow mein",
+        "price": "$20.00"
+      },
+      {
+        "name": "Lo Mein",
+        "image" : "/food/lomein.jpg",
+        "alt":"lo mein",
+        "price": "$10.00"
+      },
+      {
+        "name": "General Tso Chicken",
+        "image" : "/food/GeneralTsoChicken.jpg",
+        "alt": "general tso chicken",
+        "price": "$12.00"
+      }],
+      [
+      {
+        "name": "Egg Rolls",
+        "image" : "/food/eggrolls.jpg",
+        "alt": "egg rolls",
+        "price": "$11.00"
+      },
+      {
+        "name": "Wonton Soup",
+        "image" : "/food/WontonSoup.jpg",
+        "alt": "wonton soup",
+        "price": "$5.00"
+      },
+      {
+        "name": "Chicken with Broccoli",
+        "image" : "/food/chickenwithbroccoli.avif",
+        "alt": "chicken with broccoli",
+        "price": "$8.00"
+      }]
+    ],
+  "cart-items":
+    [
+      {
+        "name": "Chicken with Broccoli",
+        "image" : "/food/chickenwithbroccoli.avif",
+        "alt": "chicken with broccoli",
+        "price": "$15.00"
+      },
+      {
+        "name": "Dumpling",
+        "image" : "/food/dumplings.jpg",
+        "alt": "dumplings",
+        "price": "$10.00"
+      },
+      {
+        "name": "Chow mein",
+        "image" : "/food/chowmein.jpg",
+        "alt": "chow mein",
+        "price": "$21.00"
+      }
+    ]   
+}

@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
-import Index from './index.jsx'
-import Food from './Food.jsx'
-import Order from './Order.jsx'
-import Signin from './Signin.jsx'
-import Contact from './Contact.jsx'
-import About from './About.jsx'
-import Layout from './Layout.jsx'
-import NotFound from './Notfound.jsx'
+import Index from './pages/index.jsx'
+import Food from './pages/Food.jsx'
+import Order from './pages/Order.jsx'
+import Signin from './pages/Signin.jsx'
+import Contact from './pages/Contact.jsx'
+import About from './pages/About.jsx'
+import Layout from './pages/Layout.jsx'
+import NotFound from './pages/Notfound.jsx'
 import { ThemeProvider } from "./Context";
 
 export default function App() {

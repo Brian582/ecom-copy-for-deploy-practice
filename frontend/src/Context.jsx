@@ -5,8 +5,11 @@ import {createContext, useState, useEffect}  from 'react';
 // eslint-disable-next-line react-refresh/only-export-components
 export const ThemeContext = createContext(null);
 
-//defines Provider component
-export const ThemeProvider = ({ children }) => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext(null);
+
+//defines ThemeContext Provider component
+export function ThemeProvider({ children }) {
 
   //gets priceTotal, intially starts with 0
   const [priceTotal, setPriceTotal] = useState(() => {
@@ -14,7 +17,8 @@ export const ThemeProvider = ({ children }) => {
       const total = localStorage.getItem('total_price');
       return total ? Number(total) : 0;
     } 
-    catch {
+    catch (error) {
+      console.error('Error parsing data from localStorage:', error)
       return 0;
     }});
   
@@ -24,20 +28,11 @@ export const ThemeProvider = ({ children }) => {
       const savedItems = localStorage.getItem('cart-items');
       return savedItems ? JSON.parse(savedItems) : [];
     } 
-    catch {
+    catch (error) {
+      console.error('Error parsing data from localStorage:', error)
       return [];
     }
   });
-
-  //stores the cart's data in Localstorage
-  useEffect(() => {
-    //to store objects/arrays, they need to be converted to JSON
-    try {
-      localStorage.setItem('cart-items', JSON.stringify(cartItems));
-    } catch (error) {
-      console.error('Error parsing data from localStorage:', error)
-    }
-  }, [cartItems]);
 
   //stores total price in Localstorage
   useEffect(() => {
@@ -48,6 +43,17 @@ export const ThemeProvider = ({ children }) => {
     }
   }, [priceTotal]);
 
+  //stores the cart's items in Localstorage
+  useEffect(() => {
+    //to store objects/arrays, they need to be converted to JSON
+    try {
+      localStorage.setItem('cart-items', JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error parsing data from localStorage:', error)
+    }
+  }, [cartItems]);
+
+  //adds item to cart
   function addItem(item) {
     setCartItems(prev => [...prev, item]);
     setPriceTotal(priceTotal => priceTotal + Number(item.price.replace("$", "")));
@@ -61,6 +67,7 @@ export const ThemeProvider = ({ children }) => {
     // }
   }
 
+  //removes all items
   function clearCart(){
     setCartItems([]);
     setPriceTotal(0);
@@ -79,4 +86,71 @@ export const ThemeProvider = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
+};
+
+//AuthContext provider component
+export function AuthProvider({ children }) {
+  
+  //authenticates that user exists
+  const [authenticated, setAuthenticated] = useState(() => {
+    try {
+      const status = localStorage.getItem('authenticated');
+      return status ? JSON.parse(status) : "";
+    } 
+    catch (error) {
+      console.error('Error parsing data from localStorage:', error)
+      return false;
+    }
+  })
+
+  //shows user that's loggedin
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? savedUser : "";
+    } 
+    catch (error) {
+      console.error('Error parsing data from localStorage:', error)
+      return ""
+    }
+  });
+
+  //stores authentication status in Localstorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('authenticated', authenticated);
+    } catch (error) {
+      console.error('Error parsing data from localStorage:', error)
+    }
+  }, [authenticated]);
+
+  //stores user's name in Localstorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('user', user);
+    } catch (error) {
+      console.error('Error parsing data from localStorage:', error)
+    }
+  }, [user]);
+
+  //holds username and authentication
+  function login(userData, authenication){
+    setUser(userData);
+    setAuthenticated(authenication);
+  };
+  
+  //removes username and authentication
+  function logout(){
+    setUser("");
+    setAuthenticated(false);
+  };
+
+  const authContextValue = { user, authenticated, login, logout };
+
+  return (
+    <AuthContext.Provider value={authContextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
+
 };

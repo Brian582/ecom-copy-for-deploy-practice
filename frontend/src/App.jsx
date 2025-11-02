@@ -7,11 +7,12 @@ import Contact from './pages/Contact.jsx'
 import About from './pages/About.jsx'
 import Layout from './pages/Layout.jsx'
 import NotFound from './pages/Notfound.jsx'
-import { ThemeProvider } from "./Context";
+import { ThemeProvider, AuthProvider } from "./Context";
 
 export default function App() {
   return (
     <>
+      <AuthProvider>
       <ThemeProvider>
       <Layout>
         <Routes>
@@ -28,6 +29,7 @@ export default function App() {
         </Routes> 
       </Layout> 
       </ThemeProvider> 
+      </AuthProvider>
     </>
   )
 }

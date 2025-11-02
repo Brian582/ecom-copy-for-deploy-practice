@@ -1,7 +1,7 @@
+import '../styles/order.css';
 import { useContext } from 'react';
 import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
 eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
-import '../styles/order.css';
 
 import { ThemeContext } from '../Context.jsx';
 

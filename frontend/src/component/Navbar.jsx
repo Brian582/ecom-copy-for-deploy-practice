@@ -1,15 +1,15 @@
 import {Link} from 'react-router-dom';
 import '../styles/Navbar.css';
 import { useContext } from "react";
-import { ThemeContext } from "../Context.jsx";
+import { ThemeContext, AuthContext } from "../Context.jsx";
 import { FaShoppingCart } from 'react-icons/fa'; // provides cart icon
-
 
 import { useState } from 'react';
 import CartModal from "./Cartmodal.jsx";
 
 export default function NavBar() {
   const { cartItemcount, cartItems } = useContext(ThemeContext);
+  const { user, authenticated} = useContext(AuthContext);
 
   //used to control when the modal appears
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -42,6 +42,11 @@ export default function NavBar() {
           {cartItemcount > 0 && (<span className='cart-icon'>
             {cartItemcount}</span>)} 
         </button>
+        {authenticated &&
+            <button>
+                {"Hi, " + user }
+            </button>
+          }
       </nav>
       
       {/* controls the modal appearing */}

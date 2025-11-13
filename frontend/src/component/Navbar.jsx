@@ -4,15 +4,21 @@ import { useContext } from "react";
 import { ThemeContext, AuthContext } from "../Context.jsx";
 import { FaShoppingCart } from 'react-icons/fa'; // provides cart icon
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import CartModal from "./Cartmodal.jsx";
+import ProfileMenu from './ProfileMenu.jsx';
 
 export default function NavBar() {
   const { cartItemcount, cartItems } = useContext(ThemeContext);
-  const { user, authenticated} = useContext(AuthContext);
+  const { user, authenticated} = useContext(AuthContext);// Save the user in localstorage, 
+                                                        // so their name doesnt go away when I refresh the page
 
   //used to control when the modal appears
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // control profile menu visibility
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const profileButtonRef = useRef(null);
 
   return (
     <>
@@ -42,11 +48,14 @@ export default function NavBar() {
           {cartItemcount > 0 && (<span className='cart-icon'>
             {cartItemcount}</span>)} 
         </button>
-        {authenticated &&
-            <button>
-                {"Hi, " + user }
-            </button>
-          }
+    {authenticated && (
+      <>
+        <button ref={profileButtonRef} onClick={() => setIsProfileOpen(prev => !prev)} aria-haspopup="true" aria-expanded={isProfileOpen}>{/* when clicked profile menu will open using a function setProfileMenuOpen(true) */}
+          {"Hi, " + user }
+        </button>
+        <ProfileMenu isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} onLogout={() => console.log('logout')} triggerRef={profileButtonRef} />
+      </>
+    )}
       </nav>
       
       {/* controls the modal appearing */}

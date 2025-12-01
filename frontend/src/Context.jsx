@@ -1,5 +1,6 @@
 // this file is needed to define useContext
 import {createContext, useState, useEffect}  from 'react';
+import axios from 'axios';
 
 // defines the Context, the comment below removes IDE bug
 // eslint-disable-next-line react-refresh/only-export-components
@@ -10,48 +11,87 @@ export const AuthContext = createContext(null);
 
 //defines ThemeContext Provider component
 export function ThemeProvider({ children }) {
-
-  //gets priceTotal, intially starts with 0
-  const [priceTotal, setPriceTotal] = useState(() => {
-    try {
-      const total = localStorage.getItem('total_price');
-      return total ? Number(total) : 0;
-    } 
-    catch (error) {
-      console.error('Error parsing data from localStorage:', error)
-      return 0;
-    }});
   
-  //gets cart items, intially starts with empty array
-  const [cartItems, setCartItems] = useState(() => {
-    try {
-      const savedItems = localStorage.getItem('cart-items');
-      return savedItems ? JSON.parse(savedItems) : [];
-    } 
-    catch (error) {
-      console.error('Error parsing data from localStorage:', error)
-      return [];
-    }
-  });
+  const [priceTotal, setPriceTotal] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+  const [auth, setAuth] = useState(false);
+  const [clear,setClear] = useState(false);
 
-  //stores total price in Localstorage
+  //get total price from Json file
+  useEffect( () => {
+    const getTotalPrice = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/getTotalPrice/'); 
+        console.log(`Price response ${response.data}`);
+        setPriceTotal(Number(response.data))
+      } catch (error) {
+        console.error('Error to get Total Price:', error)
+      }
+    }
+    getTotalPrice()
+  }, []); 
+
+  //stores total price to Json file
+  useEffect( () => {
+    const updateTotalPrice = async () => {
+      try {
+        // if (auth === true){
+        if (clear === false){
+          const response = await axios.put('http://localhost:5000/updateTotalPrice/',{totalPrice : priceTotal});
+          console.log("update total price response:", response.data);
+          console.log(response.data);
+          console.log("clear", clear);
+        }
+        else{
+          const response = await axios.put('http://localhost:5000/resetTotalPrice/',{cleartotalPrice: priceTotal});
+          console.log(response.data);
+          console.log("clear", clear);
+        }
+      } catch (error) {
+        console.error('Error updating data to Json file:', error)
+      }
+    }
+    updateTotalPrice()
+  }, [priceTotal,auth,clear]); 
+
+  //gets the cart's items from Json file 
   useEffect(() => {
-    try {
-      localStorage.setItem('total_price', priceTotal);
-    } catch (error) {
-      console.error('Error parsing data from localStorage:', error)
+    const getCartItems = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/getCartItems/'); 
+        console.log(`Cart items response ${response.data}`);
+        console.log("Cart items response:", response.data);
+        setCartItems(response.data)
+      } catch (error) {
+        console.error('Error to get Total Price:', error)
+      }
     }
-  }, [priceTotal]);
+    getCartItems()
+  }, []);   
 
-  //stores the cart's items in Localstorage
+  //stores the cart's items to Json file
   useEffect(() => {
     //to store objects/arrays, they need to be converted to JSON
-    try {
-      localStorage.setItem('cart-items', JSON.stringify(cartItems));
-    } catch (error) {
-      console.error('Error parsing data from localStorage:', error)
+    const updateCartItems = async () => {
+      try {
+        if (clear === false){
+          const response = await axios.put("http://localhost:5000/updateCartItems/",{ updateItems: cartItems});
+          console.log("add Cart item response:", response.data);
+          console.log(response.data);
+          console.log("clear", clear);
+        }
+        else{
+          const response = await axios.put("http://localhost:5000/clearCartItems/",{ clearItems: cartItems});
+          console.log(response.data);
+          setClear(false)
+          console.log("clear", clear);
+        }
+      } catch (error) {
+        console.error('Error updating data to Json file:', error)
+      }
     }
-  }, [cartItems]);
+    updateCartItems()
+  }, [cartItems,auth,clear]);
 
   //adds item to cart
   function addItem(item) {
@@ -71,6 +111,7 @@ export function ThemeProvider({ children }) {
   function clearCart(){
     setCartItems([]);
     setPriceTotal(0);
+    setClear(true)
     // try {
     //   localStorage.setItem('cart-items', []);
     //   localStorage.setItem('total_price', '0');

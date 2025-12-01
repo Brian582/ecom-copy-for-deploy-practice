@@ -22,12 +22,26 @@ export default function ProfileMenu({ isOpen, onClose, onLogout, triggerRef }){
     document.addEventListener('pointerdown', handlePointerDown);
     document.addEventListener('keydown', handleKeyDown);
 
+    // focus first button after menu opens
+    // const timer = setTimeout(() => {
+    //   const first = ref.current?.querySelector('button');
+    //   first?.focus();
+    // }, 0);
+
+    // // capture current trigger element to use in cleanup (ref may change)
+    // const triggerEl = triggerRef?.current;
+
     return () => {
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('keydown', handleKeyDown);
-      
+      // clearTimeout(timer);
+      // restore focus to trigger button when menu unmounts
+      try {
+        // triggerEl?.focus?.();
+      } catch {
+        // ignore
+      }
     };
-    
   }, [isOpen, onClose, triggerRef]);
 
   if (!isOpen) return null;

@@ -5,10 +5,19 @@ from pymongo.errors import PyMongoError
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
+from payment import paypal_bp
+from Json import json_bp
+from users import users_bp
+
 app = Flask(__name__)
+app.register_blueprint(paypal_bp) 
+app.register_blueprint(json_bp)
+app.register_blueprint(users_bp)
 CORS(app)
+
 app.config["MONGO_URI"] = os.getenv("MONGO_URI") #from env file
 mongo = PyMongo(app)
+
 
 #adds user to database
 @app.route('/addUser', methods=['POST'])
@@ -44,8 +53,6 @@ def get_user():
     password = request.json.get('password')
     stored_hashed_password = user_data.get('password') #gets password from user_data dictionary
 
-    #remove stored_hashed_password == password later, its only used for testing to get non hashed passwords in
-    #the database
     if check_password_hash(stored_hashed_password, password) or stored_hashed_password == password :
       authenticated = True
     else: authenticated = False

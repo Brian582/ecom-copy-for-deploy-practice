@@ -24,7 +24,7 @@ export default function CartModal({ isOpen, onClose, items }){
         </div>
 
         <div>
-          <h2 className="total-header">Total: ${priceTotal}</h2>
+          <h2 className="total-header">Total: ${Number(priceTotal).toFixed(2)}</h2>
           { (items.length !== 0 ) && (
           <button className="remove-btn clear-btn" onClick={clearCart}>
               Clear Cart

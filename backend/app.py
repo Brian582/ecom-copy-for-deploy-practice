@@ -5,14 +5,14 @@ from pymongo.errors import PyMongoError
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
-from payment import paypal_bp
+# from payment import paypal_bp
 from Json import json_bp
-from users import users_bp
+# from users import users_bp
 
 app = Flask(__name__)
-app.register_blueprint(paypal_bp) 
+# app.register_blueprint(paypal_bp) 
 app.register_blueprint(json_bp)
-app.register_blueprint(users_bp)
+# app.register_blueprint(users_bp)
 CORS(app)
 
 app.config["MONGO_URI"] = os.getenv("MONGO_URI") #from env file

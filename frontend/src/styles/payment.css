@@ -1,0 +1,10 @@
+.payment_portion {
+  width: 250px;
+}
+
+.centered-div {
+  width: 32%; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 80px;
+}

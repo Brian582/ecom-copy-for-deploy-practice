@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import './ProfileMenu.css';
+import '../styles/ProfileMenu.css';
 
 export default function ProfileMenu({ isOpen, onClose, onLogout, triggerRef }){
   const ref = useRef(null);

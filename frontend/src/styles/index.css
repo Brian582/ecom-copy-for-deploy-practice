@@ -1,3 +1,7 @@
 h1 {
   text-align: center;
 }
+
+.index-page {
+  min-height: 100vh;
+}

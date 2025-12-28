@@ -1,9 +1,14 @@
-import "../styles/index.css"
+import Hero from '../components/Hero';
+import FeaturedDishes from '../components/FeaturedDishes';
+import CallToAction from '../components/CallToAction';
+import '../styles/Index.css';
 
-export default function index(){
+export default function Index() {
   return (
-    <>
-      <h1>Welcome to Wok This Way!</h1>
-    </>
+    <div className="index-page">
+      <Hero />
+      <FeaturedDishes />
+      <CallToAction />
+    </div>
   );
-};
+}

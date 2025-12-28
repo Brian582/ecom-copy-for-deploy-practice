@@ -1,0 +1,249 @@
+/* About Page Styles */
+
+.about-page {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+/* Hero Section */
+.about-hero {
+  position: relative;
+  padding: 5rem 0;
+  background: linear-gradient(to bottom, hsla(0, 85%, 35%, 0.1), var(--background));
+  overflow: hidden;
+}
+
+.about-hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(48px);
+}
+
+.about-hero-blob-1 {
+  top: 2.5rem;
+  left: 2.5rem;
+  width: 8rem;
+  height: 8rem;
+  background-color: hsla(45, 95%, 55%, 0.2);
+}
+
+.about-hero-blob-2 {
+  bottom: 2.5rem;
+  right: 2.5rem;
+  width: 10rem;
+  height: 10rem;
+  background-color: hsla(0, 85%, 35%, 0.2);
+}
+
+.about-hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+.about-emblem {
+  width: 6rem;
+  height: 6rem;
+  margin: 0 auto 1.5rem;
+}
+
+.about-hero-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .about-hero-title {
+    font-size: 3rem;
+  }
+}
+
+.about-hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--muted-foreground);
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+/* Story Section */
+.about-story {
+  padding: 4rem 0;
+  background-color: var(--background);
+}
+
+.about-story-card {
+  max-width: 56rem;
+  margin: 0 auto;
+  background-color: var(--card);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+}
+
+@media (min-width: 768px) {
+  .about-story-card {
+    padding: 3rem;
+  }
+}
+
+.about-story-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 1.5rem;
+}
+
+.about-story-title span {
+  color: var(--primary);
+}
+
+.about-story-text {
+  color: var(--muted-foreground);
+  line-height: 1.75;
+}
+
+.about-story-text p {
+  margin-bottom: 1rem;
+}
+
+.about-story-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Values Section */
+.about-values {
+  padding: 4rem 0;
+  background-color: hsla(36, 100%, 50%, 0.3);
+}
+
+.about-values-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.about-values-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .about-values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-values-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.value-card {
+  background-color: var(--card);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s ease;
+}
+
+.value-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.value-icon-wrapper {
+  width: 4rem;
+  height: 4rem;
+  background-color: hsla(0, 85%, 35%, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.value-icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--primary);
+}
+
+.value-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 0.5rem;
+}
+
+.value-description {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+/* CTA Section */
+.about-cta {
+  padding: 4rem 0;
+  background-color: var(--background);
+  text-align: center;
+}
+
+.about-cta-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+}
+
+.about-cta-subtitle {
+  color: var(--muted-foreground);
+  margin-bottom: 2rem;
+}
+
+.about-cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .about-cta-buttons {
+    flex-direction: row;
+  }
+}
+
+.about-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+}
+
+.about-button-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+}
+
+.about-button-primary:hover {
+  background-color: hsla(0, 85%, 35%, 0.9);
+}
+
+.about-button-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.about-button-outline:hover {
+  background-color: hsla(0, 85%, 35%, 0.1);
+}

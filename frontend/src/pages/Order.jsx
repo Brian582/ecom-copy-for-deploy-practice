@@ -1,22 +1,11 @@
 import '../styles/order.css';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import menuData from '../data/menu.json';
+import pricesData from '../data/prices.json';
 import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
 eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
 
 import { ThemeContext } from '../Context.jsx';
-
-//objects in array with meals content
-const meals = [
-  { img: dumplings, name: 'Dumplings', price: '$10.20' },
-  { img: kungpaochicken, name: 'Kung Pao Chicken', price: '$11.00' },
-  { img: sweetsourchicken, name: 'Sweet and Sour Chicken', price: '$11.11' },
-  { img: chowmein, name: 'Chow Mein', price: '$9.00' },
-  { img: lomein, name: 'Lo Mein', price: '$8.35' },
-  { img: generaltsochicken, name: 'General Tso Chicken', price: '$7.22' },
-  { img: eggrolls, name: 'Egg Rolls', price: '$4.75' },
-  { img: wontonsoup, name: 'Wonton Soup', price: '$4.87' },
-  { img: chickenwithbroccoli, name: 'Chicken with Broccoli', price: '$8.99' },
-];
 
 //splits the meals object array into rows of `size`
 function split(array,size) {
@@ -32,35 +21,65 @@ function split(array,size) {
 
 export default function Order() {
   const { addItem } = useContext(ThemeContext);
+  const [meals, setMeals] = useState([]);
 
-  function handleAddItem(name, price) {
-    const item = { name, price };
+  useEffect(() => {
+
+    const images = {
+      'dumplings': dumplings,
+      'kung pao chicken': kungpaochicken,
+      'sweet and sour chicken': sweetsourchicken,
+      'chow mein': chowmein,
+      'lo mein': lomein,
+      'general tso chicken': generaltsochicken,
+      'egg rolls': eggrolls,
+      'wonton soup': wontonsoup,
+      'chicken with broccoli': chickenwithbroccoli,
+    };
+
+    // menuData.items is an array of rows; flatten into single list
+    const flattened = menuData.items.flat();
+
+    const combined = flattened.map((menuItem) => {
+      const key = menuItem.name.toLowerCase();
+      const img = images[key]
+      const priceObj = pricesData.items_prices.find((p) => p.menu_id === menuItem.menu_id);
+      const price = priceObj && priceObj.price;
+      return { menu_id: menuItem.menu_id, img, name: menuItem.name, price };
+    });
+
+    setMeals(combined);
+  }, []);
+
+  function handleAddItem(menu_id, name, price) {
+    const item = { menu_id, name, price };
     addItem(item);
   }
 
-  const rows = split(meals, 3);
+  const rows = split(meals, 3);//splits the meals into 3 rows for the UI
 
   return (
     <>
       <h2>Choose a meal to start your order</h2>
-
-      {/* loops each row */}
-      {rows.map((row, rowIndex) => (
-        <section className="row" key={rowIndex}>
-          {/* loops each meal in a row */}
-          {row.map((meal, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                handleAddItem(meal.name, meal.price);
-              }}
-            >
-              <img src={meal.img} alt={meal.name} />
-              <p>{meal.name}</p>
-            </button>
-          ))}
-        </section>
-      ))}
+      <div className="spacing">
+        {/* loops each row */}
+        {rows.map((row, rowIndex) => (
+          <section className="row" key={rowIndex}>
+            {/* loops each meal in a row */}
+            {row.map((meal, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  handleAddItem( meal.menu_id, meal.name, meal.price);
+                }}
+              >
+                <img src={meal.img} alt={meal.name} />
+                <p>{meal.name}</p>
+              </button>
+            ))}
+          </section>
+        ))}
+      </div>
     </>
   );
 }

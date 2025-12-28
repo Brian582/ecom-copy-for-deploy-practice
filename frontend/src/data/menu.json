@@ -4,61 +4,61 @@
       [
         {
           "menu_id": 1785,
-          "name": "Dumpling",
-          "image": "/food/dumplings.jpg",
-          "alt": "dumplings"
+          "name": "Dumplings",
+          "image": "dumplings.jpg",
+          "alt": "Dumplings"
         },
         {
           "menu_id": 5457,
           "name": "Kung Pao Chicken",
-          "image": "/food/kungpaochicken.webp",
-          "alt": "kung pao chicken"
+          "image": "kungpaochicken.webp",
+          "alt": "Kung Pao chicken"
         },
         {
           "menu_id": 2576,
           "name": "Sweet and Sour Chicken",
-          "image": "/food/sweetsourchicken.webp",
-          "alt": "sweet and sour chicken"
+          "image": "sweetsourchicken.webp",
+          "alt": "Sweet and Sour Chicken"
         }
       ],
       [
         {
           "menu_id": 7609,
           "name": "Chow mein",
-          "image": "/food/chowmein.jpg",
-          "alt": "chow mein"
+          "image": "chowmein.jpg",
+          "alt": "Chow mein"
         },
         {
           "menu_id": 1248,
           "name": "Lo Mein",
-          "image": "/food/lomein.jpg",
-          "alt": "lo mein"
+          "image": "lomein.jpg",
+          "alt": "Lo Mein"
         },
         {
           "menu_id": 1649,
           "name": "General Tso Chicken",
-          "image": "/food/GeneralTsoChicken.jpg",
-          "alt": "general tso chicken"
+          "image": "GeneralTsoChicken.jpg",
+          "alt": "General Tso Chicken"
         }
       ],
       [
         {
           "menu_id": 7467,
           "name": "Egg Rolls",
-          "image": "/food/eggrolls.jpg",
-          "alt": "egg rolls"
+          "image": "eggrolls.jpg",
+          "alt": "Egg Rolls"
         },
         {
           "menu_id": 3752,
           "name": "Wonton Soup",
-          "image": "/food/WontonSoup.jpg",
-          "alt": "wonton soup"
+          "image": "WontonSoup.jpg",
+          "alt": "Wonton soup"
         },
         {
           "menu_id": 4022,
           "name": "Chicken with Broccoli",
-          "image": "/food/chickenwithbroccoli.avif",
-          "alt": "chicken with broccoli"
+          "image": "chickenwithbroccoli.avif",
+          "alt": "Chicken with Broccoli"
         }
       ]
     ]

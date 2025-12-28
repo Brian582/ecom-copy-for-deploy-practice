@@ -1,36 +1,14 @@
 {
   "cart-Items": [
     {
+      "menu_id": 1785,
       "name": "Dumplings",
-      "price": "$10.20"
+      "price": "$10.70"
     },
     {
-      "name": "Sweet and Sour Chicken",
-      "price": "$11.11"
-    },
-    {
+      "menu_id": 5457,
       "name": "Kung Pao Chicken",
-      "price": "$11.00"
-    },
-    {
-      "name": "General Tso Chicken",
-      "price": "$7.22"
-    },
-    {
-      "name": "Lo Mein",
-      "price": "$8.35"
-    },
-    {
-      "name": "General Tso Chicken",
-      "price": "$7.22"
-    },
-    {
-      "name": "Sweet and Sour Chicken",
-      "price": "$11.11"
-    },
-    {
-      "name": "Kung Pao Chicken",
-      "price": "$11.00"
+      "price": "$9.00"
     }
   ]
 }

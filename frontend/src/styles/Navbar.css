@@ -1,11 +1,13 @@
 .navbar {
+  position: sticky;
+  top: 0;
+  /* z-index: 999; */
   display: flex;
-  height: 27px;
+  height: 50px;
   width: 100%;
   background-color: orange;
   justify-content: center;
-  position: relative;
-  gap: 5px;
+  gap: 15px;
   align-items: center;
   border-bottom: 1.5px solid rgba(255, 255, 255, 0.2);
 }
@@ -19,8 +21,10 @@ body{
 /* styles all buttons in navigation bar*/
 .navbar button{
   background-color: orange;
-  color: white;
+  color: black;
   border: none;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 /* designs the cart counter*/
@@ -29,18 +33,19 @@ body{
 }
 
 /* designs the cart icon*/
-.cart-icon {
+.cart-icon-counter {
   display: inline-block;
   position: absolute;
   background-color: red;
   color: white;
   border-radius: 50%;
   padding: 1px 2px;
-  font-size: 7px;
+  font-size: 13px;
   font-weight: bold;
 }
 
-/* adjusts icon size*/
-.icon-size{
-  font-size: 18px;
+/* adjusts cart icon size*/
+.cart-icon-size{
+  color: white;
+  font-size: 30px;
 }

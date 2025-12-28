@@ -1,5 +1,5 @@
 // this file is needed to define useContext
-import {createContext, useState, useEffect}  from 'react';
+import {createContext, useState, useEffect, useRef}  from 'react';
 import axios from 'axios';
 
 // defines the Context, the comment below removes IDE bug
@@ -11,21 +11,23 @@ export const AuthContext = createContext(null);
 
 //defines ThemeContext Provider component
 export function ThemeProvider({ children }) {
-  
+  const loaded = useRef(false);
+  const loaded2 = useRef(false);
+  const host = useRef(import.meta.env.VITE_HOST);
   const [priceTotal, setPriceTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
-  const [auth, setAuth] = useState(false);
-  const [clear,setClear] = useState(false);
 
   //get total price from Json file
   useEffect( () => {
     const getTotalPrice = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/getTotalPrice/'); 
+        const response = await axios.get(`${host.current}/getTotalPrice`); 
         console.log(`Price response ${response.data}`);
         setPriceTotal(Number(response.data))
+        loaded.current=true;
+
       } catch (error) {
-        console.error('Error to get Total Price:', error)
+        console.error('Failed to get Total Price: ', error)
       }
     }
     getTotalPrice()
@@ -33,37 +35,33 @@ export function ThemeProvider({ children }) {
 
   //stores total price to Json file
   useEffect( () => {
+    if (!loaded.current) return; // prevents initial run from updating cart
+    
     const updateTotalPrice = async () => {
       try {
-        // if (auth === true){
-        if (clear === false){
-          const response = await axios.put('http://localhost:5000/updateTotalPrice/',{totalPrice : priceTotal});
+          const response = await axios.put(`${host.current}/updateTotalPrice`, {totalPrice : priceTotal});
           console.log("update total price response:", response.data);
           console.log(response.data);
-          console.log("clear", clear);
-        }
-        else{
-          const response = await axios.put('http://localhost:5000/resetTotalPrice/',{cleartotalPrice: priceTotal});
-          console.log(response.data);
-          console.log("clear", clear);
-        }
+        
       } catch (error) {
-        console.error('Error updating data to Json file:', error)
+        console.error('Failed to update Total Price: ', error)
       }
     }
     updateTotalPrice()
-  }, [priceTotal,auth,clear]); 
+  }, [priceTotal]); 
 
   //gets the cart's items from Json file 
   useEffect(() => {
     const getCartItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/getCartItems/'); 
+        const response = await axios.get(`${host.current}/getCartItems`); 
         console.log(`Cart items response ${response.data}`);
         console.log("Cart items response:", response.data);
-        setCartItems(response.data)
+        setCartItems(response.data);
+        loaded2.current=true;
+
       } catch (error) {
-        console.error('Error to get Total Price:', error)
+        console.error('Failed to get cart items: ', error)
       }
     }
     getCartItems()
@@ -71,32 +69,29 @@ export function ThemeProvider({ children }) {
 
   //stores the cart's items to Json file
   useEffect(() => {
-    //to store objects/arrays, they need to be converted to JSON
+    if (!loaded2.current) return; // prevents initial run from updating cart
+
     const updateCartItems = async () => {
       try {
-        if (clear === false){
-          const response = await axios.put("http://localhost:5000/updateCartItems/",{ updateItems: cartItems});
+          const response = await axios.put(`${host.current}/updateCartItems`,{ updateItems: cartItems});
           console.log("add Cart item response:", response.data);
           console.log(response.data);
-          console.log("clear", clear);
-        }
-        else{
-          const response = await axios.put("http://localhost:5000/clearCartItems/",{ clearItems: cartItems});
-          console.log(response.data);
-          setClear(false)
-          console.log("clear", clear);
-        }
       } catch (error) {
-        console.error('Error updating data to Json file:', error)
+        console.error('Failed to update cart items: ', error)
       }
     }
     updateCartItems()
-  }, [cartItems,auth,clear]);
+  }, [cartItems]);
 
   //adds item to cart
   function addItem(item) {
     setCartItems(prev => [...prev, item]);
     setPriceTotal(priceTotal => priceTotal + Number(item.price.replace("$", "")));
+    // setPriceTotal(priceTotal => {
+    //   const value = priceTotal + Number(item.price.replace("$", ""));
+    //   console.log("new price 1", value);
+    //   return value
+    // });
   }
 
   //removes items from cart by using an item's index
@@ -111,7 +106,6 @@ export function ThemeProvider({ children }) {
   function clearCart(){
     setCartItems([]);
     setPriceTotal(0);
-    setClear(true)
     // try {
     //   localStorage.setItem('cart-items', []);
     //   localStorage.setItem('total_price', '0');
@@ -129,6 +123,7 @@ export function ThemeProvider({ children }) {
   );
 };
 
+/////////////////////////////////////////// DELETE this if Auth or any of the functions below are no longer needed
 //AuthContext provider component
 export function AuthProvider({ children }) {
   

@@ -10,11 +10,18 @@ import NotFound from './pages/Notfound.jsx'
 import { ThemeProvider, AuthProvider } from "./Context";
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import CheckoutPage from './pages/Payment.jsx';
+import CheckoutPage from './pages/Checkout.jsx';
+
+import { ToastProvider } from './hooks/useToast';
+import { Toaster } from './components/Toast';
+
+import Payment from './pages/Payment.jsx';////////// delete this later
 
 export default function App() {
   return (
     <>
+      <ToastProvider>
+      <Toaster />
       <AuthProvider>
       <ThemeProvider>
       <Layout>
@@ -33,11 +40,15 @@ export default function App() {
 
             {/* Paypal portion */}
             <Route exact path="/checkout" element={<CheckoutPage />} />
+
+            {/* /// delete this page later */}
+            <Route exact path="/payment" element={<Payment />} /> 
           </Routes> 
         </PayPalScriptProvider>
       </Layout> 
       </ThemeProvider> 
       </AuthProvider>
+      </ToastProvider>
     </>
   )
 }

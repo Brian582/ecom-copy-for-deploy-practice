@@ -1,0 +1,49 @@
+from flask import jsonify, request, Blueprint
+from file_handler import readFile, writeFile
+import json
+
+totalprice_bp = Blueprint("totalprice", __name__)
+
+#gets user's total price of their cart items
+@totalprice_bp.route("/getTotalPrice", methods=['GET'], strict_slashes=False)
+def get_TotalPrice():
+  try:
+    data = readFile("JSON_TOTALPRICEFILE")
+    totalPrice = data.get('totalPrice')
+    print(f"json total {totalPrice}")
+    return jsonify(totalPrice)
+  
+  except FileNotFoundError as e:
+    return jsonify({"error": f"File not found: {e}"}), 404
+  except json.JSONDecodeError as e:
+    return jsonify({"error": f"Invalid JSON: {e}"}), 400
+  except KeyError as e:
+    return jsonify({"error": f"Missing key in JSON: {e}"}), 400
+  except Exception as e:
+    return jsonify({"error": f"Unexpected error: {e}"}), 500
+
+#get total price without jsonify
+def get_TotalPrice_value():
+    data = readFile("JSON_TOTALPRICEFILE")
+    return float(data.get("totalPrice"))
+
+#updates user's total price
+@totalprice_bp.route("/updateTotalPrice", methods=['PUT'], strict_slashes=False)
+def update_TotalPrice():
+  try:
+    data = readFile("JSON_TOTALPRICEFILE")
+    newTotalPrice = request.get_json().get("totalPrice")
+
+    if newTotalPrice is not None:
+      data['totalPrice'] = newTotalPrice
+
+    writeFile("JSON_TOTALPRICEFILE", data)
+    
+    return jsonify({"success": "Successfully updated total price"}), 200
+  
+  except FileNotFoundError as e:
+    return jsonify({"error": f"File not found: {e}"}), 404
+  except json.JSONDecodeError as e:
+    return jsonify({"error": f"Invalid JSON: {e}"}), 400
+  except Exception as e:
+    return jsonify({"error": f"Unexpected error: {e}"}), 500

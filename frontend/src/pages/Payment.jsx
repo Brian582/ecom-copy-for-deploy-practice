@@ -1,18 +1,17 @@
 import axios from "axios";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import "../styles/payment.css";
+import { useContext } from "react";
+import { ThemeContext } from "../Context";
 
 export default function YourCheckoutPage() {
-
-  // const host = import.meta.env.HOST
-  const host = 'http://localhost:5000'
-
+  const { clearCart } = useContext(ThemeContext);
+  const host = import.meta.env.VITE_HOST;
+ 
   const handleCreateOrder = async () => {
     try {
-      // const res = await axios.post(`${host}/create-order`);
-      const res = await axios.post('http://localhost:5000/create-order');
-      console.log(res.data.id)
-      return res.data.id; // order_id returned from Flask
+      const result = await axios.post(`${host}/create-order`);
+      return result.data.id; // order_id returned from Flask
 
     } catch (error) {
       console.error('Order Error :', error);
@@ -21,10 +20,11 @@ export default function YourCheckoutPage() {
 
   const handleOnApprove = async (data) => {
     try {
-      const res = await axios.post(`${host}/capture-order/${data.orderID}`);
-      console.log("Payment completed:", res.data);
-      alert("Payment successful");
-
+      const result = await axios.post(`${host}/capture-order/${data.orderID}`);
+      if(result.data.status === "COMPLETED") {
+        clearCart()
+      }
+      alert("Payment successful"); 
     } catch (error) {
       console.error('Approve Error :', error);
     }
@@ -38,18 +38,16 @@ export default function YourCheckoutPage() {
   return (
     <div className="centered-div">
       <div className="payment_portion">
-        <h2>Pay with PayPal</h2>
-        
         <PayPalButtons
           style={{
             shape: "rect",
             layout: "vertical",
+            // disableMaxWidth: true,
+            // width: "300px",
           }}
 
-          createOrder={handleCreateOrder}
-          
+          createOrder={handleCreateOrder}   
           onApprove={handleOnApprove}
-
           onError={handleOnError}
         />
       </div>

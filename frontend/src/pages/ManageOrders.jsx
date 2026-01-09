@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import '../styles/ManageOrders.css';
 import axios from 'axios';
-import { AuthContext } from '../Context';
+import { AuthContext } from '../Context.jsx';
 
 export default function ManageOrders() {
-  const [orders, setOrders] = useState(null);
+  const [orders, setOrders] = useState([]);
   const [draggedOrder, setDraggedOrder] = useState(null);
   const [draggedFrom, setDraggedFrom] = useState(null);
   const [dragOverColumn, setDragOverColumn] = useState(null);
@@ -12,22 +12,29 @@ export default function ManageOrders() {
   const { auth }  = useContext(AuthContext);
   const host = useRef(import.meta.env.VITE_HOST);
 
-  //check if user is logged in and if they are, then get their orders.
-  useEffect( () => {
-      const fetchOrders = async () => {
-        try {
-          if (auth.isLoggedIn === true) {
-          const response = await axios.get(`${host.current}/getUserOrders/<userID>`);
-          response.data.length > 0 ? setOrders(response.data) : setOrders([])
+  //Fetch orders for the logged-in user
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        if (auth?.isLoggedIn) {
+          const userId = String(auth.user?.userId || auth.user?.id || '');
+          if (!userId) {
+            setOrders([]);
+            return;
           }
-        } catch (err) {
-          console.error('Error fetching data:', err);
+          const response = await axios.get(`${host.current}/getUserOrders/${userId}`);
+          setOrders(Array.isArray(response.data) ? response.data : []);
+        } else {
+          setOrders([]);
         }
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setOrders([]);
       }
+    };
 
     fetchOrders();
-    
-  }, [auth])
+  }, [auth?.isLoggedIn, auth?.user?.userId, auth?.user?.id]);
 
   const toggleItem = (orderId, itemIndex) => {
     setOrders((prev) =>
@@ -143,7 +150,7 @@ export default function ManageOrders() {
   );
 
   const columns = [
-    { key: 'newOrder', title: 'New Order' },
+    { key: 'new', title: 'New Order' },
     { key: 'processing', title: 'Processing' },
     { key: 'done', title: 'Done' },
   ];

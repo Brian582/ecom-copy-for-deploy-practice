@@ -242,6 +242,20 @@ export function AuthProvider({ children }) {
     isLoggedIn: false
   })
 
+  // restore auth from localStorage on mount so refresh doesn't log user out
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('auth');
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (parsed && parsed.isLoggedIn && parsed.user) {
+        setAuth({ user: parsed.user, isLoggedIn: true });
+      }
+    } catch (err) {
+      console.error('Failed to restore auth from localStorage:', err);
+    }
+  }, []);
+
   //create account
   async function createAccount(formdata){
     const response = await axios.post(`${host.current}/addUser`, formdata)
@@ -250,19 +264,22 @@ export function AuthProvider({ children }) {
 
   //sign in user
   async function signIn(formdata){
-    const response = await axios.post(`${host.current}/signIn`, formdata)
     try {
       const response = await axios.post(`${host.current}/signIn`, formdata);
       if (response?.data?.authenticated === true) {
-        setAuth({ user: response.data.user, isLoggedIn: true });
+        const newAuth = { user: response.data.user, isLoggedIn: true };
+        setAuth(newAuth);
+        try { localStorage.setItem('auth', JSON.stringify(newAuth)); } catch (e) { /* ignore */ }
       } else {
         setAuth({ user: null, isLoggedIn: false });
+        try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
       }
       return response.data;
     } catch (err) {
       // axios throws for non-2xx responses (e.g. 401). Handle 401 as authentication failure.
       if (err.response && err.response.status === 401) {
         setAuth({ user: null, isLoggedIn: false });
+        try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
         return err.response.data || { authenticated: false };
       }
       console.error('Sign in failed:', err);
@@ -274,10 +291,9 @@ export function AuthProvider({ children }) {
   
   //change user's status to log them out
   function logout(){
-    setAuth( prevAuth =>({
-      ...prevAuth, 
-      isLoggedIn : false
-    }));
+    // clear auth state and persisted auth
+    setAuth({ user: null, isLoggedIn: false });
+    try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
   };
 
   const authContextValue = { auth, createAccount, signIn, logout };

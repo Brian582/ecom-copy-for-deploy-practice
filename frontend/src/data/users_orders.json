@@ -40,6 +40,12 @@
               "quantity": "2",
               "price": "$10.70"
             },
+             {
+              "mealId": 1248,
+              "name": "Lo Mein",
+              "quantity": "2",
+              "price": "$10.99"
+            },
             {
               "mealId": 5457,
               "name": "Kung Pao Chicken",

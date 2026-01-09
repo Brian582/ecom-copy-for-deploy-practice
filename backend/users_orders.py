@@ -11,7 +11,8 @@ def add_user_order(userID):
 		data = readFile('JSON_USERS_ORDERS')
 		users_orders = data.get('usersOrders', [])
 		users_orders.append(userOrder)
-		writeFile('JSON_USERSFILE', data)
+		data['usersOrders'] = users_orders
+		writeFile('JSON_USERS_ORDERS', data)
 
 		return jsonify({'added': True}), 201
 	except FileNotFoundError as e:
@@ -21,18 +22,51 @@ def add_user_order(userID):
 	except Exception as e:
 		return jsonify({'error': f'unexpected error: {e}'}), 500
 
-#gets user's orders
+# gets user's orders. If the requester is a worker (exists in workers list), return all orders.
 @users_orders_bp.route('/getUserOrders/<userID>', methods=['GET'], strict_slashes=False)
-def get_user_orders(userId):
+def get_user_orders(userID):
 	try:
-		data = readFile('JSON_USERS_ORDERS')
-		users_orders = data.get('usersOrders', [])
+		# normalize id to string for comparison
+		user_id = str(userID)
+
+		# check if user is a worker
+		workers_data = readFile('JSON_WORKERS') or {}
+		workers = workers_data.get('workers', [])
+		is_worker = any(str(w.get('workerId')) == user_id for w in workers)
+
+		users_orders_data = readFile('JSON_USERS_ORDERS') or {}
+		users_orders = users_orders_data.get('usersOrders', [])
+
+		result_orders = []
+
+		if is_worker:
+			# aggregate all orders from all users
+			for u in users_orders:
+				for o in u.get('orders', []):
+					# normalize order shape for frontend ManageOrders
+					order_id = o.get('orderId')
+					status = o.get('status')
+					meals = o.get('meals', [])
+					items = []
+					for m in meals:
+						items.append({ 'name': m.get('name'), 'checked': False })
+					result_orders.append({ 'id': int(order_id) if str(order_id).isdigit() else order_id, 'status': status, 'items': items })
+			return jsonify(result_orders)
+
+		# not a worker — find the matching user's orders
 		for u in users_orders:
-			if u.get('userId').lower() == userId:
-				return jsonify(u.get('orders'))
-			
+			if str(u.get('userId')) == user_id:
+				for o in u.get('orders', []):
+					order_id = o.get('orderId')
+					status = o.get('status')
+					meals = o.get('meals', [])
+					items = []
+					for m in meals:
+						items.append({ 'name': m.get('name'), 'checked': False })
+					result_orders.append({ 'id': int(order_id) if str(order_id).isdigit() else order_id, 'status': status, 'items': items })
+				return jsonify(result_orders)
+
 		return jsonify([])
-	
 	except FileNotFoundError as e:
 		return jsonify({'error': f'users_orders file not found: {e}'}), 404
 	except json.JSONDecodeError as e:
@@ -41,30 +75,7 @@ def get_user_orders(userId):
 		return jsonify({'error': f'unexpected error: {e}'}), 500
 
 #get orders of all users
-@users_orders_bp.route('/getUserOrders/<email>', methods=['GET'], strict_slashes=False)
-def get_orders(workerId):
-	try:
-		data = readFile('JSON_WORKERS')
-		workers = data.get('workers')
-		for w in workers:
-			if w["workerId"] != workerId:
-				return jsonify({'authenticated': False})
-
-		data = readFile('JSON_USERS_ORDERS')
-		users_orders = data.get('usersOrders', [])
-		orders = []
-		for u in users_orders:
-			if u.get('orders'):
-				orders.append()
-			
-		return jsonify( {'authenticated': False, 'orders': orders })
-	
-	except FileNotFoundError as e:
-		return jsonify({'error': f'users_orders file not found: {e}'}), 404
-	except json.JSONDecodeError as e:
-		return jsonify({'error': f'invalid users_orders json: {e}'}), 400
-	except Exception as e:
-		return jsonify({'error': f'unexpected error: {e}'}), 500
+# (old worker endpoint removed — logic consolidated in get_user_orders)
 
 
 ############# edit this 

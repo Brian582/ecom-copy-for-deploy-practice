@@ -251,12 +251,24 @@ export function AuthProvider({ children }) {
   //sign in user
   async function signIn(formdata){
     const response = await axios.post(`${host.current}/signIn`, formdata)
-    if (response.data.authenticated === true){
-      setAuth({  
-        user : response.data.user, 
-        isLoggedIn : response.data.authenticated
-      })
+    try {
+      const response = await axios.post(`${host.current}/signIn`, formdata);
+      if (response?.data?.authenticated === true) {
+        setAuth({ user: response.data.user, isLoggedIn: true });
+      } else {
+        setAuth({ user: null, isLoggedIn: false });
+      }
+      return response.data;
+    } catch (err) {
+      // axios throws for non-2xx responses (e.g. 401). Handle 401 as authentication failure.
+      if (err.response && err.response.status === 401) {
+        setAuth({ user: null, isLoggedIn: false });
+        return err.response.data || { authenticated: false };
+      }
+      console.error('Sign in failed:', err);
+      throw err;
     }
+    
     // sign-in status handled by caller
   }
   

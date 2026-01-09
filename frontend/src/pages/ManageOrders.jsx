@@ -12,11 +12,11 @@ export default function ManageOrders() {
   const { auth }  = useContext(AuthContext);
   const host = useRef(import.meta.env.VITE_HOST);
 
-  //check if user is logged in and if they are, then get their orders. Otherwise, maybe make orders into an empty list to add cart items to it.
+  //check if user is logged in and if they are, then get their orders.
   useEffect( () => {
       const fetchOrders = async () => {
         try {
-          if (auth.status == true) {
+          if (auth.isLoggedIn === true) {
           const response = await axios.get(`${host.current}/getUserOrders/<userID>`);
           response.data.length > 0 ? setOrders(response.data) : setOrders([])
           }

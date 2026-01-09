@@ -7,28 +7,40 @@ users_bp = Blueprint("users", __name__)
 
 #checks if user is in the json file
 def verify_user(email, password):
-    data = readFile('JSON_USERS')
-    users = data.get('users', [])
+	data = readFile('JSON_USERS')
+	users = data.get('users', [])
 
-    email = email.lower()
-    users_by_email = { u["email"].lower(): u for u in users}
-    user = users_by_email.get(email)
+	email = email.lower()
+	users_by_email = { u["email"].lower(): u for u in users}
+	user = users_by_email.get(email)
 
-    if user and check_password_hash(user["password"], password):
-        return {
-            "authenticated": True,
-            "user": {
-                "userId": user["userId"],
-                "name": user["name"],
-                "email": user["email"],
-                "role": user["identity"]
-            }
-        }
+	if user:
+		stored = user.get('password')
+		# support both hashed passwords (werkzeug) and legacy plaintext/numeric passwords
+		try:
+			if isinstance(stored, str) and (stored.startswith('pbkdf2:') or ':' in stored):
+				valid = check_password_hash(stored, password)
+			else:
+				# fallback: compare string forms for legacy plain passwords
+				valid = str(stored) == str(password)
+		except Exception:
+			valid = False
 
-    return {
-        "authenticated": False,
-        "user": None
-    }
+	if valid:
+		return {
+			"authenticated": True,
+			"user": {
+				"userId": user.get("userId"),
+				"name": user.get("name"),
+				"email": user.get("email"),
+				"role": user.get("role")
+			}
+	}
+
+	return {
+		"authenticated": False,
+		"user": None
+	}
 	
 #signs user into their account
 @users_bp.route('/signIn', methods=['POST'], strict_slashes=False)

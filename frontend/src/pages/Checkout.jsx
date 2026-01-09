@@ -10,7 +10,7 @@ eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
 
 
 export default function Checkout() {
-  const { priceTotal, removeItem, cartItems} = useContext(ThemeContext);
+  const { priceTotal, removeItem, activeMeals } = useContext(ThemeContext);
   const [CheckoutCartItems, setCheckoutCartItems] = useState([]);
   
   useEffect(() => {
@@ -27,15 +27,18 @@ export default function Checkout() {
       'chicken with broccoli': chickenwithbroccoli,
     };
     
-    const combined = cartItems.map((menuItem) => {
-      const key = menuItem.name.toLowerCase();
-      const img = images[key]
-      const price = menuItem.price;
-      return { meal_Id: menuItem.meal_Id, image: img, name: menuItem.name, price: price, quantity: menuItem.quantity ?? 1 };
+    const combined = (activeMeals || []).map((menuItem) => {
+      const name = (menuItem.name || '').toString();
+      const key = name.toLowerCase().trim();
+      const img = images[key] || menuItem.image || null;
+      const mealId = menuItem.mealId ?? menuItem.meal_Id ?? menuItem.id ?? null;
+      const priceRaw = menuItem.price ?? menuItem.priceString ?? menuItem.amount ?? 0;
+      const price = typeof priceRaw === 'string' ? Number(String(priceRaw).replace('$','')) : Number(priceRaw) || 0;
+      return { mealId, image: img, name: name, price: price, size : menuItem.quantity ?? 1 };
     });
 
     setCheckoutCartItems(combined);
-  }, [cartItems]);
+  }, [activeMeals]);
 
   const subtotal = priceTotal
   const shipping = subtotal > 0 ? 5.99 : 0;
@@ -73,7 +76,7 @@ export default function Checkout() {
                       <div className="cart-item-header">
                         <div>
                           <h3 className="cart-item-name">{item.name}</h3>
-                          <p className="cart-item-size">{item.size}</p>
+                          <p className="cart-item-size">Quantity: {item.size}</p>
                         </div>
                         <button
                           className="cart-item-remove"
@@ -84,7 +87,7 @@ export default function Checkout() {
                       </div>
 
                       <div className="cart-item-footer">
-                        <p className="cart-item-price">{item.price}</p>
+                        <p className="cart-item-price">${item.price}</p>
                         {/* <select
                           className="quantity-select"
                           value={item.quantity.toString()}

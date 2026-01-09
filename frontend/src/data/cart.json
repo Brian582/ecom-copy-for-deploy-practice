@@ -3,26 +3,7 @@
     {
       "cartId": "guest",
       "userId": null,
-      "meals": [
-        {
-          "mealId": 3752,
-          "name": "Wonton Soup",
-          "price": "$5.00",
-          "quantity": 1
-        },
-        {
-          "mealId": 4022,
-          "name": "Chicken with Broccoli",
-          "price": "$8.00",
-          "quantity": 1
-        },
-        {
-          "mealId": 1649,
-          "name": "General Tso Chicken",
-          "price": "$12.00",
-          "quantity": 1
-        }
-      ]
+      "meals": []
     },
     {
       "cartId": "cart_70",
@@ -56,30 +37,48 @@
           "mealId": 1785,
           "name": "Dumplings",
           "price": "$10.70",
-          "quantity": 3
+          "quantity": 5
         },
         {
           "mealId": 2576,
           "name": "Sweet and Sour Chicken",
           "price": "$11.49",
-          "quantity": 1
+          "quantity": 4
         },
         {
           "mealId": 5457,
           "name": "Kung Pao Chicken",
           "price": "$9.00",
-          "quantity": 3
+          "quantity": 6
         },
         {
           "mealId": 3752,
           "name": "Wonton Soup",
           "price": "$5.00",
-          "quantity": 2
+          "quantity": 3
         },
         {
           "mealId": 7467,
           "name": "Egg Rolls",
           "price": "$2.89",
+          "quantity": 1
+        },
+        {
+          "mealId": 4022,
+          "name": "Chicken with Broccoli",
+          "price": "$8.00",
+          "quantity": 1
+        },
+        {
+          "mealId": 1649,
+          "name": "General Tso Chicken",
+          "price": "$12.00",
+          "quantity": 2
+        },
+        {
+          "mealId": 1248,
+          "name": "Lo Mein",
+          "price": "$10.99",
           "quantity": 1
         }
       ]

@@ -89,8 +89,11 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     const tryMerge = async () => {
       try {
-        const userId = auth?.user?.userId || auth?.user?.id || null;
+        const user = auth?.user || {};
+        const userId = user?.userId || user?.id || null;
+        // only merge for logged-in customers (not workers)
         if (!auth?.isLoggedIn || !userId) return;
+        if (user.role && String(user.role).toLowerCase() !== 'customer') return;
         if (lastMergedUser.current === String(userId)) return;
 
         await axios.post(`${host.current}/mergeGuestToUser`, { userId });
@@ -108,7 +111,7 @@ export function ThemeProvider({ children }) {
       }
     }
     tryMerge();
-  }, [auth?.isLoggedIn, auth?.user?.id, auth?.user?.userId]);
+  }, [auth?.isLoggedIn, auth?.user, auth?.user?.id, auth?.user?.userId, auth?.user?.role]);
 
   //adds item to cart (increments quantity if meal already present)
 
@@ -197,6 +200,9 @@ export function ThemeProvider({ children }) {
     } catch (e) { return null }
   })();
 
+  // expose active cart meals for consumers
+  const activeMeals = (activeCart && Array.isArray(activeCart.meals)) ? activeCart.meals : [];
+
   // derive total price from active cart so it's always consistent with quantities
   useEffect(() => {
     try {
@@ -220,7 +226,7 @@ export function ThemeProvider({ children }) {
   }, [cartItems, auth?.isLoggedIn, auth?.user?.id, auth?.user?.userId]);
 
   const cartItemcount = (activeCart && Array.isArray(activeCart.meals)) ? activeCart.meals.reduce((s, it) => s + (Number(it.quantity) || 1), 0) : 0;
-  const ContextValues = { cartItems, priceTotal, cartItemcount, addItem, removeItem, clearCart }
+  const ContextValues = { cartItems, priceTotal, cartItemcount, addItem, removeItem, clearCart, activeMeals }
 
   return (
     <ThemeContext.Provider value={ContextValues}>

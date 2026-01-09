@@ -79,6 +79,17 @@ def merge_guest_to_user():
     if userId is None:
       return jsonify({'error': 'userId is required'}), 400
 
+    # ensure the target user is a customer (do not merge for workers)
+    try:
+      users_data = readFile('JSON_USERS')
+      users = users_data.get('users', [])
+      target_user = next((u for u in users if str(u.get('userId')) == str(userId)), None)
+      if target_user is None or str(target_user.get('role') or '').lower() != 'customer':
+        return jsonify({'merged': False, 'reason': 'user not allowed to merge (not a customer)'}), 403
+    except FileNotFoundError:
+      # if users file missing, be conservative and block merge
+      return jsonify({'merged': False, 'reason': 'users file not found'}), 500
+
     data = readFile("JSON_CARTFILE")
     cart_list = data.get('cart') or data.get('cart-Items') or []
 

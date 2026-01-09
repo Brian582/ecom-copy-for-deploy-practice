@@ -11,6 +11,11 @@ export default function ManageOrders() {
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const { auth }  = useContext(AuthContext);
   const host = useRef(import.meta.env.VITE_HOST);
+  const isWorker = !!(
+    auth?.user && (
+      auth.user.role === 'worker' || auth.user.isWorker || auth.user.worker
+    )
+  );
 
   //Fetch orders for the logged-in user
   useEffect(() => {
@@ -125,7 +130,7 @@ export default function ManageOrders() {
     <div
       key={order.id}
       className={`order-card ${draggedOrder?.id === order.id ? 'dragging' : ''}`}
-      draggable='true'
+      draggable={isWorker}
       onDragStart={(e) => handleDragStart(e, order)}
       onDragEnd={handleDragEnd}
       onDragOver={(e) => handleCardDragOver(e, column, index)}

@@ -3,9 +3,9 @@
 
 body {
   background-image: url('../images/imperialdragongold.png');
-  background-repeat: no-repeat;
-  background-size: 335px;
-  background-position: center 30px;
-  background-attachment: fixed;
   background-color: rgb(153, 3, 3);
+  background-size: 50% 95%;
+  background-position: center 45px;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }

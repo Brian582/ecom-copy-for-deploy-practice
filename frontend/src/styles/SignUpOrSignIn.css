@@ -1,0 +1,191 @@
+.signup-page {
+  min-height: 100vh;
+  /* background-color: hsl(var(--background)); */
+  /* background-color: white; */
+}
+
+.signup-hero {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    hsl(var(--primary) / 0.1) 0%,
+    hsl(var(--background)) 50%,
+    hsl(var(--secondary) / 0.1) 100%
+  );
+}
+
+.signup-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.signup-blob-1 {
+  width: 400px;
+  height: 400px;
+  background: hsl(var(--primary) / 0.3);
+  top: -100px;
+  right: -100px;
+}
+
+.signup-blob-2 {
+  width: 300px;
+  height: 300px;
+  background: hsl(var(--secondary) / 0.3);
+  bottom: -50px;
+  left: -50px;
+}
+
+.signup-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  border: 3px solid #000;
+  border-radius: 25px;
+  background-color: white;
+  background-clip: padding-box;
+}
+
+.signup-card {
+  /* background-color: hsl(var(--card)); */
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 2.5rem;
+  box-shadow: 0 10px 40px hsl(var(--foreground) / 0.1);
+}
+
+.signup-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  text-align: center;
+}
+
+.signup-subtitle {
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.signup-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.signup-input-icon {
+  position: absolute;
+  left: 1rem;
+  width: 20px;
+  height: 20px;
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+}
+
+.signup-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  font-size: 1rem;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--input));
+  border: 1px solid gray;
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.signup-input:focus {
+  outline: none;
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+}
+
+.signup-input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.signup-password-toggle {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: hsl(var(--muted-foreground));
+  transition: color 0.2s ease;
+}
+
+.signup-password-toggle:hover {
+  color: hsl(var(--foreground));
+}
+
+.signup-password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.signup-submit-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary));
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.signup-submit-button:hover {
+  background-color: hsl(var(--primary) / 0.9);
+  transform: translateY(-2px);
+}
+
+.signup-submit-button:active {
+  transform: translateY(0);
+}
+
+.signup-signin-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.signup-signin-link button {
+  color: hsl(var(--primary));
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  border: None;
+}
+
+.signup-signin-link button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .signup-card {
+    padding: 1.5rem;
+  }
+
+  .signup-title {
+    font-size: 1.5rem;
+  }
+}

@@ -31,10 +31,10 @@ export default function NavBar() {
         <Link to="/order">
           <button>Order</button>
         </Link>
-        <Link to="/signin">
+        {/* <Link to="/signin">
           <button>Sign in</button>
-        </Link>
-        <Link to="/signup">
+        </Link> */}
+        <Link to="/SignUpOrSignIn">
           <button>Sign Up</button>
         </Link>
         <Link to="/about">

@@ -10,7 +10,7 @@ import ProfileMenu from './ProfileMenu.jsx';
 
 export default function NavBar() {
   const { cartItemcount, cartItems } = useContext(ThemeContext);
-  const { user, authenticated} = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
 
   //used to control when the modal appears
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -57,15 +57,15 @@ export default function NavBar() {
           {cartItemcount > 0 && (<span className='cart-icon-counter'>
             {cartItemcount}</span>)} 
         </button>
-        {authenticated && (
+        {auth?.isLoggedIn && (
           <>
             <button ref={profileButtonRef} 
             onClick={() => setIsProfileOpen(prev => !prev)} 
             aria-haspopup="true" 
             aria-expanded={isProfileOpen}>{/* when clicked profile menu will open using a function setProfileMenuOpen(true) */}
-              {"Hi, " + user }
+              {"Hi, " + (auth.user?.name || '') }
             </button>
-            <ProfileMenu isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} onLogout={() => console.log('logout')} triggerRef={profileButtonRef} />
+            <ProfileMenu isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} onLogout={() => {}} triggerRef={profileButtonRef} />
           </>
         )}
       </nav>
@@ -74,7 +74,14 @@ export default function NavBar() {
       <CartModal
       isOpen={isCartOpen}
       onClose={() => setIsCartOpen(false)}
-      items={cartItems}
+      items={(function(){
+        try {
+          const userId = auth?.isLoggedIn ? String(auth.user?.userId || auth.user?.id || '') : null;
+          if (!Array.isArray(cartItems)) return [];
+          const active = cartItems.find(c => (c.userId == null && userId == null) || (c.userId != null && String(c.userId) === String(userId)));
+          return (active && Array.isArray(active.meals)) ? active.meals : [];
+        } catch (e) { return [] }
+      })()}
       />
     </>
   )

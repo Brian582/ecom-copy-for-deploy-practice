@@ -43,7 +43,7 @@ export default function CartModal({ isOpen, onClose, items }){
             items.map((item, index) => (
               <div key={index} className="cart-item">
                 <div className="button-group">
-                  <button className="remove-btn" onClick={() => removeItem(item, auth)}> - </button>
+                  <button className="remove-btn" onClick={() => removeItem(item, undefined, auth)}> - </button>
                   <button className="add-btn" onClick={() => addItem(item, auth)}> + </button>
                 </div>
                 <span className="cart-item-name">{item.name}</span>

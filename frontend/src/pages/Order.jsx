@@ -5,7 +5,7 @@ import pricesData from '../data/meal_prices.json';
 import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
 eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
 
-import { ThemeContext } from '../Context.jsx';
+import { ThemeContext, AuthContext } from '../Context.jsx';
 
 //splits the meals object array into rows of `size`
 function split(array,size) {
@@ -21,6 +21,7 @@ function split(array,size) {
 
 export default function Order() {
   const { addItem } = useContext(ThemeContext);
+  const { auth } = useContext(AuthContext);
   const [meals, setMeals] = useState([]);
 
   useEffect(() => {
@@ -42,18 +43,18 @@ export default function Order() {
 
     const combined = flattened.map((menuItem) => {
       const key = menuItem.name.toLowerCase();
-      const img = images[key]
-      const priceObj = pricesData.meal_prices.find((p) => p.meal_Id === menuItem.meal_Id);
+      const img = images[key];
+      const priceObj = pricesData.meal_prices.find((p) => p.mealId === menuItem.mealId || p.mealId === menuItem.mealId);
       const price = priceObj && priceObj.price;
-      return { meal_Id: menuItem.meal_Id, img, name: menuItem.name, price };
+      return { mealId: menuItem.mealId ?? menuItem.mealId ?? menuItem.mealId, img, name: menuItem.name, price };
     });
 
     setMeals(combined);
   }, []);
 
-  function handleAddItem(meal_Id, name, price) {
-    const item = { meal_Id, name, price };
-    addItem(item);
+  function handleAddItem(mealId, name, price) {
+    const item = { mealId, name, price };
+    addItem(item, auth);
   }
 
   const rows = split(meals, 3);//splits the meals into 3 rows for the UI
@@ -68,10 +69,9 @@ export default function Order() {
             {/* loops each meal in a row */}
             {row.map((meal, idx) => (
               <button
-                key={idx}
-                onClick={() => {
-                  handleAddItem( meal.meal_Id, meal.name, meal.price);
-                }}
+                type="button"
+                key={meal.mealId ?? idx}
+                onClick={() => handleAddItem(meal.mealId ?? idx, meal.name, meal.price)}
               >
                 <img src={meal.img} alt={meal.name} />
                 <p>{meal.name}</p>

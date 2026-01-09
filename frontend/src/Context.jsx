@@ -1,5 +1,5 @@
 // this file is needed to define useContext
-import {createContext, useState, useEffect, useRef}  from 'react';
+import {createContext, useState, useEffect, useRef, useContext}  from 'react';
 import axios from 'axios';
 
 // defines the Context, the comment below removes IDE bug
@@ -16,13 +16,14 @@ export function ThemeProvider({ children }) {
   const host = useRef(import.meta.env.VITE_HOST);
   const [priceTotal, setPriceTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
+  const { auth } = useContext(AuthContext);
+  const lastMergedUser = useRef(null);
 
   //get total price from Json file
   useEffect( () => {
     const getTotalPrice = async () => {
       try {
-        const response = await axios.get(`${host.current}/getTotalPrice`); 
-        console.log(`Price response ${response.data}`);
+        const response = await axios.get(`${host.current}/getTotalPrice`);
         setPriceTotal(Number(response.data))
         cartLoaded.current=true;
 
@@ -39,9 +40,7 @@ export function ThemeProvider({ children }) {
     
     const updateTotalPrice = async () => {
       try {
-          const response = await axios.put(`${host.current}/updateTotalPrice`, {totalPrice : priceTotal});
-          console.log("update total price response:", response.data);
-          console.log(response.data);
+          await axios.put(`${host.current}/updateTotalPrice`, {totalPrice : priceTotal});
         
       } catch (error) {
         console.error('Failed to update Total Price: ', error)
@@ -54,12 +53,14 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     const getCartItems = async () => {
       try {
-        const response = await axios.get(`${host.current}/getCartItems`); 
-        console.log(`Cart items response ${response.data}`);
-        console.log("Cart items response:", response.data);
-        // normalize items to ensure quantity exists
-        const normalized = response.data.map(i => ({ ...i, quantity: i.quantity ?? 1 }));
-        setCartItems(normalized);
+        const response = await axios.get(`${host.current}/getCartItems`);
+        // normalize response shape: accept either an array or an object with a `cart` array
+        const payload = response.data;
+        let carts = [];
+        if (Array.isArray(payload)) carts = payload;
+        else if (payload && Array.isArray(payload.cart)) carts = payload.cart;
+        else carts = [];
+        setCartItems(carts);
         priceLoaded.current=true;
 
       } catch (error) {
@@ -75,9 +76,7 @@ export function ThemeProvider({ children }) {
 
     const updateCartItems = async () => {
       try {
-          const response = await axios.put(`${host.current}/updateCartItems`,{ updateItems: cartItems});
-          console.log("add Cart item response:", response.data);
-          console.log(response.data);
+          await axios.put(`${host.current}/updateCartItems`, { updateItems: cartItems});
       } catch (error) {
         console.error('Failed to update cart items: ', error)
       }
@@ -85,71 +84,101 @@ export function ThemeProvider({ children }) {
     updateCartItems()
   }, [cartItems]);
 
+
+  // when a user logs in, merge guest cart into their cart on the server
+  useEffect(() => {
+    const tryMerge = async () => {
+      try {
+        const userId = auth?.user?.userId || auth?.user?.id || null;
+        if (!auth?.isLoggedIn || !userId) return;
+        if (lastMergedUser.current === String(userId)) return;
+
+        await axios.post(`${host.current}/mergeGuestToUser`, { userId });
+        // refresh carts from server
+        const resp = await axios.get(`${host.current}/getCartItems`);
+        const payload = resp.data;
+        let carts = [];
+        if (Array.isArray(payload)) carts = payload;
+        else if (payload && Array.isArray(payload.cart)) carts = payload.cart;
+        else carts = [];
+        setCartItems(carts);
+        lastMergedUser.current = String(userId);
+      } catch (err) {
+        console.error('Failed to merge guest cart to user cart:', err);
+      }
+    }
+    tryMerge();
+  }, [auth?.isLoggedIn, auth?.user?.id, auth?.user?.userId]);
+
   //adds item to cart (increments quantity if meal already present)
 
   //check if user is loggedin. If they are, use their userId to get their items from Cart. Otherwise UserId == None
-  function addItem(item, auth) {
-    const price = Number(item.price.replace("$", ""));
+  function addItem(item, providedAuth) {
+    const usedAuth = providedAuth ?? auth;
+    const targetUserId = usedAuth?.isLoggedIn ? String(usedAuth.user?.userId || usedAuth.user?.id || '') : null;
+
     setCartItems(prev => {
-      return prev.map(userItems => {
-        if (userItems.userId === auth.user.Id) {
-            const idx = userItems.meals.findIndex(ci => ci.meal_Id === item.meal_Id);            
-            const updatedMeals = (idx !== -1)
-                ? userItems.meals.map(ci => ci.meal_Id === item.meal_Id 
-                    ? { ...ci, quantity: (ci.quantity ?? 1) + 1 } 
-                    : ci
-                  )
-                : [...userItems.meals, { ...item, quantity: 1 }];       
-            return { ...userItems, meals: updatedMeals };
-        }
-        return userItems;
-      });
+      const list = Array.isArray(prev) ? [...prev] : [];
+
+      // find or create target cart
+      let cartIndex = list.findIndex(c => (c.userId == null && targetUserId == null) || (c.userId != null && String(c.userId) === String(targetUserId)));
+      if (cartIndex === -1) {
+        const newCart = { cartId: targetUserId ? `cart_${Math.random().toString(36).slice(2,10)}` : 'guest', userId: targetUserId, meals: [] };
+        list.push(newCart);
+        cartIndex = list.length - 1;
+      }
+
+      const cart = { ...list[cartIndex] };
+      const mealId = item.mealId ?? item.meal_Id ?? item.id;
+      const idx = (cart.meals || []).findIndex(m => String(m.mealId ?? m.meal_Id ?? m.id) === String(mealId));
+      if (idx !== -1) {
+        cart.meals = (cart.meals || []).map((m, i) => i === idx ? { ...m, quantity: (Number(m.quantity) || 0) + 1 } : m);
+      } else {
+        cart.meals = [...(cart.meals || []), { mealId: mealId, name: item.name, price: item.price, quantity: 1 }];
+      }
+
+      list[cartIndex] = cart;
+      return list;
     });
-    setPriceTotal(priceTotal => priceTotal + price);
   }
 
   //removes one quantity of an item from cart (decrements quantity or removes item)
-  function removeItem(item, index, auth) {
-    const price = Number(item.price.replace("$", ""));
-    const targetId = item.meal_id ?? item.id ?? null;
-    setCartItems(prev => {
-      return prev.map(userItems => {
-          if (userItems.userId === auth.user.id && targetId != null){
-              return { ...userItems, 
-                      meals: userItems.meals
-                      .map(ci => ci.meal_Id == targetId ? { ...ci, quantity : ( ci.quantity ?? 1 ) - 1 } : ci )
-                      .filter(ci => ( ci.quantity ?? 1 ) > 0 )
-                    }}
-          if ( typeof index === 'number') {
-            return { ...userItems, meals: userItems.filter( (_,i) => i !== index ) }
-          }
-          return userItems
-        });
-        // const targetId = item.meal_id ?? item.id ?? null
-        // if ( targetId != null ){
-        //   return prev
-        //       .map(ci => ci.meal_id === targetId ? {...ci, quantity : (ci.quantity ?? 1 ) - 1 } : ci )
-        //       .filter(ci => (ci.quantity ?? 1 ) > 0 )
-        // }
-        // if ( typeof index === 'number') return prev.filter( (_,i) => i !== index )
+  function removeItem(item, index, providedAuth) {
+    const targetId = item.mealId ?? item.meal_Id ?? item.id ?? null;
+    const usedAuth = providedAuth ?? auth;
+    const targetUserId = usedAuth?.isLoggedIn ? String(usedAuth.user?.userId || usedAuth.user?.id || '') : null;
 
-      // console.log( "item meal id", item.meal_Id )
-      // console.log( "item id", item.id )
-      // const targetId = item.meal_Id ?? item.id ?? null;
-      // if (targetId != null) {
-      //   return prev
-      //     .map(ci => ci.meal_Id === targetId ? { ...ci, quantity: (ci.quantity ?? 1) - 1 } : ci)
-      //     .filter(ci => (ci.quantity ?? 1) > 0);
-      // }
-      // if (typeof index === 'number') return prev.filter((_, i) => i !== index);
-      // return prev;
+    setCartItems(prev => {
+      const list = Array.isArray(prev) ? [...prev] : [];
+      const cartIdx = list.findIndex(c => (c.userId == null && targetUserId == null) || (c.userId != null && String(c.userId) === String(targetUserId)));
+      if (cartIdx === -1) return list;
+
+      const cart = { ...list[cartIdx] };
+      if (typeof index === 'number') {
+        cart.meals = (cart.meals || []).filter((_, i) => i !== index);
+      } else if (targetId != null) {
+        cart.meals = (cart.meals || [])
+          .map(m => String(m.mealId ?? m.meal_Id ?? m.id) === String(targetId) ? { ...m, quantity: (m.quantity ?? 1) - 1 } : m)
+          .filter(m => (m.quantity ?? 1) > 0);
+      }
+
+      list[cartIdx] = cart;
+      return list;
     });
-    setPriceTotal(priceTotal => Math.max(0, priceTotal - price));
+
+    // priceTotal is derived from cart contents; recomputed in effect below
   }
 
   //removes all items
   function clearCart(){
-    setCartItems([]);
+    // clear guest cart only if not logged in, otherwise clear current user's cart
+    setCartItems(prev => {
+      if (!auth?.isLoggedIn) return (prev || []).map(c => ({ ...c, 
+        meals: String(c.cartId) === "guest" && c.userId === null ? [] : c.meals }));
+      // [{ cartId: 'guest', userId: null, meals: [],  }, ...prev];
+      return (prev || []).map(c => ({ ...c, 
+              meals: auth?.isLoggedIn && String(c.userId) === String(auth.user?.userId) ? [] : c.meals }));
+    });
     setPriceTotal(0);
     // try {
     //   localStorage.setItem('cart-items', []);
@@ -159,7 +188,38 @@ export function ThemeProvider({ children }) {
     // }
   }
 
-  const cartItemcount = cartItems.reduce((s, it) => s + (it.quantity ?? 1), 0);
+  // compute item count for active cart (guest or logged-in user's cart)
+  const activeCart = (() => {
+    try {
+      const userId = auth?.isLoggedIn ? String(auth.user?.userId || auth.user?.id || '') : null;
+      if (!Array.isArray(cartItems)) return null;
+      return cartItems.find(c => (c.userId == null && userId == null) || (c.userId != null && String(c.userId) === String(userId))) || null;
+    } catch (e) { return null }
+  })();
+
+  // derive total price from active cart so it's always consistent with quantities
+  useEffect(() => {
+    try {
+      const userId = auth?.isLoggedIn ? String(auth.user?.userId || auth.user?.id || '') : null;
+      if (!Array.isArray(cartItems)) {
+        setPriceTotal(0);
+        return;
+      }
+      const active = cartItems.find(c => (c.userId == null && userId == null) || (c.userId != null && String(c.userId) === String(userId)));
+      const sum = (active && Array.isArray(active.meals))
+        ? active.meals.reduce((s, m) => {
+            const price = Number(String(m.price || '').replace('$', '')) || 0;
+            const qty = Number(m.quantity) || 1;
+            return s + price * qty;
+          }, 0)
+        : 0;
+      setPriceTotal(Number(sum.toFixed(2)));
+    } catch (err) {
+      console.error('Failed to recompute priceTotal:', err);
+    }
+  }, [cartItems, auth?.isLoggedIn, auth?.user?.id, auth?.user?.userId]);
+
+  const cartItemcount = (activeCart && Array.isArray(activeCart.meals)) ? activeCart.meals.reduce((s, it) => s + (Number(it.quantity) || 1), 0) : 0;
   const ContextValues = { cartItems, priceTotal, cartItemcount, addItem, removeItem, clearCart }
 
   return (
@@ -172,21 +232,20 @@ export function ThemeProvider({ children }) {
 //AuthContext provider component
 export function AuthProvider({ children }) {
   const host = useRef(import.meta.env.VITE_HOST);
-
   const [auth, setAuth] = useState({
     user: {
-          id: "",
-          name: "",
-          email: "",
-          identity: "",
+          id: null,
+          name: null,
+          email: null,
+          identity: null,
         },
-    status: false
+    isLoggedIn: false
   })
 
   //create account
   async function createAccount(formdata){
     const response = await axios.post(`${host.current}/addUser`, formdata)
-    console.log( "account creation status", response.data.added)  /////////////// debugging, delete later
+    // account creation status handled by caller
   }
 
   //sign in user
@@ -195,20 +254,17 @@ export function AuthProvider({ children }) {
     if (response.data.authenticated === true){
       setAuth({  
         user : response.data.user, 
-        status : response.data.authenticated
+        isLoggedIn : response.data.authenticated
       })
     }
-    
-    /////////////// debugging, delete later
-    console.log(" user", response.data.user )
-    console.log(" status", response.data.authenticated )
+    // sign-in status handled by caller
   }
   
   //change user's status to log them out
   function logout(){
     setAuth( prevAuth =>({
       ...prevAuth, 
-      status : false
+      isLoggedIn : false
     }));
   };
 

@@ -2,32 +2,32 @@
   "cart": [
     {
       "cartId": "guest",
-      "userId" : null,
-      "meals" : [
+      "userId": null,
+      "meals": [
         {
           "mealId": 1785,
           "name": "Dumplings",
           "price": "$10.70",
-          "quantity": 1
-        },
-        {
-          "mealId": 5457,
-          "name": "Kung Pao Chicken",
-          "price": "$9.00",
-          "quantity": 1
+          "quantity": 3
         },
         {
           "mealId": 2576,
           "name": "Sweet and Sour Chicken",
           "price": "$11.49",
           "quantity": 1
+        },
+        {
+          "mealId": 5457,
+          "name": "Kung Pao Chicken",
+          "price": "$9.00",
+          "quantity": 3
         }
       ]
     },
     {
       "cartId": "cart_70",
-      "userId" : "3",
-      "meals" : [
+      "userId": "3",
+      "meals": [
         {
           "mealId": 1785,
           "name": "Dumplings",

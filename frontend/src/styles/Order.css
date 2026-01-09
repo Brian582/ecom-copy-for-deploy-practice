@@ -42,6 +42,8 @@
 .row p {
   line-height: 10px;
   font-size: 11.8px;
+  font-weight: bold;
+  margin-top: 4px;
   /* font-size: .87em; */
 }
 

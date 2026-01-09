@@ -6,8 +6,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 from payment import paypal_bp
-from cart_items_api import cart_items_bp
-from totalPrice_api import totalprice_bp
+from cart_items import cart_items_bp
+from cart_totalprice import totalprice_bp
 
 app = Flask(__name__)
 app.register_blueprint(paypal_bp) 
@@ -81,6 +81,5 @@ def check_username(username):
 #       return True
 #   except PyMongoError as e:
 #       return jsonify({"error": "User not found"}), 404
-
 if __name__ == '__main__':
   app.run(debug=True)

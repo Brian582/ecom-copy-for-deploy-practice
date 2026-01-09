@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
-import { useToast } from '../hooks/useToast';
 import '../styles/Checkout.css';
 import Payment from './Payment.jsx';
 
@@ -12,7 +11,6 @@ import menuData from '../data/menu.json';
 
 
 export default function Checkout() {
-  const { toast } = useToast();
   const { priceTotal, removeItem, cartItems} = useContext(ThemeContext);
   const [CheckoutCartItems, setCheckoutCartItems] = useState([]);
   

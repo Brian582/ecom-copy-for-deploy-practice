@@ -1,7 +1,7 @@
 import '../styles/order.css';
 import { useContext, useEffect, useState } from 'react';
 import menuData from '../data/menu.json';
-import pricesData from '../data/prices.json';
+import pricesData from '../data/meal_prices.json';
 import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
 eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
 
@@ -37,13 +37,13 @@ export default function Order() {
       'chicken with broccoli': chickenwithbroccoli,
     };
 
-    // menuData.items is an array of rows; flatten into single list
+    // menuData.items is an array of rows; its flattened into single list
     const flattened = menuData.items.flat();
 
     const combined = flattened.map((menuItem) => {
       const key = menuItem.name.toLowerCase();
       const img = images[key]
-      const priceObj = pricesData.items_prices.find((p) => p.menu_id === menuItem.menu_id);
+      const priceObj = pricesData.meal_prices.find((p) => p.menu_id === menuItem.menu_id);
       const price = priceObj && priceObj.price;
       return { menu_id: menuItem.menu_id, img, name: menuItem.name, price };
     });
@@ -75,6 +75,7 @@ export default function Order() {
               >
                 <img src={meal.img} alt={meal.name} />
                 <p>{meal.name}</p>
+                <p>{meal.price}</p>
               </button>
             ))}
           </section>

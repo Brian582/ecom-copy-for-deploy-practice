@@ -1,0 +1,67 @@
+/* Contact Page Styles */
+
+.contact-page {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+/* Contact Content */
+.contact-content {
+  padding: 4rem 0;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  max-width: 72rem;
+  /* margin: 0 auto; */
+  margin-left: 30rem;
+}
+
+@media (min-width: 768px) {
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Contact Info */
+.contact-info-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 3rem;
+}
+
+.contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contact-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.contact-info-icon {
+  padding: 0.75rem;
+  background-color: hsla(0, 85%, 35%, 0.1);
+  border-radius: var(--radius);
+}
+
+.contact-info-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--primary);
+}
+
+.contact-info-label {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.contact-info-text {
+  color: var(--muted-foreground);
+}

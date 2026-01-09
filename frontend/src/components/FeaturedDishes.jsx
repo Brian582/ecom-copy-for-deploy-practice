@@ -6,19 +6,19 @@ const dishes = [
     id: 1,
     name: 'Kung Pao Chicken',
     description: 'Spicy stir-fried chicken with peanuts and vegetables',
-    price: '$12.99',
+    price: '$9.00',
   },
   {
     id: 2,
-    name: 'Special Fried Rice',
-    description: 'Wok-tossed rice with shrimp, chicken, and vegetables',
+    name: 'Lo Mein',
+    description: 'Soft, chewy egg noodles tossed with a savory sauce, crisp vegetables',
     price: '$10.99',
   },
   {
     id: 3,
     name: 'Egg Rolls',
-    description: 'Crispy vegetable rolls served with sweet chili sauce',
-    price: '$11.89',
+    description: 'Crispy egg rolls served with sweet chili sauce',
+    price: '$2.89',
   },
 ];
 

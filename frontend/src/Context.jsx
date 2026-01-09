@@ -11,8 +11,8 @@ export const AuthContext = createContext(null);
 
 //defines ThemeContext Provider component
 export function ThemeProvider({ children }) {
-  const loaded = useRef(false);
-  const loaded2 = useRef(false);
+  const cartLoaded = useRef(false);
+  const priceLoaded = useRef(false);
   const host = useRef(import.meta.env.VITE_HOST);
   const [priceTotal, setPriceTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
@@ -24,7 +24,7 @@ export function ThemeProvider({ children }) {
         const response = await axios.get(`${host.current}/getTotalPrice`); 
         console.log(`Price response ${response.data}`);
         setPriceTotal(Number(response.data))
-        loaded.current=true;
+        cartLoaded.current=true;
 
       } catch (error) {
         console.error('Failed to get Total Price: ', error)
@@ -35,7 +35,7 @@ export function ThemeProvider({ children }) {
 
   //stores total price to Json file
   useEffect( () => {
-    if (!loaded.current) return; // prevents initial run from updating cart
+    if (!cartLoaded.current) return; // prevents initial run from updating cart
     
     const updateTotalPrice = async () => {
       try {
@@ -57,8 +57,10 @@ export function ThemeProvider({ children }) {
         const response = await axios.get(`${host.current}/getCartItems`); 
         console.log(`Cart items response ${response.data}`);
         console.log("Cart items response:", response.data);
-        setCartItems(response.data);
-        loaded2.current=true;
+        // normalize items to ensure quantity exists
+        const normalized = response.data.map(i => ({ ...i, quantity: i.quantity ?? 1 }));
+        setCartItems(normalized);
+        priceLoaded.current=true;
 
       } catch (error) {
         console.error('Failed to get cart items: ', error)
@@ -69,7 +71,7 @@ export function ThemeProvider({ children }) {
 
   //stores the cart's items to Json file
   useEffect(() => {
-    if (!loaded2.current) return; // prevents initial run from updating cart
+    if (!priceLoaded.current) return; // prevents initial run from updating cart
 
     const updateCartItems = async () => {
       try {
@@ -83,23 +85,33 @@ export function ThemeProvider({ children }) {
     updateCartItems()
   }, [cartItems]);
 
-  //adds item to cart
+  //adds item to cart (increments quantity if meal already present)
   function addItem(item) {
-    setCartItems(prev => [...prev, item]);
-    setPriceTotal(priceTotal => priceTotal + Number(item.price.replace("$", "")));
-    // setPriceTotal(priceTotal => {
-    //   const value = priceTotal + Number(item.price.replace("$", ""));
-    //   console.log("new price 1", value);
-    //   return value
-    // });
+    const price = Number(item.price.replace("$", ""));
+    setCartItems(prev => {
+      const idx = prev.findIndex(ci => ci.meal_Id === item.meal_Id);
+      if (idx !== -1) {
+        return prev.map(ci => ci.meal_Id === item.meal_Id ? { ...ci, quantity: (ci.quantity ?? 1) + 1 } : ci);
+      }
+      return [...prev, { ...item, quantity: 1 }];
+    });
+    setPriceTotal(priceTotal => priceTotal + price);
   }
 
-  //removes items from cart by using an item's index
+  //removes one quantity of an item from cart (decrements quantity or removes item)
   function removeItem(item, index) {
-    setCartItems(prev => prev.filter(function(_, i){return i !== index}));
-    // if(priceTotal !== 0){
-    setPriceTotal(priceTotal => priceTotal - Number(item.price.replace("$", "")));
-    // }
+    const price = Number(item.price.replace("$", ""));
+    setCartItems(prev => {
+      const targetId = item.meal_Id ?? item.id ?? null;
+      if (targetId != null) {
+        return prev
+          .map(ci => ci.meal_Id === targetId ? { ...ci, quantity: (ci.quantity ?? 1) - 1 } : ci)
+          .filter(ci => (ci.quantity ?? 1) > 0);
+      }
+      if (typeof index === 'number') return prev.filter((_, i) => i !== index);
+      return prev;
+    });
+    setPriceTotal(priceTotal => Math.max(0, priceTotal - price));
   }
 
   //removes all items
@@ -114,7 +126,8 @@ export function ThemeProvider({ children }) {
     // }
   }
 
-  const ContextValues = { cartItems, priceTotal, cartItemcount: cartItems.length, addItem, removeItem, clearCart }
+  const cartItemcount = cartItems.reduce((s, it) => s + (it.quantity ?? 1), 0);
+  const ContextValues = { cartItems, priceTotal, cartItemcount, addItem, removeItem, clearCart }
 
   return (
     <ThemeContext.Provider value={ContextValues}>
@@ -123,65 +136,50 @@ export function ThemeProvider({ children }) {
   );
 };
 
-/////////////////////////////////////////// DELETE this if Auth or any of the functions below are no longer needed
 //AuthContext provider component
 export function AuthProvider({ children }) {
-  
-  //authenticates that user exists
-  const [authenticated, setAuthenticated] = useState(() => {
-    try {
-      const status = localStorage.getItem('authenticated');
-      return status ? JSON.parse(status) : "";
-    } 
-    catch (error) {
-      console.error('Error parsing data from localStorage:', error)
-      return false;
-    }
+  const host = useRef(import.meta.env.VITE_HOST);
+
+  const [auth, setAuth] = useState({
+    user: {
+          id: "",
+          name: "",
+          email: "",
+          identity: "",
+        },
+    status: ""
   })
 
-  //shows user that's loggedin
-  const [user, setUser] = useState(() => {
-    try {
-      const savedUser = localStorage.getItem('user');
-      return savedUser ? savedUser : "";
-    } 
-    catch (error) {
-      console.error('Error parsing data from localStorage:', error)
-      return ""
-    }
-  });
+  //create account
+  async function createAccount(formdata){
+    const response = await axios.post(`${host.current}/addUser`, formdata)
+    console.log( "account creation status", response.data.added)  /////////////// debugging, delete later
+  }
 
-  //stores authentication status in Localstorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('authenticated', authenticated);
-    } catch (error) {
-      console.error('Error parsing data from localStorage:', error)
+  //sign in user
+  async function signIn(formdata){
+    const response = await axios.post(`${host.current}/signIn`, formdata)
+    if (response.data.authenticated === true){
+      setAuth({  
+        user : response.data.user, 
+        status : response.data.authenticated
+      })
     }
-  }, [authenticated]);
-
-  //stores user's name in Localstorage
-  useEffect(() => {
-    try {
-      localStorage.setItem('user', user);
-    } catch (error) {
-      console.error('Error parsing data from localStorage:', error)
-    }
-  }, [user]);
-
-  //holds username and authentication
-  function login(userData, authenication){
-    setUser(userData);
-    setAuthenticated(authenication);
-  };
+    
+    /////////////// debugging, delete later
+    console.log(" user", response.data.user )
+    console.log(" status", response.data.authenticated )
+  }
   
-  //removes username and authentication
+  //change user's status to log them out
   function logout(){
-    setUser("");
-    setAuthenticated(false);
+    setAuth( prevAuth =>({
+      ...prevAuth, 
+      status : false
+    }));
   };
 
-  const authContextValue = { user, authenticated, login, logout };
+  const authContextValue = { auth, createAccount, signIn, logout };
 
   return (
     <AuthContext.Provider value={authContextValue}>

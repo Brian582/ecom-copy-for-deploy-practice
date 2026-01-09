@@ -10,6 +10,19 @@ def get_CartItems():
   try:
     data = readFile("JSON_CARTFILE")
     cartItems = data.get('cart-Items')
+
+    #### Reminder: change this function to check for user Id and get the orders from the matching userID. 
+    # The cart will have a userID == Null to hold items even when one is logged in
+
+    # print("cart ", cartItems)
+    # for c in cartItems:
+    #   print("items", c)
+    #   print("item userID", c.get('userID'))
+    #   if 'userID' not in c:
+    #     items = c.get('items')
+    #     print("true")
+    
+    # return jsonify(items)
     return jsonify(cartItems)
   
   except FileNotFoundError as e:

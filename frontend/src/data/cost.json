@@ -2,39 +2,39 @@
   "items_prices" : 
   [
     {
-      "menu_id": 1785,
+      "meal_Id": 1785,
       "price": "$10.00"
     },
     {
-      "menu_id": 5457,
+      "meal_Id": 5457,
       "price": "$9.00"
     },
     {
-      "menu_id": 2576,
+      "meal_Id": 2576,
       "price": "$11.00"
     },
     {
-      "menu_id": 7609,
+      "meal_Id": 7609,
       "price": "$20.00"
     },
     {
-      "menu_id": 1248,
+      "meal_Id": 1248,
       "price": "$10.00"
     },
     {
-      "menu_id": 1649,
+      "meal_Id": 1649,
       "price": "$12.00"
     },
     {
-      "menu_id": 7467,
+      "meal_Id": 7467,
       "price": "$11.00"
     },
     {
-      "menu_id": 3752,
+      "meal_Id": 3752,
       "price": "$5.00"
     },
     {
-      "menu_id": 4022,
+      "meal_Id": 4022,
       "price": "$8.00"
     }
   ]

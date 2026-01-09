@@ -43,16 +43,16 @@ export default function Order() {
     const combined = flattened.map((menuItem) => {
       const key = menuItem.name.toLowerCase();
       const img = images[key]
-      const priceObj = pricesData.meal_prices.find((p) => p.menu_id === menuItem.menu_id);
+      const priceObj = pricesData.meal_prices.find((p) => p.meal_Id === menuItem.meal_Id);
       const price = priceObj && priceObj.price;
-      return { menu_id: menuItem.menu_id, img, name: menuItem.name, price };
+      return { meal_Id: menuItem.meal_Id, img, name: menuItem.name, price };
     });
 
     setMeals(combined);
   }, []);
 
-  function handleAddItem(menu_id, name, price) {
-    const item = { menu_id, name, price };
+  function handleAddItem(meal_Id, name, price) {
+    const item = { meal_Id, name, price };
     addItem(item);
   }
 
@@ -70,7 +70,7 @@ export default function Order() {
               <button
                 key={idx}
                 onClick={() => {
-                  handleAddItem( meal.menu_id, meal.name, meal.price);
+                  handleAddItem( meal.meal_Id, meal.name, meal.price);
                 }}
               >
                 <img src={meal.img} alt={meal.name} />

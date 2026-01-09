@@ -3,19 +3,19 @@
     [
       [
         {
-          "menu_id": 1785,
+          "meal_Id": 1785,
           "name": "Dumplings",
           "image": "dumplings.jpg",
           "alt": "Dumplings"
         },
         {
-          "menu_id": 5457,
+          "meal_Id": 5457,
           "name": "Kung Pao Chicken",
           "image": "kungpaochicken.webp",
           "alt": "Kung Pao chicken"
         },
         {
-          "menu_id": 2576,
+          "meal_Id": 2576,
           "name": "Sweet and Sour Chicken",
           "image": "sweetsourchicken.webp",
           "alt": "Sweet and Sour Chicken"
@@ -23,19 +23,19 @@
       ],
       [
         {
-          "menu_id": 7609,
+          "meal_Id": 7609,
           "name": "Chow mein",
           "image": "chowmein.jpg",
           "alt": "Chow mein"
         },
         {
-          "menu_id": 1248,
+          "meal_Id": 1248,
           "name": "Lo Mein",
           "image": "lomein.jpg",
           "alt": "Lo Mein"
         },
         {
-          "menu_id": 1649,
+          "meal_Id": 1649,
           "name": "General Tso Chicken",
           "image": "GeneralTsoChicken.jpg",
           "alt": "General Tso Chicken"
@@ -43,19 +43,19 @@
       ],
       [
         {
-          "menu_id": 7467,
+          "meal_Id": 7467,
           "name": "Egg Rolls",
           "image": "eggrolls.jpg",
           "alt": "Egg Rolls"
         },
         {
-          "menu_id": 3752,
+          "meal_Id": 3752,
           "name": "Wonton Soup",
           "image": "WontonSoup.jpg",
           "alt": "Wonton soup"
         },
         {
-          "menu_id": 4022,
+          "meal_Id": 4022,
           "name": "Chicken with Broccoli",
           "image": "chickenwithbroccoli.avif",
           "alt": "Chicken with Broccoli"

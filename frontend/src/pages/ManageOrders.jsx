@@ -1,57 +1,79 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import '../styles/ManageOrders.css';
+import axios from 'axios';
+import { AuthContext } from '../Context';
 
-const initialOrders = [
-  {
-    id: 1,
-    status: 'newOrder',
-    items: [
-      { name: 'Dumpling', checked: false },
-      { name: 'Fried rice', checked: false },
-      { name: 'Soup', checked: false },
-    ],
-  },
-  {
-    id: 2,
-    status: 'done',
-    items: [
-      { name: 'Dumpling', checked: false },
-      { name: 'Fried rice', checked: false },
-      { name: 'Soup', checked: false },
-    ],
-  },
-  { 
-    id: 3,
-    status: 'done',
-    items: [
-      { name: 'Dumpling', checked: false },
-      { name: 'Fried rice', checked: false },
-      { name: 'Szfgdfggf', checked: false },
-    ],},
-  {
-    id: 4,
-    status: 'processing',
-    items: [
-      { name: 'yuipodfh', checked: false },
-      { name: 'Fried rice', checked: false },
-      { name: 'Soup', checked: false },
-    ],},
-  {
-    id: 5,
-    status: 'done',
-    items: [
-      { name: 'Dumpling', checked: false },
-      { name: 'Fzdfbzbzfbe', checked: false },
-      { name: 'Soup', checked: false },
-    ],},
-];
+// const initialOrders = [
+//   {
+//     id: 1,
+//     status: 'newOrder',
+//     items: [
+//       { name: 'Dumpling', checked: false },
+//       { name: 'Fried rice', checked: false },
+//       { name: 'Soup', checked: false },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     status: 'done',
+//     items: [
+//       { name: 'Dumpling', checked: false },
+//       { name: 'Fried rice', checked: false },
+//       { name: 'Soup', checked: false },
+//     ],
+//   },
+//   { 
+//     id: 3,
+//     status: 'done',
+//     items: [
+//       { name: 'Dumpling', checked: false },
+//       { name: 'Fried rice', checked: false },
+//       { name: 'Szfgdfggf', checked: false },
+//     ],},
+//   {
+//     id: 4,
+//     status: 'processing',
+//     items: [
+//       { name: 'yuipodfh', checked: false },
+//       { name: 'Fried rice', checked: false },
+//       { name: 'Soup', checked: false },
+//     ],},
+//   {
+//     id: 5,
+//     status: 'done',
+//     items: [
+//       { name: 'Dumpling', checked: false },
+//       { name: 'Fzdfbzbzfbe', checked: false },
+//       { name: 'Soup', checked: false },
+//     ],},
+// ];
 
-export default function Ordering() {
-  const [orders, setOrders] = useState(initialOrders);
+export default function ManageOrders() {
+  // const [orders, setOrders] = useState(initialOrders);
+  const [orders, setOrders] = useState(null);
   const [draggedOrder, setDraggedOrder] = useState(null);
   const [draggedFrom, setDraggedFrom] = useState(null);
   const [dragOverColumn, setDragOverColumn] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
+  const { auth }  = useContext(AuthContext);
+  const host = useRef(import.meta.env.VITE_HOST);
+
+  //check if user is logged in and if they are, then get their orders. Otherwise, maybe make orders into an empty list to add cart items to it.
+  useEffect( () => {
+      const fetchOrders = async () => {
+        try {
+          if (auth.status == true) {
+          const response = await axios.get(`${host.current}/getUserOrders/<userID>`);
+          response.data.length > 0 ? setOrders(response.data) : setOrders([])
+          }
+        } catch (err) {
+          console.error('Error fetching data:', err);
+        }
+      }
+
+    fetchOrders();
+    
+  }, [auth])
 
   const toggleItem = (orderId, itemIndex) => {
     setOrders((prev) =>
@@ -142,7 +164,7 @@ export default function Ordering() {
     <div
       key={order.id}
       className={`order-card ${draggedOrder?.id === order.id ? 'dragging' : ''}`}
-      draggable
+      draggable='true'
       onDragStart={(e) => handleDragStart(e, order)}
       onDragEnd={handleDragEnd}
       onDragOver={(e) => handleCardDragOver(e, column, index)}

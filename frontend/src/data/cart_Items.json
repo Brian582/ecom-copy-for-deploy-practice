@@ -1,14 +1,22 @@
 {
   "cart-Items": [
     {
-      "menu_id": 1785,
+      "meal_Id": 1785,
       "name": "Dumplings",
-      "price": "$10.70"
+      "price": "$10.70",
+      "quantity": 1
     },
     {
-      "menu_id": 5457,
+      "meal_Id": 5457,
       "name": "Kung Pao Chicken",
-      "price": "$9.00"
+      "price": "$9.00",
+      "quantity": 1
+    },
+    {
+      "meal_Id": 2576,
+      "name": "Sweet and Sour Chicken",
+      "price": "$11.49",
+      "quantity": 1
     }
   ]
 }

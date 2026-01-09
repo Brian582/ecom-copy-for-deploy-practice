@@ -1,17 +1,39 @@
 {
-  "users":
-  [
+  "users": [
     {
-      "username": "someone",
-      "password": 533
+      "userId": "77",
+      "name": "Bob",
+      "email": "bob@outlook.com",
+      "password": 7809,
+      "identity": "worker"
     },
     {
-      "username": "nobody",
-      "password": 12494
+      "userId": "1",
+      "name": "Jordan",
+      "email": "jordan@gmail.com",
+      "password": 533,
+      "identity": "customer"
     },
     {
-      "username": "member",
-      "password": 12345
+      "userId": "2",
+      "name": "Molly",
+      "email": "molly@yahoo.com",
+      "password": 12494,
+      "identity": "customer"
+    },
+    {
+      "userId": "3",
+      "name": "Tom",
+      "email": "tom@outlook.com",
+      "password": 12345,
+      "identity": "customer"
+    },
+    {
+      "userId": "17",
+      "name": "Laura",
+      "email": "laura@outlook.com",
+      "password": 56708,
+      "identity": "worker"
     }
   ]
 }

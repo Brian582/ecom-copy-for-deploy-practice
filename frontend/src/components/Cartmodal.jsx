@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { ThemeContext } from '../Context.jsx';
 
 export default function CartModal({ isOpen, onClose, items }){
-  const { priceTotal, removeItem, clearCart} = useContext(ThemeContext);
+  const { priceTotal, removeItem, addItem, clearCart} = useContext(ThemeContext);
 
   return (
     <>
@@ -40,11 +40,15 @@ export default function CartModal({ isOpen, onClose, items }){
           ) : (
             items.map((item, index) => (
               <div key={index} className="cart-item">
-                <button className="remove-btn" onClick={() => removeItem(item,index)}>
-                  x
-                </button>
-                <span>{item.name}</span>
-                <span>{item.price}</span>
+                <div className="button-group">
+                  <button className="remove-btn" onClick={() => removeItem(item)}> - </button>
+                  <button className="add-btn" onClick={() => addItem(item)}> + </button>
+                </div>
+                <span className="cart-item-name">{item.name}</span>
+                <div className="cart-item-qty-price">
+                  <span className="cart-item-price">{item.price}</span>
+                  <span className="cart-item-qty">Qty: {item.quantity ?? 1}</span>
+                </div>
               </div>
             ))
           )}

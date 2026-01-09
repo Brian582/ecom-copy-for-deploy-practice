@@ -7,7 +7,6 @@ import { useContext } from 'react';
 import { ThemeContext } from '../Context.jsx';
 import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
 eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
-import menuData from '../data/menu.json';
 
 
 export default function Checkout() {
@@ -32,7 +31,7 @@ export default function Checkout() {
       const key = menuItem.name.toLowerCase();
       const img = images[key]
       const price = menuItem.price;
-      return { id:menuData.menu_id , image:img , name: menuItem.name, price };
+      return { meal_Id: menuItem.meal_Id, image: img, name: menuItem.name, price: price, quantity: menuItem.quantity ?? 1 };
     });
 
     setCheckoutCartItems(combined);
@@ -78,7 +77,7 @@ export default function Checkout() {
                         </div>
                         <button
                           className="cart-item-remove"
-                          onClick={() => removeItem(item, index)}
+                          onClick={() => removeItem(item)}
                         >
                           <X />
                         </button>

@@ -34,6 +34,9 @@ export default function NavBar() {
         <Link to="/signin">
           <button>Sign in</button>
         </Link>
+        <Link to="/signup">
+          <button>Sign Up</button>
+        </Link>
         <Link to="/about">
           <button>About</button>
         </Link>

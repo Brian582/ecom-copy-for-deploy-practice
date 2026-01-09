@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Index from './pages/index.jsx'
 import Food from './pages/Food.jsx'
 import Order from './pages/Order.jsx'
-import Signin from './pages/Signin.jsx'
+import SignIn from './pages/SignIn.jsx'
 import Contact from './pages/Contact.jsx'
 import About from './pages/About.jsx'
 import Layout from './pages/Layout.jsx'
@@ -12,6 +12,7 @@ import { ThemeProvider, AuthProvider } from "./Context";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import CheckoutPage from './pages/Checkout.jsx';
 import ManageOrders from './pages/ManageOrders.jsx'
+import SignUp from './pages/SignUp.jsx';
 
 import { ToastProvider } from './hooks/useToast';
 import { Toaster } from './components/Toast';
@@ -31,7 +32,10 @@ export default function App() {
             <Route exact path="/" element={<Index />} />
             <Route exact path="/food" element={<Food />} />
             <Route exact path="/order" element={<Order />} />
-            <Route exact path="/signin" element={<Signin />} />
+
+            <Route exact path="/signin" element={<SignIn />} /> {/*maybe remove this later */}
+            <Route exact path="/signup" element={<SignUp />} />
+
             <Route exact path="/contact" element={<Contact />} />
             <Route exact path="/about" element={<About />} />
             <Route exact path="/manage-orders" element={<ManageOrders />} />

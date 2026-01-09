@@ -1,9 +1,11 @@
 import "../styles/cartModal.css";
 import { useContext } from 'react';
 import { ThemeContext } from '../Context.jsx';
+import { AuthContext } from "../Context.jsx";
 
 export default function CartModal({ isOpen, onClose, items }){
   const { priceTotal, removeItem, addItem, clearCart} = useContext(ThemeContext);
+  const { auth } = useContext(AuthContext);
 
   return (
     <>
@@ -41,8 +43,8 @@ export default function CartModal({ isOpen, onClose, items }){
             items.map((item, index) => (
               <div key={index} className="cart-item">
                 <div className="button-group">
-                  <button className="remove-btn" onClick={() => removeItem(item)}> - </button>
-                  <button className="add-btn" onClick={() => addItem(item)}> + </button>
+                  <button className="remove-btn" onClick={() => removeItem(item, auth)}> - </button>
+                  <button className="add-btn" onClick={() => addItem(item, auth)}> + </button>
                 </div>
                 <span className="cart-item-name">{item.name}</span>
                 <div className="cart-item-qty-price">

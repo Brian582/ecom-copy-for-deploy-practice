@@ -86,30 +86,63 @@ export function ThemeProvider({ children }) {
   }, [cartItems]);
 
   //adds item to cart (increments quantity if meal already present)
-  function addItem(item) {
+
+  //check if user is loggedin. If they are, use their userId to get their items from Cart. Otherwise UserId == None
+  function addItem(item, auth) {
     const price = Number(item.price.replace("$", ""));
     setCartItems(prev => {
-      const idx = prev.findIndex(ci => ci.meal_Id === item.meal_Id);
-      if (idx !== -1) {
-        return prev.map(ci => ci.meal_Id === item.meal_Id ? { ...ci, quantity: (ci.quantity ?? 1) + 1 } : ci);
-      }
-      return [...prev, { ...item, quantity: 1 }];
+      return prev.map(userItems => {
+        if (userItems.userId === auth.user.Id) {
+            const idx = userItems.meals.findIndex(ci => ci.meal_Id === item.meal_Id);            
+            const updatedMeals = (idx !== -1)
+                ? userItems.meals.map(ci => ci.meal_Id === item.meal_Id 
+                    ? { ...ci, quantity: (ci.quantity ?? 1) + 1 } 
+                    : ci
+                  )
+                : [...userItems.meals, { ...item, quantity: 1 }];       
+            return { ...userItems, meals: updatedMeals };
+        }
+        return userItems;
+      });
     });
     setPriceTotal(priceTotal => priceTotal + price);
   }
 
   //removes one quantity of an item from cart (decrements quantity or removes item)
-  function removeItem(item, index) {
+  function removeItem(item, index, auth) {
     const price = Number(item.price.replace("$", ""));
+    const targetId = item.meal_id ?? item.id ?? null;
     setCartItems(prev => {
-      const targetId = item.meal_Id ?? item.id ?? null;
-      if (targetId != null) {
-        return prev
-          .map(ci => ci.meal_Id === targetId ? { ...ci, quantity: (ci.quantity ?? 1) - 1 } : ci)
-          .filter(ci => (ci.quantity ?? 1) > 0);
-      }
-      if (typeof index === 'number') return prev.filter((_, i) => i !== index);
-      return prev;
+      return prev.map(userItems => {
+          if (userItems.userId === auth.user.id && targetId != null){
+              return { ...userItems, 
+                      meals: userItems.meals
+                      .map(ci => ci.meal_Id == targetId ? { ...ci, quantity : ( ci.quantity ?? 1 ) - 1 } : ci )
+                      .filter(ci => ( ci.quantity ?? 1 ) > 0 )
+                    }}
+          if ( typeof index === 'number') {
+            return { ...userItems, meals: userItems.filter( (_,i) => i !== index ) }
+          }
+          return userItems
+        });
+        // const targetId = item.meal_id ?? item.id ?? null
+        // if ( targetId != null ){
+        //   return prev
+        //       .map(ci => ci.meal_id === targetId ? {...ci, quantity : (ci.quantity ?? 1 ) - 1 } : ci )
+        //       .filter(ci => (ci.quantity ?? 1 ) > 0 )
+        // }
+        // if ( typeof index === 'number') return prev.filter( (_,i) => i !== index )
+
+      // console.log( "item meal id", item.meal_Id )
+      // console.log( "item id", item.id )
+      // const targetId = item.meal_Id ?? item.id ?? null;
+      // if (targetId != null) {
+      //   return prev
+      //     .map(ci => ci.meal_Id === targetId ? { ...ci, quantity: (ci.quantity ?? 1) - 1 } : ci)
+      //     .filter(ci => (ci.quantity ?? 1) > 0);
+      // }
+      // if (typeof index === 'number') return prev.filter((_, i) => i !== index);
+      // return prev;
     });
     setPriceTotal(priceTotal => Math.max(0, priceTotal - price));
   }
@@ -147,7 +180,7 @@ export function AuthProvider({ children }) {
           email: "",
           identity: "",
         },
-    status: ""
+    status: false
   })
 
   //create account

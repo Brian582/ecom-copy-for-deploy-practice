@@ -7,33 +7,36 @@ users_bp = Blueprint("users", __name__)
 
 #checks if user is in the json file
 def verify_user(email, password):
-	data = readFile('JSON_USERS')
-	users = data.get('users', [])
+    data = readFile('JSON_USERS')
+    users = data.get('users', [])
 
-	for u in users:
-		if u["email"] == email.lower() and (check_password_hash(u["password"], password) or u["password"]==password):##### remove u["password"]==password later
-			return {
-							"authenticated": True,
-							"user": {
-									"userId": u["userId"],
-									"name": u["name"],
-									"email": u["email"],
-									"identity": u["identity"]
-							}
-           }
-	
-	return {
+    email = email.lower()
+    users_by_email = { u["email"].lower(): u for u in users}
+    user = users_by_email.get(email)
+
+    if user and check_password_hash(user["password"], password):
+        return {
+            "authenticated": True,
+            "user": {
+                "userId": user["userId"],
+                "name": user["name"],
+                "email": user["email"],
+                "role": user["identity"]
+            }
+        }
+
+    return {
         "authenticated": False,
         "user": None
-     }
+    }
 	
 #signs user into their account
 @users_bp.route('/signIn', methods=['POST'], strict_slashes=False)
 def signIn():
 	try:
-		accountInfo = request.get_json()
-		email = (accountInfo.get('email') or '').strip()
-		password = accountInfo.get('password')
+		request_data = request.get_json()
+		email = (request_data.get('email') or '').strip()
+		password = request_data.get('password')
 
 		result = verify_user(email,password)
 
@@ -53,19 +56,21 @@ def signIn():
 @users_bp.route('/addUser', methods=['POST'], strict_slashes=False)
 def add_user():
 	try:
-		accountInfo = request.get_json()
-		name = accountInfo.get('name')
-		email = (accountInfo.get('email') or '').strip() # removes whitespace characters
-		hashed_password = generate_password_hash(accountInfo.get('password'))
+		request_data = request.get_json()
+		name = request_data.get('name')
+		email = (request_data.get('email') or '').strip() # removes whitespace characters
+		hashed_password = generate_password_hash(request_data.get('password'))
 
-		data = readFile('JSON_WORKERS')
-		workers = data.get('workers')
-		for w in workers:
-			if w["name"] == email and w["email"] == email:
-				identity = 'worker'
-		
-		identity = 'customer'
+		# Check if user is a worker
+		workers_data = readFile('JSON_WORKERS')
+		workers = workers_data.get('workers')
 
+		role = "worker" if any( (worker['email'] == email and worker['name'] == name) for worker in workers) else "customer"
+
+		# Read users and generate new ID
+		users_data = readFile('JSON_USERS')
+		users = users_data.get('users', [])
+	
 		# generate new userId
 		try:
 			max_id = max(int(u.get('userId', 0)) for u in users) if users else 0
@@ -74,18 +79,16 @@ def add_user():
 		new_id = str(max_id + 1)
 
 		new_user = { 
-			'user': new_id,
+			'userId': new_id,
 			'name' : name,
 			'email':email,
 			"password": hashed_password,
-			'identity': identity,
+			'role': role,
 		}
 		
-		data = readFile('JSON_USERS')
-		users = data.get('users', [])
 		users.append(new_user)
-		data['users'] = users
-		writeFile('JSON_USERSFILE', data)
+		users_data['users'] = users
+		writeFile('JSON_USERSFILE', users_data)
 
 		return jsonify({'added': True, 'user': new_user}), 201
 	except FileNotFoundError as e:

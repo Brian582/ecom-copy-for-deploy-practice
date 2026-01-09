@@ -10,13 +10,13 @@
           "status": "new",
           "meals": [
             {
-              "meal_Id": 1785,
+              "mealId": 1785,
               "name": "Dumplings",
               "quantity": "2",
               "price": "$10.70"
             },
             {
-              "meal_Id": 5457,
+              "mealId": 5457,
               "name": "Kung Pao Chicken",
               "quantity": "3",
               "price": "$9.00"
@@ -35,13 +35,13 @@
           "status": "new",
           "meals": [
             {
-              "meal_Id": 1785,
+              "mealId": 1785,
               "name": "Dumplings",
               "quantity": "2",
               "price": "$10.70"
             },
             {
-              "meal_Id": 5457,
+              "mealId": 5457,
               "name": "Kung Pao Chicken",
               "quantity": "3",
               "price": "$9.00"
@@ -60,13 +60,13 @@
           "status": "processing",
           "meals": [
             {
-              "meal_Id": 1785,
+              "mealId": 1785,
               "name": "Dumplings",
               "quantity": "2",
               "price": "$10.70"
             },
             {
-              "meal_Id": 5457,
+              "mealId": 5457,
               "name": "Kung Pao Chicken",
               "quantity": "3",
               "price": "$9.00"

@@ -2,39 +2,39 @@
   "meal_prices" : 
   [
     {
-      "meal_Id": 1785,
+      "mealId": 1785,
       "price": "$10.70"
     },
     {
-      "meal_Id": 5457,
+      "mealId": 5457,
       "price": "$9.00"
     },
     {
-      "meal_Id": 2576,
+      "mealId": 2576,
       "price": "$11.49"
     },
     {
-      "meal_Id": 7609,
+      "mealId": 7609,
       "price": "$9.21"
     },
     {
-      "meal_Id": 1248,
+      "mealId": 1248,
       "price": "$10.99"
     },
     {
-      "meal_Id": 1649,
+      "mealId": 1649,
       "price": "$12.00"
     },
     {
-      "meal_Id": 7467,
+      "mealId": 7467,
       "price": "$2.89"
     },
     {
-      "meal_Id": 3752,
+      "mealId": 3752,
       "price": "$5.00"
     },
     {
-      "meal_Id": 4022,
+      "mealId": 4022,
       "price": "$8.00"
     }
   ]

@@ -5,35 +5,35 @@
       "name": "Bob",
       "email": "bob@outlook.com",
       "password": 7809,
-      "identity": "worker"
+      "role": "worker"
     },
     {
       "userId": "1",
       "name": "Jordan",
       "email": "jordan@gmail.com",
       "password": 533,
-      "identity": "customer"
+      "role": "customer"
     },
     {
       "userId": "2",
       "name": "Molly",
       "email": "molly@yahoo.com",
       "password": 12494,
-      "identity": "customer"
+      "role": "customer"
     },
     {
       "userId": "3",
       "name": "Tom",
       "email": "tom@outlook.com",
       "password": 12345,
-      "identity": "customer"
+      "role": "customer"
     },
     {
       "userId": "17",
       "name": "Laura",
       "email": "laura@outlook.com",
       "password": 56708,
-      "identity": "worker"
+      "role": "worker"
     }
   ]
 }

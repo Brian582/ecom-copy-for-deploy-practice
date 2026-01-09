@@ -3,53 +3,7 @@ import '../styles/ManageOrders.css';
 import axios from 'axios';
 import { AuthContext } from '../Context';
 
-// const initialOrders = [
-//   {
-//     id: 1,
-//     status: 'newOrder',
-//     items: [
-//       { name: 'Dumpling', checked: false },
-//       { name: 'Fried rice', checked: false },
-//       { name: 'Soup', checked: false },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     status: 'done',
-//     items: [
-//       { name: 'Dumpling', checked: false },
-//       { name: 'Fried rice', checked: false },
-//       { name: 'Soup', checked: false },
-//     ],
-//   },
-//   { 
-//     id: 3,
-//     status: 'done',
-//     items: [
-//       { name: 'Dumpling', checked: false },
-//       { name: 'Fried rice', checked: false },
-//       { name: 'Szfgdfggf', checked: false },
-//     ],},
-//   {
-//     id: 4,
-//     status: 'processing',
-//     items: [
-//       { name: 'yuipodfh', checked: false },
-//       { name: 'Fried rice', checked: false },
-//       { name: 'Soup', checked: false },
-//     ],},
-//   {
-//     id: 5,
-//     status: 'done',
-//     items: [
-//       { name: 'Dumpling', checked: false },
-//       { name: 'Fzdfbzbzfbe', checked: false },
-//       { name: 'Soup', checked: false },
-//     ],},
-// ];
-
 export default function ManageOrders() {
-  // const [orders, setOrders] = useState(initialOrders);
   const [orders, setOrders] = useState(null);
   const [draggedOrder, setDraggedOrder] = useState(null);
   const [draggedFrom, setDraggedFrom] = useState(null);

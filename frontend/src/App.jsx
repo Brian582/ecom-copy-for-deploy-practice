@@ -11,6 +11,7 @@ import { ThemeProvider, AuthProvider } from "./Context";
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import CheckoutPage from './pages/Checkout.jsx';
+import ManageOrders from './pages/ManageOrders.jsx'
 
 import { ToastProvider } from './hooks/useToast';
 import { Toaster } from './components/Toast';
@@ -33,6 +34,7 @@ export default function App() {
             <Route exact path="/signin" element={<Signin />} />
             <Route exact path="/contact" element={<Contact />} />
             <Route exact path="/about" element={<About />} />
+            <Route exact path="/manage-orders" element={<ManageOrders />} />
             
             {/* Wildcard route for 404 Not Found */}
             <Route path="*" element={<NotFound />} />

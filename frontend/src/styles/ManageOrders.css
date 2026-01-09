@@ -1,0 +1,127 @@
+/* Ordering Page Styles */
+
+.ordering-page {
+  min-height: 100vh;
+  /* background-color: hsl(var(--background)); */
+  background-color: white;
+}
+
+.ordering-main {
+  padding: 2rem 0;
+}
+
+.ordering-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  min-height: 500px;
+}
+
+.kanban-column {
+  background-color: hsl(var(--muted));
+  border-radius: var(--radius);
+  padding: 1rem;
+  border: 1px solid hsl(var(--border));
+}
+
+.column-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid hsl(var(--border));
+}
+
+.column-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 100px;
+}
+
+.order-card {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  cursor: grab;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 12px hsl(var(--foreground) / 0.1);
+}
+
+.order-card:active {
+  cursor: grabbing;
+}
+
+.order-card.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.kanban-column.drag-over {
+  background-color: hsl(var(--primary) / 0.1);
+  border: 2px dashed hsl(var(--primary));
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.order-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: hsl(var(--card-foreground));
+  margin-bottom: 0.75rem;
+}
+
+.order-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+}
+
+.item-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.item-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: hsl(var(--primary));
+  cursor: pointer;
+}
+
+.item-name {
+  font-size: 0.9rem;
+  color: hsl(var(--card-foreground));
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
+
+  .ordering-heading {
+    font-size: 1.5rem;
+  }
+}

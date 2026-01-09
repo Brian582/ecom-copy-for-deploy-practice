@@ -43,6 +43,9 @@ export default function NavBar() {
         <Link to="/checkout">
           <button>Checkout </button>
         </Link>
+        <Link to="/manage-orders">
+            <button className="nav-button">Manage Orders</button>
+        </Link>
         
         <button aria-label="cart" onClick={() => setIsCartOpen(true)}>
           <FaShoppingCart className='cart-icon-size' />

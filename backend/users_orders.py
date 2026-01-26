@@ -5,7 +5,7 @@ import json
 users_orders_bp = Blueprint("users_orders", __name__)
 
 @users_orders_bp.route('/addUserOrder/<userID>', methods=['POST'], strict_slashes=False)
-def add_user_order(userID):
+def add_user_order():
 	try:
 		userOrder = request.get_json()
 		data = readFile('JSON_USERS_ORDERS')

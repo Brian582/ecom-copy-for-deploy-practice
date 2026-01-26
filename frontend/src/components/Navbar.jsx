@@ -73,6 +73,7 @@ export default function NavBar() {
         {auth?.isLoggedIn && (
           <>
             <button ref={profileButtonRef} 
+            className="username"
             onClick={() => setIsProfileOpen(prev => !prev)} 
             aria-haspopup="true" 
             aria-expanded={isProfileOpen}>{/* when clicked profile menu will open using a function setProfileMenuOpen(true) */}

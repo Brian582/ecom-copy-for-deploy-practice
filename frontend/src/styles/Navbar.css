@@ -7,7 +7,7 @@
   width: 100%;
   background-color: orange;
   justify-content: center;
-  gap: 15px;
+  gap: 14px;
   align-items: center;
   border-bottom: 1.5px solid rgba(255, 255, 255, 0.2);
 }
@@ -48,4 +48,8 @@ body{
 .cart-icon-size{
   color: white;
   font-size: 30px;
+}
+
+.username{
+  margin-left: 10px;
 }

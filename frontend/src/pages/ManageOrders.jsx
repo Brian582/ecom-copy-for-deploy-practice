@@ -41,6 +41,14 @@ export default function ManageOrders() {
     fetchOrders();
   }, [auth?.isLoggedIn, auth?.user?.userId, auth?.user?.id]);
 
+  //notify user when their order status changes
+  useEffect(() => {
+    const notifyUserOrderStatus = async () => {
+      try {
+
+
+  })
+
   const toggleItem = (orderId, itemIndex) => {
     setOrders((prev) =>
       prev.map((order) =>

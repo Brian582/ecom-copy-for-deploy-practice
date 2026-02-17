@@ -4,23 +4,23 @@ import json
 
 users_orders_bp = Blueprint("users_orders", __name__)
 
-@users_orders_bp.route('/addUserOrder/<userID>', methods=['POST'], strict_slashes=False)
-def add_user_order():
-	try:
-		userOrder = request.get_json()
-		data = readFile('JSON_USERS_ORDERS')
-		users_orders = data.get('usersOrders', [])
-		users_orders.append(userOrder)
-		data['usersOrders'] = users_orders
-		writeFile('JSON_USERS_ORDERS', data)
+# @users_orders_bp.route('/addUserOrder/<userID>', methods=['POST'], strict_slashes=False)
+# def add_user_order():
+# 	try:
+# 		userOrder = request.get_json()
+# 		data = readFile('JSON_USERS_ORDERS')
+# 		users_orders = data.get('usersOrders', [])
+# 		users_orders.append(userOrder)
+# 		data['usersOrders'] = users_orders
+# 		writeFile('JSON_USERS_ORDERS', data)
 
-		return jsonify({'added': True}), 201
-	except FileNotFoundError as e:
-		return jsonify({'error': f'users_orders file not found: {e}'}), 404
-	except json.JSONDecodeError as e:
-		return jsonify({'error': f'invalid users_orders json: {e}'}), 400
-	except Exception as e:
-		return jsonify({'error': f'unexpected error: {e}'}), 500
+# 		return jsonify({'added': True}), 201
+# 	except FileNotFoundError as e:
+# 		return jsonify({'error': f'users_orders file not found: {e}'}), 404
+# 	except json.JSONDecodeError as e:
+# 		return jsonify({'error': f'invalid users_orders json: {e}'}), 400
+# 	except Exception as e:
+# 		return jsonify({'error': f'unexpected error: {e}'}), 500
 
 # gets user's orders. If the requester is a worker (exists in workers list), return all orders.
 @users_orders_bp.route('/getUserOrders/<userID>', methods=['GET'], strict_slashes=False)
@@ -74,11 +74,11 @@ def get_user_orders(userID):
 	except Exception as e:
 		return jsonify({'error': f'unexpected error: {e}'}), 500
 
+
 #get orders of all users
 # (old worker endpoint removed — logic consolidated in get_user_orders)
 
 
-############# edit this 
 # @users_orders_bp.route('/deleteUserOrder', methods=['DELETE'], strict_slashes=False)
 # def delete_user_order():
 # 	try:

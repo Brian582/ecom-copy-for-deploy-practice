@@ -3,6 +3,7 @@ import '../styles/ManageOrders.css';
 import axios from 'axios';
 import { AuthContext } from '../Context.jsx';
 
+// ManageOrders: displays a kanban board, fetches orders, allows drag/drop, and sends SMS notifications.
 export default function ManageOrders() {
   const [orders, setOrders] = useState([]);
   const [draggedOrder, setDraggedOrder] = useState(null);
@@ -11,14 +12,21 @@ export default function ManageOrders() {
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const { auth }  = useContext(AuthContext);
   const host = useRef(import.meta.env.VITE_HOST);
+  const prevOrdersRef = useRef([]);
   const isWorker = !!(
     auth?.user && (
       auth.user.role === 'worker' || auth.user.isWorker || auth.user.worker
     )
   );
+  // const columns = useRef([
+  //   { key: 'new', title: 'New Order' },
+  //   { key: 'processing', title: 'Processing' },
+  //   { key: 'done', title: 'Done' },
+  // ]);
 
   //Fetch orders for the logged-in user
   useEffect(() => {
+    // fetchOrders: fetch and set the logged-in user's orders.
     const fetchOrders = async () => {
       try {
         if (auth?.isLoggedIn) {
@@ -42,13 +50,14 @@ export default function ManageOrders() {
   }, [auth?.isLoggedIn, auth?.user?.userId, auth?.user?.id]);
 
   //notify user when their order status changes
-  useEffect(() => {
-    const notifyUserOrderStatus = async () => {
-      try {
+  // useEffect(() => {
+  //   const notifyUserOrderStatus = async () => {
+  //     try {
 
 
-  })
+  // })
 
+  // toggleItem: toggle the checked flag for an item in an order.
   const toggleItem = (orderId, itemIndex) => {
     setOrders((prev) =>
       prev.map((order) =>
@@ -64,12 +73,14 @@ export default function ManageOrders() {
     );
   };
 
+  // handleDragStart: start dragging an order and record its origin column.
   const handleDragStart = (e, order) => {
     setDraggedOrder(order);
     setDraggedFrom(order.status);
     e.dataTransfer.effectAllowed = 'move';
   };
 
+  // handleDragEnd: clear drag state after dragging finishes.
   const handleDragEnd = () => {
     setDraggedOrder(null);
     setDraggedFrom(null);
@@ -77,6 +88,7 @@ export default function ManageOrders() {
     setDragOverIndex(null);
   };
 
+  // handleDragOver: allow dropping into a column and set insertion index at end.
   const handleDragOver = (e, column) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -86,6 +98,7 @@ export default function ManageOrders() {
     setDragOverIndex(count);
   };
 
+  // handleCardDragOver: set insertion index when dragging over a specific card.
   const handleCardDragOver = (e, column, index) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -93,11 +106,13 @@ export default function ManageOrders() {
     setDragOverIndex(index);
   };
 
+  // handleDragLeave: clear drag-over state when leaving a column area.
   const handleDragLeave = () => {
     setDragOverColumn(null);
     setDragOverIndex(null);
   };
 
+  // handleDrop: move dragged order to target column and update orders state.
   const handleDrop = (e, targetColumn) => {
     e.preventDefault();
     if (!draggedOrder || draggedFrom === targetColumn) {
@@ -134,6 +149,56 @@ export default function ManageOrders() {
     setDragOverIndex(null);
   };
 
+  // Notify via SMS when an order's status changes (column moved)
+  useEffect(() => {
+    const prev = prevOrdersRef.current || [];
+    const prevStatusMap = new Map(prev.map((prevOrder) => [prevOrder.id, prevOrder.status]));
+
+    const statusTitles = {
+      new: 'New Order',
+      processing: 'Processing',
+      done: 'Done',
+    };
+
+    const moved = orders.filter((currOrder) => {
+      const prevStatus = prevStatusMap.get(currOrder.id);
+      return prevStatus && prevStatus !== currOrder.status;
+    });
+
+    if (moved.length > 0) {
+      moved.forEach(async (order) => {
+        try {
+          // best-effort extraction of customer name/phone from order object
+          const customer = order.customer || order.user || order.customerName || order.customer_name || order.name || '';
+          const phone = order.customerPhoneNumber || order.customer_phone || order.phone || order.phoneNumber || order.customerPhone || '';
+          const columnTitle = statusTitles[order.status] || order.status;
+          // const columnTitle = columns[order.status] || order.status;
+          
+          const data = {
+            user: customer,
+            columnTitle,
+            orderID: order.id,
+            customerPhoneNumber: phone,
+          }
+          await axios.post(`${host.current}/send-sms`, data);
+
+          console.log({
+            user: customer,
+            columnTitle,
+            orderID: order.id,
+            customerPhoneNumber: phone,
+          })//to view output in console
+
+        } catch (err) {
+          console.error('Error sending SMS for order', order.id, err);
+        }
+      });
+    }
+
+    prevOrdersRef.current = orders;
+  }, [orders]);
+
+  // renderOrderCard: render a single order card JSX with items and checkboxes.
   const renderOrderCard = (order, column, index) => (
     <div
       key={order.id}
@@ -167,7 +232,7 @@ export default function ManageOrders() {
     { key: 'processing', title: 'Processing' },
     { key: 'done', title: 'Done' },
   ];
-
+  
   return (
     <div className="ordering-page">
       <main className="ordering-main">

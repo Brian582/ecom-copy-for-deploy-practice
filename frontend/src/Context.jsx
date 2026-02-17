@@ -38,15 +38,15 @@ export function ThemeProvider({ children }) {
   useEffect( () => {
     if (!cartLoaded.current) return; // prevents initial run from updating cart
     
-    const updateTotalPrice = async () => {
+    const updateTotalPrice = setTimeout(async () => {
       try {
-          await axios.put(`${host.current}/updateTotalPrice`, {totalPrice : priceTotal});
-        
+        await axios.put(`${host.current}/updateTotalPrice`, {totalPrice : priceTotal});   
       } catch (error) {
         console.error('Failed to update Total Price: ', error)
       }
-    }
-    updateTotalPrice()
+    }, 500); // Wait 500ms after the last price change before updating
+
+    return () => clearTimeout(updateTotalPrice) // Clear the timer if price changes again before 500ms
   }, [priceTotal]); 
 
   //gets the cart's items from Json file 
@@ -56,10 +56,14 @@ export function ThemeProvider({ children }) {
         const response = await axios.get(`${host.current}/getCartItems`);
         // normalize response shape: accept either an array or an object with a `cart` array
         const payload = response.data;
-        let carts = [];
-        if (Array.isArray(payload)) carts = payload;
-        else if (payload && Array.isArray(payload.cart)) carts = payload.cart;
-        else carts = [];
+        // let carts = [];
+        // // if (Array.isArray(payload)) carts = payload;
+        // // else if (payload && Array.isArray(payload.cart)) carts = payload.cart;
+        // // else carts = [];
+        ///////////////// if this ternary operator for "carts" doesnt cause an error, then keep it and delete the if else statments for "carts" above
+        let carts = Array.isArray(payload) ? payload
+        : (payload && Array.isArray(payload?.cart)) ? payload.cart
+        : [];
         setCartItems(carts);
         priceLoaded.current=true;
 
@@ -74,14 +78,15 @@ export function ThemeProvider({ children }) {
   useEffect(() => {
     if (!priceLoaded.current) return; // prevents initial run from updating cart
 
-    const updateCartItems = async () => {
+    const updateCartItems = setTimeout(async () => {
       try {
-          await axios.put(`${host.current}/updateCartItems`, { updateItems: cartItems});
+        await axios.put(`${host.current}/updateCartItems`, { updateItems: cartItems});
       } catch (error) {
         console.error('Failed to update cart items: ', error)
       }
-    }
-    updateCartItems()
+    }, 500); // Wait 500ms after the last cart change before updating
+
+    return () => clearTimeout(updateCartItems); // Clear the timer if updatecartItems changes again before 500ms
   }, [cartItems]);
 
 
@@ -100,10 +105,18 @@ export function ThemeProvider({ children }) {
         // refresh carts from server
         const resp = await axios.get(`${host.current}/getCartItems`);
         const payload = resp.data;
-        let carts = [];
-        if (Array.isArray(payload)) carts = payload;
-        else if (payload && Array.isArray(payload.cart)) carts = payload.cart;
-        else carts = [];
+        // let carts = [];
+        // if (Array.isArray(payload)) {
+        //   carts = payload;
+        // } else if (payload && Array.isArray(payload.cart)) {
+        //   carts = payload.cart;
+        // } else {
+        //   carts = [];
+        // }
+        ///////////////// if this ternary operator for "carts" doesnt cause an error, then keep it and delete the if else statments for "carts" above
+        let carts = Array.isArray(payload) ? payload
+        : (payload && Array.isArray(payload?.cart)) ? payload.cart
+        : [];
         setCartItems(carts);
         lastMergedUser.current = String(userId);
       } catch (err) {
@@ -114,8 +127,6 @@ export function ThemeProvider({ children }) {
   }, [auth?.isLoggedIn, auth?.user, auth?.user?.id, auth?.user?.userId, auth?.user?.role]);
 
   //adds item to cart (increments quantity if meal already present)
-
-  //check if user is loggedin. If they are, use their userId to get their items from Cart. Otherwise UserId == None
   function addItem(item, providedAuth) {
     const usedAuth = providedAuth ?? auth;
     const targetUserId = usedAuth?.isLoggedIn ? String(usedAuth.user?.userId || usedAuth.user?.id || '') : null;
@@ -262,7 +273,6 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  //create account
   async function createAccount(formdata){
     const response = await axios.post(`${host.current}/addUser`, formdata)
     // account creation status handled by caller

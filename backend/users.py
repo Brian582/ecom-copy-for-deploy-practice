@@ -10,8 +10,8 @@ def verify_user(email, password):
 	data = readFile('JSON_USERS')
 	users = data.get('users', [])
 
-	email = email.lower()
 	users_by_email = { u["email"].lower(): u for u in users}
+	email = email.lower()
 	user = users_by_email.get(email)
 
 	if user:

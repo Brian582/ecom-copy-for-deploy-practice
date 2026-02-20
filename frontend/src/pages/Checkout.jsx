@@ -8,7 +8,7 @@ import { ThemeContext } from '../Context.jsx';
 import { dumplings, kungpaochicken, sweetsourchicken, chowmein, lomein, generaltsochicken,
 eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
 
-
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 export default function Checkout() {
   const { priceTotal, removeItem, activeMeals } = useContext(ThemeContext);
   const [CheckoutCartItems, setCheckoutCartItems] = useState([]);
@@ -46,109 +46,112 @@ export default function Checkout() {
   const total = subtotal + shipping + tax;
 
   return (
-    <div className="checkout-page">
+    <>
+      <div className="checkout-page">
+        <main className="checkout-main">
+          <div className="container">
+            <h1 className="checkout-title animate-fade-in">Checkout</h1>
 
-      <main className="checkout-main">
-        <div className="container">
-          <h1 className="checkout-title animate-fade-in">Checkout</h1>
+            <div className="checkout-grid">
+              {/* Cart Items Section */}
+              <div className="cart-items animate-fade-in">
+                {CheckoutCartItems.length === 0 ? (
+                  <div className="cart-empty">
+                    <p className="cart-empty-text">Your cart is empty.</p>
+                  </div>
+                ) : (
+                  CheckoutCartItems.map((item,index) => (
+                    <div key={index} className="cart-item">
+                      {/* Product Image */}
+                      <div className="cart-item-image-wrapper">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="cart-item-image"
+                        />
+                      </div>
 
-          <div className="checkout-grid">
-            {/* Cart Items Section */}
-            <div className="cart-items animate-fade-in">
-              {CheckoutCartItems.length === 0 ? (
-                <div className="cart-empty">
-                  <p className="cart-empty-text">Your cart is empty.</p>
-                </div>
-              ) : (
-                CheckoutCartItems.map((item,index) => (
-                  <div key={index} className="cart-item">
-                    {/* Product Image */}
-                    <div className="cart-item-image-wrapper">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="cart-item-image"
-                      />
-                    </div>
-
-                    {/* Product Details */}
-                    <div className="cart-item-details">
-                      <div className="cart-item-header">
-                        <div>
-                          <h3 className="cart-item-name">{item.name}</h3>
-                          <p className="cart-item-size">Quantity: {item.size}</p>
+                      {/* Product Details */}
+                      <div className="cart-item-details">
+                        <div className="cart-item-header">
+                          <div>
+                            <h3 className="cart-item-name">{item.name}</h3>
+                            <p className="cart-item-size">Quantity: {item.size}</p>
+                          </div>
+                          <button
+                            className="cart-item-remove"
+                            onClick={() => removeItem(item)}
+                          >
+                            <X />
+                          </button>
                         </div>
-                        <button
-                          className="cart-item-remove"
-                          onClick={() => removeItem(item)}
-                        >
-                          <X />
-                        </button>
-                      </div>
 
-                      <div className="cart-item-footer">
-                        <p className="cart-item-price">${item.price}</p>
-                        {/* <select
-                          className="quantity-select"
-                          value={item.quantity.toString()}
-                          onChange={(e) =>
-                            handleQuantityChange(item.id, e.target.value)
-                          }
-                        >
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                            <option key={num} value={num}>
-                              {num}
-                            </option>
-                          ))}
-                        </select> */}
+                        <div className="cart-item-footer">
+                          <p className="cart-item-price">${item.price}</p>
+                          {/* <select
+                            className="quantity-select"
+                            value={item.quantity.toString()}
+                            onChange={(e) =>
+                              handleQuantityChange(item.id, e.target.value)
+                            }
+                          >
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                              <option key={num} value={num}>
+                                {num}
+                              </option>
+                            ))}
+                          </select> */}
+                        </div>
                       </div>
                     </div>
+                  ))
+                )}
+              </div>
+
+              {/* Order Summary Section */}
+              <div className="animate-fade-in">
+                <div className="order-summary">
+                  <h2 className="order-summary-title">Order Summary</h2>
+
+                  <div className="order-summary-rows">
+                    <div className="summary-row">
+                      <span>Subtotal</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+
+                    <div className="summary-divider" />
+
+                    <div className="summary-row">
+                      <span>Estimated Shipping</span>
+                      <span>${shipping.toFixed(2)}</span>
+                    </div>
+
+                    <div className="summary-divider" />
+
+                    <div className="summary-row">
+                      <span>Estimated Tax</span>
+                      <span>${tax.toFixed(2)}</span>
+                    </div>
+
+                    <div className="summary-divider" />
+
+                    <div className="summary-total">
+                      <span>Order Total</span>
+                      <span>${total.toFixed(2)}</span>
+                    </div>
                   </div>
-                ))
-              )}
-            </div>
 
-            {/* Order Summary Section */}
-            <div className="animate-fade-in">
-              <div className="order-summary">
-                <h2 className="order-summary-title">Order Summary</h2>
-
-                <div className="order-summary-rows">
-                  <div className="summary-row">
-                    <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                  <div className="order-summary-footer">
+                    <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_SANDBOX_CLIENT_ID}}>
+                      <Payment/>
+                    </PayPalScriptProvider>
                   </div>
-
-                  <div className="summary-divider" />
-
-                  <div className="summary-row">
-                    <span>Estimated Shipping</span>
-                    <span>${shipping.toFixed(2)}</span>
-                  </div>
-
-                  <div className="summary-divider" />
-
-                  <div className="summary-row">
-                    <span>Estimated Tax</span>
-                    <span>${tax.toFixed(2)}</span>
-                  </div>
-
-                  <div className="summary-divider" />
-
-                  <div className="summary-total">
-                    <span>Order Total</span>
-                    <span>${total.toFixed(2)}</span>
-                  </div>
-                </div>
-
-                <div className="order-summary-footer">
-                  <Payment />
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }

@@ -9,7 +9,7 @@ import Layout from './pages/Layout.jsx'
 import NotFound from './pages/Notfound.jsx'
 import { ThemeProvider, AuthProvider } from "./Context";
 
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+// import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import CheckoutPage from './pages/Checkout.jsx';
 import ManageOrders from './pages/ManageOrders.jsx'
 // import SignUp from './pages/SignUp.jsx';
@@ -17,7 +17,7 @@ import ManageOrders from './pages/ManageOrders.jsx'
 import { ToastProvider } from './hooks/useToast';
 import { Toaster } from './components/Toast';
 
-import Payment from './pages/Payment.jsx';////////// delete this later
+import Payment from './pages/Payment.jsx';
 
 export default function App() {
   return (
@@ -27,13 +27,12 @@ export default function App() {
       <AuthProvider>
       <ThemeProvider>
       <Layout>
-        <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_SANDBOX_CLIENT_ID}}>
+        {/* <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_SANDBOX_CLIENT_ID}}> */}
           <Routes>
             <Route exact path="/" element={<Index />} />
             <Route exact path="/food" element={<Food />} />
             <Route exact path="/order" element={<Order />} />
-
-            {/* <Route exact path="/signin" element={<SignIn />} /> maybe remove this later */}
+  
             <Route exact path="/SignUpOrSignIn" element={<SignUpOrSignIn />} />
 
             <Route exact path="/contact" element={<Contact />} />
@@ -47,10 +46,9 @@ export default function App() {
             {/* Paypal portion */}
             <Route exact path="/checkout" element={<CheckoutPage />} />
 
-            {/* /// delete this page later */}
             <Route exact path="/payment" element={<Payment />} /> 
           </Routes> 
-        </PayPalScriptProvider>
+        {/* </PayPalScriptProvider> */}
       </Layout> 
       </ThemeProvider> 
       </AuthProvider>

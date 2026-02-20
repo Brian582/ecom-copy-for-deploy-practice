@@ -17,18 +17,11 @@ export default function Signin(){
 
   //handles form data after submission
   async function handleSubmit(event){
-    console.log("submitted: ", formData)
     try {
-      
-      //checks if there's already a user logged in
-      // if(user !== "") { return } //I need to fix this logic, its causing problems. I need to find 
-                                    //another way to tell if user is already logged in.
       
       event.preventDefault();// prevents page reload
       const response = await axios.post("http://localhost:5000/getUser", formData);
-      // console.log(response.data)
       const user_data = response.data
-      console.log(user_data)
       login( user_data["username"] , user_data["authenticated"] )//sets user's name and authentication status
 
       //checks if user is authenticated

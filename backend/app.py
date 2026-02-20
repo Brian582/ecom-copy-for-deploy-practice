@@ -11,6 +11,7 @@ from cart_totalprice import totalprice_bp
 
 from users import users_bp
 from users_orders import users_orders_bp
+from send_sms_live import twilio_bp
 
 app = Flask(__name__)
 app.register_blueprint(paypal_bp) 
@@ -20,6 +21,7 @@ app.register_blueprint(totalprice_bp)
 
 app.register_blueprint(users_bp)
 app.register_blueprint(users_orders_bp)
+app.register_blueprint(twilio_bp)
 
 CORS(app)
 

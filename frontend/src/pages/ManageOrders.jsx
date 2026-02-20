@@ -170,7 +170,7 @@ export default function ManageOrders() {
         try {
           // best-effort extraction of customer name/phone from order object
           const customer = order.customer || order.user || order.customerName || order.customer_name || order.name || '';
-          const phone = order.customerPhoneNumber || order.customer_phone || order.phone || order.phoneNumber || order.customerPhone || '';
+          // const phone = order.customerPhoneNumber || order.customer_phone || order.phone || order.phoneNumber || order.customerPhone || '';
           const columnTitle = statusTitles[order.status] || order.status;
           // const columnTitle = columns[order.status] || order.status;
           
@@ -178,17 +178,10 @@ export default function ManageOrders() {
             user: customer,
             columnTitle,
             orderID: order.id,
-            customerPhoneNumber: phone,
+            // customerPhoneNumber: phone,
           }
+
           await axios.post(`${host.current}/send-sms`, data);
-
-          console.log({
-            user: customer,
-            columnTitle,
-            orderID: order.id,
-            customerPhoneNumber: phone,
-          })//to view output in console
-
         } catch (err) {
           console.error('Error sending SMS for order', order.id, err);
         }

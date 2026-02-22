@@ -3,7 +3,6 @@
     { 
       "userId": "3",
       "name": "Tom",
-      "email": "tom@outlook.com",
       "orders": [
         {
           "orderId": "1",
@@ -28,7 +27,6 @@
     { 
       "userId": "1",
       "name": "Jordan",
-      "email": "jordan@gmail.com",
       "orders": [
         {
           "orderId": "7",
@@ -59,7 +57,6 @@
     { 
       "userId": "2",
       "name": "Molly",
-      "email": "molly@yahoo.com",
       "orders": [
         {
           "orderId": "5",

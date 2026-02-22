@@ -33,7 +33,8 @@ def verify_user(email, password):
 				"userId": user.get("userId"),
 				"name": user.get("name"),
 				"email": user.get("email"),
-				"role": user.get("role")
+				"role": user.get("role"),
+				"phoneNumber": user.get("phone_number"),
 			}
 	}
 
@@ -72,6 +73,7 @@ def add_user():
 		name = request_data.get('name')
 		email = (request_data.get('email') or '').strip() # removes whitespace characters
 		hashed_password = generate_password_hash(request_data.get('password'))
+		phone_number = request_data.get('phone')
 
 		# Check if user is a worker
 		workers_data = readFile('JSON_WORKERS')
@@ -95,6 +97,7 @@ def add_user():
 			'name' : name,
 			'email':email,
 			"password": hashed_password,
+			"phone_number": phone_number,
 			'role': role,
 		}
 		

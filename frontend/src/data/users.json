@@ -5,6 +5,7 @@
       "name": "Bob",
       "email": "bob@outlook.com",
       "password": 7809,
+      "phone_number": "+15551234567",
       "role": "worker"
     },
     {
@@ -12,6 +13,7 @@
       "name": "Jordan",
       "email": "jordan@gmail.com",
       "password": 533,
+      "phone_number": "+13849876543",
       "role": "customer"
     },
     {
@@ -19,6 +21,7 @@
       "name": "Molly",
       "email": "molly@yahoo.com",
       "password": 12494,
+      "phone_number": "+447911123456",
       "role": "customer"
     },
     {
@@ -26,6 +29,7 @@
       "name": "Tom",
       "email": "tom@outlook.com",
       "password": 12345,
+      "phone_number": "+821701234567",
       "role": "customer"
     },
     {
@@ -33,6 +37,7 @@
       "name": "Laura",
       "email": "laura@outlook.com",
       "password": 56708,
+      "phone_number": "+61400123456",
       "role": "worker"
     }
   ]

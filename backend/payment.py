@@ -2,7 +2,7 @@ from base64 import b64encode
 from flask import jsonify, Blueprint
 import os
 import requests
-from users_Items import get_TotalPrice_value
+from cart_totalprice import get_TotalPrice_value
 
 paypal_bp = Blueprint("paypal", __name__)
 
@@ -63,8 +63,8 @@ def capture_order(order_id):
   access_token = get_access_token()
 
   headers = {
-      "Content-Type": "application/json",
-      "Authorization": f"Bearer {access_token}"
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {access_token}"
   }
 
   r = requests.post(f"{PAYPAL_URL}/v2/checkout/orders/{order_id}/capture",

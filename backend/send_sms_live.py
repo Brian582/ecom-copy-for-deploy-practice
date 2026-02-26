@@ -1,19 +1,22 @@
 from twilio.rest import Client
 import os
 from dotenv import load_dotenv
-from flask import Blueprint, request, jsonify
+from flask import Blueprint
 
 twilio_bp = Blueprint("twilio", __name__)
 
 load_dotenv()
 
 # live crendentials
-# account_sid = os.getenv("TWILIO_ACCOUNT_SID")
-# auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 
-#test credentials
-account_sid = os.getenv("TWILIO_ACCOUNT_SID_TEST")
-auth_token = os.getenv("TWILIO_AUTH_TOKEN_TEST")
+# test credentials
+# account_sid = os.getenv("TWILIO_ACCOUNT_SID_TEST")
+# auth_token = os.getenv("TWILIO_AUTH_TOKEN_TEST")
+
+#When using test credentials, this is the only phone number that makes sending messages give successful response
+from_phone_number = os.getenv("TWILIO_PHONE_NUMBER_TEST")
 
 # @twilio_bp.route("/send-sms", methods=["POST"], strict_slashes=False)
 # def send_sms():
@@ -63,15 +66,15 @@ auth_token = os.getenv("TWILIO_AUTH_TOKEN_TEST")
 # 		return jsonify({"error": str(e)}), 500
 
 def send_order_status_sms(order, phone_number):
-    client = Client(
-        os.environ["TWILIO_ACCOUNT_SID"],
-        os.environ["TWILIO_AUTH_TOKEN"]
-    )
 
-    message = f"Your order #{order['orderId']} is now {order['status']}."
+    client = Client(account_sid, auth_token)
+
+    message = f"Your order #{order.get('orderId')} is now {order.get('status') }."
+    
+    virtual_phone_number = '+18777804236' 
 
     client.messages.create(
-        body=message,
-        from_=os.environ["TWILIO_PHONE_NUMBER"],
-        to=phone_number
+        body = message,
+        from_ = '+18449833971',
+        to = virtual_phone_number
     )

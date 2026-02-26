@@ -169,26 +169,29 @@ export default function ManageOrders() {
       moved.forEach(async (order) => {
         try {
           // best-effort extraction of customer name/phone from order object
-          const customer = order.customer || order.user || order.customerName || order.customer_name || order.name || '';
+          // const customer = order.customer || order.user || order.customerName || order.customer_name || order.name || '';
           // const phone = order.customerPhoneNumber || order.customer_phone || order.phone || order.phoneNumber || order.customerPhone || '';
-          const columnTitle = statusTitles[order.status] || order.status;
+          // const columnTitle = statusTitles[order.status] || order.status;
           // const columnTitle = columns[order.status] || order.status;
           
           const data = {
-            user: customer,
-            columnTitle,
-            orderID: order.id,
+            // user: customer,
+            // columnTitle,
+            // orderID: order.id,
+            status: order.status,
             // customerPhoneNumber: phone,
           }
 
-          await axios.post(`${host.current}/send-sms`, data);
+          const response = await axios.patch(`${host.current}/orders/${order.id}/status`, data); 
+          console.log("response: ",response.data)
+
         } catch (err) {
           console.error('Error sending SMS for order', order.id, err);
         }
       });
     }
 
-    prevOrdersRef.current = orders;
+    prevOrdersRef.current = orders;// updates ref.current to refer to the new changes each order
   }, [orders]);
 
   // renderOrderCard: render a single order card JSX with items and checkboxes.

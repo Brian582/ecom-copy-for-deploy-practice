@@ -10,7 +10,6 @@ def get_TotalPrice():
   try:
     data = readFile("JSON_CART_TOTALPRICE_FILE")
     totalPrice = data.get('totalPrice')
-    print(f"json total {totalPrice}")
     return jsonify(totalPrice)
   
   except FileNotFoundError as e:

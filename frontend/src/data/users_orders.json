@@ -1,10 +1,10 @@
 [
-  { 
+  {
     "userId": "3",
     "name": "Tom",
     "orderId": "1",
-    "status": "new",
-    "last_notified_status": null,
+    "status": "done",
+    "last_notified_status": "done",
     "meals": [
       {
         "mealId": 1785,
@@ -20,12 +20,12 @@
       }
     ]
   },
-  { 
+  {
     "userId": "1",
     "name": "Jordan",
     "orderId": "7",
-    "status": "new",
-    "last_notified_status": null,
+    "status": "processing",
+    "last_notified_status": "processing",
     "meals": [
       {
         "mealId": 1785,
@@ -33,7 +33,7 @@
         "quantity": "2",
         "price": "$10.70"
       },
-        {
+      {
         "mealId": 1248,
         "name": "Lo Mein",
         "quantity": "2",
@@ -46,13 +46,13 @@
         "price": "$9.00"
       }
     ]
-  },  
-  { 
+  },
+  {
     "userId": "2",
     "name": "Molly",
     "orderId": "5",
-    "status": "processing",
-    "last_notified_status": null,
+    "status": "new",
+    "last_notified_status": "new",
     "meals": [
       {
         "mealId": 1785,

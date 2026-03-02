@@ -2,6 +2,8 @@
 import {createContext, useState, useEffect, useRef, useContext}  from 'react';
 import axios from 'axios';
 
+import { useNavigate } from 'react-router-dom';
+
 // defines the Context, the comment below removes IDE bug
 // eslint-disable-next-line react-refresh/only-export-components
 export const ThemeContext = createContext(null);
@@ -24,6 +26,7 @@ export function ThemeProvider({ children }) {
     const getTotalPrice = async () => {
       try {
         const response = await axios.get(`${host.current}/getTotalPrice`);
+        console.log("total: ",response.data)
         setPriceTotal(Number(response.data))
         cartLoaded.current=true;
 
@@ -258,6 +261,7 @@ export function AuthProvider({ children }) {
         },
     isLoggedIn: false
   })
+  const navigate = useNavigate();
 
   // restore auth from localStorage on mount so refresh doesn't log user out
   useEffect(() => {
@@ -285,12 +289,17 @@ export function AuthProvider({ children }) {
       if (response?.data?.authenticated === true) {
         const newAuth = { user: response.data.user, isLoggedIn: true };
         setAuth(newAuth);
+        if (newAuth["isLoggedIn"] === true){
+          navigate('/') 
+        }
+        
         try { localStorage.setItem('auth', JSON.stringify(newAuth)); } catch (e) { /* ignore */ }
       } else {
         setAuth({ user: null, isLoggedIn: false });
         try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
       }
-      return response.data;
+      // return response.data;
+
     } catch (err) {
       // axios throws for non-2xx responses (e.g. 401). Handle 401 as authentication failure.
       if (err.response && err.response.status === 401) {

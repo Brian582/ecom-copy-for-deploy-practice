@@ -30,8 +30,8 @@ export default function SignInForm() {
     }
 
     signIn(formData) //signs in user if their input is valid
-    toast({ title: 'Signed In', description: 'Welcome back!', variant: 'default' });
-    setFormData({ email: '', password: '' });
+    toast({ title: 'Signed In', description: 'Welcome back!', variant: 'default' });//greets user with pop up message
+    setFormData({ email: '', password: '' });//resets form's fields
 
   };
 

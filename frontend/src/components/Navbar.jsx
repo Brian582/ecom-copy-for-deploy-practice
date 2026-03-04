@@ -49,14 +49,14 @@ export default function NavBar() {
         </Link>
         {auth?.isLoggedIn && ( 
         <>
+          <Link to="/manage-orders">
+            <button className="nav-button">{userRole === 'worker' ? 'Manage Orders' : 'View Orders'}</button>
+          </Link>
           { userRole !== "worker" && (
             <Link to="/checkout">
               <button>Checkout </button>
             </Link>
           )}
-          <Link to="/manage-orders">
-            <button className="nav-button">{userRole === 'worker' ? 'Manage Orders' : 'View Orders'}</button>
-          </Link>
         </>
         )}
         { userRole !== "worker" && (

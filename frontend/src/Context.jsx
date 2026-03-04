@@ -26,7 +26,6 @@ export function ThemeProvider({ children }) {
     const getTotalPrice = async () => {
       try {
         const response = await axios.get(`${host.current}/getTotalPrice`);
-        console.log("total: ",response.data)
         setPriceTotal(Number(response.data))
         cartLoaded.current=true;
 

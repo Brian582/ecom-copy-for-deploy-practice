@@ -182,8 +182,7 @@ export default function ManageOrders() {
             // customerPhoneNumber: phone,
           }
 
-          const response = await axios.patch(`${host.current}/orders/${order.id}/status`, data); 
-          console.log("response: ",response.data)
+          await axios.patch(`${host.current}/updateOrders/${order.id}/status`, data);// no need to return anything
 
         } catch (err) {
           console.error('Error sending SMS for order', order.id, err);

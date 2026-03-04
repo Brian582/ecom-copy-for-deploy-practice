@@ -121,7 +121,7 @@ def format_order(u):
 # 		return jsonify({'error': f'unexpected error: {e}'}), 500
 
 #Update the status of a specific order and notifies user by sending sms
-@users_orders_bp.route("/orders/<order_id>/status", methods=["PATCH"], strict_slashes=False)
+@users_orders_bp.route("/updateOrders/<order_id>/status", methods=["PATCH"], strict_slashes=False)
 def update_order_status(order_id):
 	data = request.get_json()
 

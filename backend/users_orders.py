@@ -62,23 +62,51 @@ def format_order(u):
 		'items': items
 	}
 
-# @users_orders_bp.route('/addUserOrder/<userID>', methods=['POST'], strict_slashes=False)
-# def add_user_order():
-# 	try:
-# 		userOrder = request.get_json()
-# 		data = readFile('JSON_USERS_ORDERS')
-# 		users_orders = data.get('usersOrders', [])
-# 		users_orders.append(userOrder)
-# 		data['usersOrders'] = users_orders
-# 		writeFile('JSON_USERS_ORDERS', data)
+@users_orders_bp.route('/addOrder', methods=['POST'], strict_slashes=False)
+def add_order():
+	try:
+		payload = request.get_json() or {}
+		user_id = payload.get('userId')
+		name = payload.get('name') or 'Guest'
+		meals = payload.get('meals', [])
 
-# 		return jsonify({'added': True}), 201
-# 	except FileNotFoundError as e:
-# 		return jsonify({'error': f'users_orders file not found: {e}'}), 404
-# 	except json.JSONDecodeError as e:
-# 		return jsonify({'error': f'invalid users_orders json: {e}'}), 400
-# 	except Exception as e:
-# 		return jsonify({'error': f'unexpected error: {e}'}), 500
+		# allow both legacy and user id-supplied values
+		if user_id is None:
+			user_id = None
+
+		orders = readFile('JSON_USERS_ORDERS') or []
+
+		# generate sequential numeric orderId; preserve existing IDs even if non-numeric
+		max_order_id = 0
+		for o in orders:
+			try:
+				num = int(o.get('orderId', 0))
+				if num > max_order_id:
+					max_order_id = num
+			except Exception:
+				continue
+
+		new_order_id = str(max_order_id + 1)
+
+		new_order = {
+			'userId': str(user_id) if user_id is not None else None,
+			'name': name,
+			'orderId': new_order_id,
+			'status': 'new',
+			'last_notified_status': 'new',
+			'meals': meals
+		}
+
+		orders.append(new_order)
+		writeFile('JSON_USERS_ORDERS', orders)
+
+		return jsonify({'added': True, 'order': new_order}), 201
+	except FileNotFoundError as e:
+		return jsonify({'error': f'users_orders file not found: {e}'}), 404
+	except json.JSONDecodeError as e:
+		return jsonify({'error': f'invalid users_orders json: {e}'}), 400
+	except Exception as e:
+		return jsonify({'error': f'unexpected error: {e}'}), 500
 
 
 # @users_orders_bp.route('/deleteUserOrder', methods=['DELETE'], strict_slashes=False)

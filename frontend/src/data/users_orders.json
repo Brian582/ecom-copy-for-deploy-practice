@@ -24,8 +24,8 @@
     "userId": "1",
     "name": "Jordan",
     "orderId": "7",
-    "status": "processing",
-    "last_notified_status": "processing",
+    "status": "new",
+    "last_notified_status": "new",
     "meals": [
       {
         "mealId": 1785,
@@ -64,6 +64,426 @@
         "mealId": 5457,
         "name": "Kung Pao Chicken",
         "quantity": "3",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "8",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "2",
+        "price": "$9.00"
+      },
+      {
+        "mealId": 1248,
+        "name": "Lo Mein",
+        "quantity": "2",
+        "price": "$10.99"
+      },
+      {
+        "mealId": 7609,
+        "name": "Chow mein",
+        "quantity": "1",
+        "price": "$9.21"
+      },
+      {
+        "mealId": 1649,
+        "name": "General Tso Chicken",
+        "quantity": "1",
+        "price": "$12.00"
+      },
+      {
+        "mealId": 2576,
+        "name": "Sweet and Sour Chicken",
+        "quantity": "1",
+        "price": "$11.49"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "9",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1248,
+        "name": "Lo Mein",
+        "quantity": "1",
+        "price": "$10.99"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "10",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "11",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "12",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 7609,
+        "name": "Chow mein",
+        "quantity": "1",
+        "price": "$9.21"
+      },
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      },
+      {
+        "mealId": 1248,
+        "name": "Lo Mein",
+        "quantity": "1",
+        "price": "$10.99"
+      },
+      {
+        "mealId": 1649,
+        "name": "General Tso Chicken",
+        "quantity": "1",
+        "price": "$12.00"
+      },
+      {
+        "mealId": 2576,
+        "name": "Sweet and Sour Chicken",
+        "quantity": "1",
+        "price": "$11.49"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "13",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "14",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      },
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "15",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "16",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "17",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "2",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 7609,
+        "name": "Chow mein",
+        "quantity": "1",
+        "price": "$9.21"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "18",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1248,
+        "name": "Lo Mein",
+        "quantity": "1",
+        "price": "$10.99"
+      },
+      {
+        "mealId": 2576,
+        "name": "Sweet and Sour Chicken",
+        "quantity": "1",
+        "price": "$11.49"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "19",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "2",
+        "price": "$9.00"
+      },
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "20",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1649,
+        "name": "General Tso Chicken",
+        "quantity": "2",
+        "price": "$12.00"
+      },
+      {
+        "mealId": 2576,
+        "name": "Sweet and Sour Chicken",
+        "quantity": "2",
+        "price": "$11.49"
+      },
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      },
+      {
+        "mealId": 7609,
+        "name": "Chow mein",
+        "quantity": "1",
+        "price": "$9.21"
+      },
+      {
+        "mealId": 1248,
+        "name": "Lo Mein",
+        "quantity": "1",
+        "price": "$10.99"
+      },
+      {
+        "mealId": 4022,
+        "name": "Chicken with Broccoli",
+        "quantity": "1",
+        "price": "$8.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "21",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      },
+      {
+        "mealId": 7609,
+        "name": "Chow mein",
+        "quantity": "1",
+        "price": "$9.21"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "22",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 7609,
+        "name": "Chow mein",
+        "quantity": "1",
+        "price": "$9.21"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
+        "price": "$9.00"
+      }
+    ]
+  },
+  {
+    "userId": "1",
+    "name": "Jordan",
+    "orderId": "23",
+    "status": "new",
+    "last_notified_status": "new",
+    "meals": [
+      {
+        "mealId": 1785,
+        "name": "Dumplings",
+        "quantity": "1",
+        "price": "$10.70"
+      },
+      {
+        "mealId": 7609,
+        "name": "Chow mein",
+        "quantity": "1",
+        "price": "$9.21"
+      },
+      {
+        "mealId": 5457,
+        "name": "Kung Pao Chicken",
+        "quantity": "1",
         "price": "$9.00"
       }
     ]

@@ -30,7 +30,7 @@ def get_access_token():
     # This block will execute if any exception occurs in the try block
     print(f"Access error: {e}")
 
-
+# Creates a PayPal order using the current payment total
 @paypal_bp.route("/create-order", methods=["POST"])
 def create_order():
   access_token = get_access_token()
@@ -58,8 +58,9 @@ def create_order():
 
   return jsonify(r.json())
 
-@paypal_bp.route("/capture-order/<order_id>", methods=["POST"])
-def capture_order(order_id):
+# Captures and completes Paypal order
+@paypal_bp.route("/capture-order/<paypal_order_id>", methods=["POST"])
+def capture_order(paypal_order_id):
   access_token = get_access_token()
 
   headers = {
@@ -67,7 +68,7 @@ def capture_order(order_id):
     "Authorization": f"Bearer {access_token}"
   }
 
-  r = requests.post(f"{PAYPAL_URL}/v2/checkout/orders/{order_id}/capture",
+  r = requests.post(f"{PAYPAL_URL}/v2/checkout/orders/{paypal_order_id}/capture",
                     headers=headers)
   r.raise_for_status()
 

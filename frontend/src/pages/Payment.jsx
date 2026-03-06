@@ -7,7 +7,8 @@ import { ThemeContext } from "../Context";
 export default function YourCheckoutPage() {
   const { clearCart } = useContext(ThemeContext);
   const host = import.meta.env.VITE_HOST;
- 
+  
+  // Calls backend to create a PayPal order 
   const handleCreateOrder = async () => {
     try {
       const result = await axios.post(`${host}/create-order`);
@@ -18,6 +19,7 @@ export default function YourCheckoutPage() {
     }
   }
 
+  // Captures the PayPal order and handles successful payment
   const handleOnApprove = async (data) => {
     try {
       const result = await axios.post(`${host}/capture-order/${data.orderID}`);
@@ -29,6 +31,7 @@ export default function YourCheckoutPage() {
       console.error('Approve Error :', error);
     }
   }
+
 
   const handleOnError = (err) => {
     console.error("PayPal checkout error", err);

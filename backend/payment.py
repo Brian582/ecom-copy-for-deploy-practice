@@ -2,7 +2,7 @@ from base64 import b64encode
 from flask import jsonify, Blueprint
 import os
 import requests
-from cart_totalprice import get_TotalPrice_value
+from cart_totalprice import get_PaymentTotal
 
 paypal_bp = Blueprint("paypal", __name__)
 
@@ -34,7 +34,7 @@ def get_access_token():
 @paypal_bp.route("/create-order", methods=["POST"])
 def create_order():
   access_token = get_access_token()
-  total_price = get_TotalPrice_value()
+  payment_total = get_PaymentTotal()
   
   headers = {
     "Content-Type": "application/json",
@@ -47,7 +47,7 @@ def create_order():
       {
         "amount": {
             "currency_code": "USD",
-            "value": f"{total_price:.2f}" 
+            "value": f"{payment_total:.2f}" 
         }
       }
     ]

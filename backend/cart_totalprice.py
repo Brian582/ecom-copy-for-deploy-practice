@@ -22,9 +22,13 @@ def get_TotalPrice():
     return jsonify({"error": f"Unexpected error: {e}"}), 500
 
 #get total price without jsonify
-def get_TotalPrice_value():
-    data = readFile("JSON_CART_TOTALPRICE_FILE")
-    return float(data.get("totalPrice"))
+def get_PaymentTotal():
+  data = readFile("JSON_CART_TOTALPRICE_FILE")
+  subtotal = float(data.get("totalPrice"))
+  shipping = 5.99  if subtotal > 0 else 0
+  tax = subtotal * 0.08
+  total = subtotal + shipping + tax
+  return total
 
 #updates user's total price
 @totalprice_bp.route("/updateTotalPrice", methods=['PUT'], strict_slashes=False)

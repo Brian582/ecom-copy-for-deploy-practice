@@ -119,6 +119,11 @@
   color: hsl(var(--muted-foreground));
 }
 
+/* hides default eye icon of Input tag type=password */
+input.signup-input::-ms-reveal {
+  display: none;
+}
+
 .signup-password-toggle {
   position: absolute;
   right: 1rem;

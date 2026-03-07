@@ -72,7 +72,7 @@ def add_user():
 		request_data = request.get_json()
 		name = request_data.get('name')
 		email = (request_data.get('email') or '').strip() # removes whitespace characters
-		hashed_password = generate_password_hash(request_data.get('password'))
+		hashed_password = generate_password_hash(request_data.get('password'), salt_length=4)
 		phone_number = request_data.get('phone')
 
 		# Check if user is a worker
@@ -103,7 +103,7 @@ def add_user():
 		
 		users.append(new_user)
 		users_data['users'] = users
-		writeFile('JSON_USERSFILE', users_data)
+		writeFile('JSON_USERS', users_data)
 
 		return jsonify({'added': True, 'user': new_user}), 201
 	except FileNotFoundError as e:

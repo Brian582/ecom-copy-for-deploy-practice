@@ -277,8 +277,13 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function createAccount(formdata){
-    const response = await axios.post(`${host.current}/addUser`, formdata)
-    // account creation status handled by caller
+    try {
+      const response = await axios.post(`${host.current}/addUser`, formdata)
+      return response?.data?.added ? true : false
+    }
+    catch (err) {
+      console.error('Failed to create account:', err);
+    }
   }
 
   //sign in user

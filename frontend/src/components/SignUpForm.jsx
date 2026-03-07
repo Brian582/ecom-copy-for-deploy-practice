@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, Eye, EyeOff, Phone } from 'lucide-react';
 import { useToast } from '../hooks/useToast';
 import { AuthContext } from '../Context.jsx';
 
@@ -7,7 +7,7 @@ export default function SignUpForm() {
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({ fullName: '', email: '', password: '', confirmPassword: '' });
+  const [formData, setFormData] = useState({ fullName: '', email: '', password: '', confirmPassword: '', phone: ''});
   const { createAccount } = useContext(AuthContext);
 
 
@@ -18,7 +18,7 @@ export default function SignUpForm() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { fullName, email, password, confirmPassword } = formData;
 
@@ -48,9 +48,9 @@ export default function SignUpForm() {
       return;
     }
 
-    createAccount(formData)
-    toast({ title: 'Account Created!', description: 'Welcome to Golden Dragon! You can now sign in.', variant: 'default' });
-    setFormData({ fullName: '', email: '', password: '', confirmPassword: '' });
+    const creationStatus = await createAccount(formData)
+    creationStatus && toast({ title: 'Account Created!', description: 'Welcome to Golden Dragon! You can now sign in.', variant: 'default' });
+    setFormData({ fullName: '', email: '', password: '', confirmPassword: '', phone: ''});
   };
 
   return (
@@ -121,6 +121,20 @@ export default function SignUpForm() {
           >
             {showConfirmPassword ? <EyeOff /> : <Eye />}
           </button>
+        </div>
+
+        {/* add in here the phone field */}
+        <div className="signup-input-group">
+          <Phone className="signup-input-icon" />
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone"
+            className="signup-input"
+            value={formData.phone}
+            onChange={handleChange}
+            maxLength={100}
+          />
         </div>
 
         <button type="submit" className="signup-submit-button">

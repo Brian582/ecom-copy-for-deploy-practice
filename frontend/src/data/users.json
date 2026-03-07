@@ -39,6 +39,30 @@
       "password": 56708,
       "phone_number": "+61400123456",
       "role": "worker"
+    },
+    {
+      "userId": "78",
+      "name": null,
+      "email": "rt@gmail.com",
+      "password": "scrypt:32768:8:1$EPTkQaML9Vwt04ZR$4f67eb6c1811d14a800175364ba87271e3863fcab4f47f4cc3f37e1e07cd1573ab185fafc4b156919bb89626991a2bf2954ca2ec2ca8ec6634219db0b3b3cee6",
+      "phone_number": "09867",
+      "role": "customer"
+    },
+    {
+      "userId": "79",
+      "name": null,
+      "email": "112@gmail.com",
+      "password": "scrypt:32768:8:1$eAWx$a4c635154b597ac19d40d58da33093be571eaa3edcd125a99c2d16bbd983564618dee89127892c77e729f85d694c548ed1527fbe6539127c1967f13230b32760",
+      "phone_number": "9087675",
+      "role": "customer"
+    },
+    {
+      "userId": "80",
+      "name": null,
+      "email": "we@gmail.com",
+      "password": "scrypt:32768:8:1$ipcI$5c1c7163dcc64dd0be3c215c8c9f452bc133ae5f3586c64a884f5ca3b1a1f014d3b841e7f871306a467bf1364ba4e91fb055f9425c962e6873aa7dfcab8d7be0",
+      "phone_number": "9876",
+      "role": "customer"
     }
   ]
 }

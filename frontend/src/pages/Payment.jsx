@@ -58,12 +58,12 @@ export default function YourCheckoutPage() {
         const addOrderResult = await handleAddOrder();
         if (addOrderResult?.added) {
           clearCart();
-          alert("Payment successful and order created");
+          console.log("Payment successful and order created");
           return;
         }
 
         console.warn("Order saved failed", addOrderResult);
-        alert("Payment succeeded, but saving order failed. Your cart was NOT cleared.");
+        // alert("Payment succeeded, but saving order failed. Your cart was NOT cleared.");
         return;
       }
 

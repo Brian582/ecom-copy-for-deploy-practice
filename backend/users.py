@@ -76,7 +76,7 @@ def add_user():
 		phone_number = request_data.get('phone')
 
 		# Check if user is a worker
-		workers_data = readFile('JSON_WORKERS')
+		workers_data = readFile('JSON_STAFF')
 		workers = workers_data.get('workers')
 
 		role = "worker" if any( (worker['email'] == email and worker['name'] == name) for worker in workers) else "customer"

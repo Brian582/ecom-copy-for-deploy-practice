@@ -14,7 +14,7 @@ def get_user_orders(userID):
 		user_id = str(userID)
 
 		# check if user is a worker
-		workers_data = readFile('JSON_WORKERS') or {}
+		workers_data = readFile('JSON_STAFF') or {}
 		workers = workers_data.get('workers', [])
 		is_worker = any(str(w.get('workerId')) == user_id for w in workers)
 

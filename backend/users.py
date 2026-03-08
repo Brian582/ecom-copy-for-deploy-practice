@@ -14,6 +14,9 @@ def verify_user(email, password):
 	email = email.lower()
 	user = users_by_email.get(email)
 
+	if not user:
+		return {"authenticated": False, "user": None}
+
 	if user:
 		stored = user.get('password')
 		# support both hashed passwords (werkzeug) and legacy plaintext/numeric passwords
@@ -26,16 +29,16 @@ def verify_user(email, password):
 		except Exception:
 			valid = False
 
-	if valid:
-		return {
-			"authenticated": True,
-			"user": {
-				"userId": user.get("userId"),
-				"name": user.get("name"),
-				"email": user.get("email"),
-				"role": user.get("role"),
-				"phoneNumber": user.get("phone_number"),
-			}
+		if valid:
+			return {
+				"authenticated": True,
+				"user": {
+					"userId": user.get("userId"),
+					"name": user.get("name"),
+					"email": user.get("email"),
+					"role": user.get("role"),
+					"phoneNumber": user.get("phone_number"),
+				}
 	}
 
 	return {

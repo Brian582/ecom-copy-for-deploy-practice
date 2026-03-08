@@ -148,6 +148,20 @@ def add_order():
 # 	except Exception as e:
 # 		return jsonify({'error': f'unexpected error: {e}'}), 500
 
+@users_orders_bp.route('/deleteOrder/<order_id>', methods=['DELETE'], strict_slashes=False)
+def delete_order(order_id):
+	try:
+		orders = readFile('JSON_USERS_ORDERS') or []
+		orders = [o for o in orders if str(o.get('orderId')) != str(order_id)]
+		writeFile('JSON_USERS_ORDERS', orders)
+		return jsonify({"message": "Order deleted"}), 200
+	except FileNotFoundError as e:
+		return jsonify({'error': f'users_orders file not found: {e}'}), 404
+	except json.JSONDecodeError as e:
+		return jsonify({'error': f'invalid users_orders json: {e}'}), 400
+	except Exception as e:
+		return jsonify({'error': f'unexpected error: {e}'}), 500
+
 #Update the status of a specific order and notifies user by sending sms
 @users_orders_bp.route("/updateOrders/<order_id>/status", methods=["PATCH"], strict_slashes=False)
 def update_order_status(order_id):
@@ -158,6 +172,7 @@ def update_order_status(order_id):
 		return jsonify({"error": "Status required"}), 400
 
 	new_status = data.get("status")
+	notify = data.get("notify", True)  # default to True
 
 	# ALLOWED_STATUSES = {
 	# 	"new", 
@@ -189,8 +204,8 @@ def update_order_status(order_id):
 	# Update order's status
 	order["status"] = new_status
 
-	# Only send SMS if user hasn't already notified for this status
-	if order.get("last_notified_status") != new_status:
+	# Only send SMS if notify is True and user hasn't already notified for this status
+	if notify and order.get("last_notified_status") != new_status:
 		
 		# Notify user by sending SMS if a phone number exists
 		user = users_by_id.get(order.get("userId"))

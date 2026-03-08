@@ -32,7 +32,20 @@
     {
       "cartId": "cart_a3ddd548",
       "userId": "1",
-      "meals": []
+      "meals": [
+        {
+          "mealId": 5457,
+          "name": "Kung Pao Chicken",
+          "price": "$9.00",
+          "quantity": 1
+        },
+        {
+          "mealId": 2576,
+          "name": "Sweet and Sour Chicken",
+          "price": "$11.49",
+          "quantity": 1
+        }
+      ]
     }
   ]
 }

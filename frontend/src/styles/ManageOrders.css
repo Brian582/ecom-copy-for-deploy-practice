@@ -63,10 +63,10 @@
   cursor: grabbing;
 }
 
-.order-card.dragging {
+/* .order-card.dragging {
   opacity: 0.5;
   transform: scale(0.95);
-}
+} */
 
 .kanban-column.drag-over {
   background-color: hsl(var(--primary) / 0.1);

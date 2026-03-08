@@ -12,7 +12,6 @@ export default function ManageOrders() {
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const { auth }  = useContext(AuthContext);
   const host = useRef(import.meta.env.VITE_HOST);
-  const prevOrdersRef = useRef([]);
   const isWorker = !!(
     auth?.user && (
       auth.user.role === 'worker' || auth.user.isWorker || auth.user.worker
@@ -113,7 +112,7 @@ export default function ManageOrders() {
   };
 
   // handleDrop: move dragged order to target column and update orders state.
-  const handleDrop = (e, targetColumn) => {
+  const handleDrop = async (e, targetColumn) => {
     e.preventDefault();
     if (!draggedOrder || draggedFrom === targetColumn) {
       setDragOverColumn(null);
@@ -143,55 +142,31 @@ export default function ManageOrders() {
       return without;
     });
 
+    // API calls
+    try {
+      if (targetColumn === 'done') {
+        const confirmed = window.confirm("Do you want to delete this order?");
+        if (confirmed) {
+          await axios.patch(`${host.current}/updateOrders/${draggedOrder.id}/status`, { status: 'done', notify: true });
+          await axios.delete(`${host.current}/deleteOrder/${draggedOrder.id}`);
+          // Remove from state
+          setOrders((prev) => prev.filter((o) => o.id !== draggedOrder.id));
+        } else {
+          await axios.patch(`${host.current}/updateOrders/${draggedOrder.id}/status`, { status: 'done', notify: false });
+        }
+      } else {
+        await axios.patch(`${host.current}/updateOrders/${draggedOrder.id}/status`, { status: targetColumn });
+      }
+    } catch (err) {
+      console.error('Error updating order', draggedOrder.id, err);
+      // Optionally revert the state change
+    }
+
     setDraggedOrder(null);
     setDraggedFrom(null);
     setDragOverColumn(null);
     setDragOverIndex(null);
   };
-
-  // Notify via SMS when an order's status changes (column moved)
-  useEffect(() => {
-    const prev = prevOrdersRef.current || [];
-    const prevStatusMap = new Map(prev.map((prevOrder) => [prevOrder.id, prevOrder.status]));
-
-    const statusTitles = {
-      new: 'New Order',
-      processing: 'Processing',
-      done: 'Done',
-    };
-
-    const moved = orders.filter((currOrder) => {
-      const prevStatus = prevStatusMap.get(currOrder.id);
-      return prevStatus && prevStatus !== currOrder.status;
-    });
-
-    if (moved.length > 0) {
-      moved.forEach(async (order) => {
-        try {
-          // best-effort extraction of customer name/phone from order object
-          // const customer = order.customer || order.user || order.customerName || order.customer_name || order.name || '';
-          // const phone = order.customerPhoneNumber || order.customer_phone || order.phone || order.phoneNumber || order.customerPhone || '';
-          // const columnTitle = statusTitles[order.status] || order.status;
-          // const columnTitle = columns[order.status] || order.status;
-          
-          const data = {
-            // user: customer,
-            // columnTitle,
-            // orderID: order.id,
-            status: order.status,
-            // customerPhoneNumber: phone,
-          }
-
-          await axios.patch(`${host.current}/updateOrders/${order.id}/status`, data);// no need to return anything
-
-        } catch (err) {
-          console.error('Error sending SMS for order', order.id, err);
-        }
-      });
-    }
-
-    prevOrdersRef.current = orders;// updates ref.current to refer to the new changes each order
-  }, [orders]);
 
   // renderOrderCard: render a single order card JSX with items and checkboxes.
   const renderOrderCard = (order, column, index) => (

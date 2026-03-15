@@ -2,7 +2,7 @@
   --size-base: 190px;
 }
 
-.row {
+.mealRow {
   display: flex;
   gap: 20px; 
   margin-top: 30px;
@@ -11,7 +11,7 @@
   justify-content: center;
 }
 
-.row button {
+.mealRow button {
   background-color: tan;
   /* width: 220px; 
   height: 215px; */
@@ -24,13 +24,13 @@
   /* padding-right: 15px; */
 }
 
-.row button:hover {
+.mealRow button:hover {
   cursor: pointer;
   border: 2px solid red;
   /* padding: 40px; */
 }
 
-.row img {
+.mealRow img {
   /* width: 165px; 
   height: 150px; */
   width: calc(var(--size-base) - 55px);
@@ -39,7 +39,7 @@
   margin-top: -10px;
 }
 
-.row p {
+.mealRow p {
   line-height: 10px;
   font-size: 11.8px;
   font-weight: bold;

@@ -8,15 +8,15 @@ eggrolls, wontonsoup, chickenwithbroccoli } from '../images/food/foodimages.js';
 import { ThemeContext, AuthContext } from '../Context.jsx';
 
 //splits the meals object array into rows of `size`
-function split(array,size) {
-  const rows = [];
+function split(meals, size) {
+  const mealRows = [];
   
   //converts the meals object array into a 2 dimensional array, 3 meals in each row
-  for (let i = 0; i < array.length; i += size){
-    rows.push(array.slice(i, i + size));
+  for (let i = 0; i < meals.length; i += size){
+    mealRows.push(meals.slice(i, i + size));
   }
 
-  return rows;
+  return mealRows;
 }
 
 export default function Order() {
@@ -57,17 +57,17 @@ export default function Order() {
     addItem(item, auth);
   }
 
-  const rows = split(meals, 3);//splits the meals into 3 rows for the UI
+  const mealRows = split(meals, 3);//splits the meals into 3 rows for the UI
 
   return (
     <>
       <h2>Choose a meal to start your order</h2>
-      <div className="spacing">
+      <div className="mealContainer">
         {/* loops each row */}
-        {rows.map((row, rowIndex) => (
-          <section className="row" key={rowIndex}>
+        {mealRows. map((mealRow, rowIndex) => (
+          <section className="mealRow" key={rowIndex}>
             {/* loops each meal in a row */}
-            {row.map((meal, idx) => (
+            {mealRow.map((meal, idx) => (
               <button
                 type="button"
                 key={meal.mealId ?? idx}

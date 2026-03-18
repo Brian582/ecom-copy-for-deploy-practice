@@ -189,7 +189,9 @@ export function ThemeProvider({ children }) {
       const userId = auth?.isLoggedIn ? String(auth.user?.userId || auth.user?.id || '') : null;
       if (!Array.isArray(cartItems)) return null;
       return cartItems.find(c => (c.userId == null && userId == null) || (c.userId != null && String(c.userId) === String(userId))) || null;
-    } catch (e) { return null }
+    } catch (e) { 
+      console.warn('Failed to find cart:', e);
+      return null }
   })();
 
   // expose active cart meals for consumers
@@ -275,18 +277,19 @@ export function AuthProvider({ children }) {
         if (newAuth["isLoggedIn"] === true){
           navigate('/') 
         }
-        
-        try { localStorage.setItem('auth', JSON.stringify(newAuth)); } catch (e) { /* ignore */ }
+        try { localStorage.setItem('auth', JSON.stringify(newAuth)); } 
+        catch (e) { console.warn('Failed to save auth to localStorage:', e); }
+        return true
       } else {
         setAuth({ user: null, isLoggedIn: false });
-        try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
+        try { localStorage.removeItem('auth'); } catch (e) { console.warn('Failed to remove auth from localStorage:', e); }
       }
 
     } catch (err) {
       // axios throws for non-2xx responses (e.g. 401). Handle 401 as authentication failure.
       if (err.response && err.response.status === 401) {
         setAuth({ user: null, isLoggedIn: false });
-        try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
+        try { localStorage.removeItem('auth'); } catch (e) { console.warn('Failed to remove auth from localStorage:', e); }
         return err.response.data || { authenticated: false };
       }
       console.error('Sign in failed:', err);
@@ -298,7 +301,7 @@ export function AuthProvider({ children }) {
   function logout(){
     // clear auth state and persisted auth
     setAuth({ user: null, isLoggedIn: false });
-    try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
+    try { localStorage.removeItem('auth'); } catch (e) { console.warn('Failed to remove auth from localStorage:', e); }
   };
 
   const authContextValue = { auth, createAccount, signIn, logout };

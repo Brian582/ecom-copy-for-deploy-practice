@@ -91,7 +91,8 @@ export default function NavBar() {
             if (!Array.isArray(cartItems)) return [];
             const activeCart = cartItems.find(c => (c.userId === null && userId === null) || (c.userId != null && String(c.userId) === String(userId)));
             return (activeCart && Array.isArray(activeCart.meals)) ? activeCart.meals : [];
-          } catch (_) { 
+          } catch (error) { 
+            console.warn("Failed to get Cart items:", error)
             return [] 
           }
         })()}

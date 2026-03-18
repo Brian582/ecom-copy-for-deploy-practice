@@ -33,7 +33,6 @@ export default function Checkout() {
       const img = images[key] || menuItem.image || null;
       const mealId = menuItem.mealId ?? menuItem.meal_Id ?? menuItem.id ?? null;
       const priceRaw = menuItem.price ?? menuItem.priceString ?? menuItem.amount ?? 0;
-      // const price = typeof priceRaw === 'string' ? Number(String(priceRaw).replace('$','')) : Number(priceRaw) || 0;
       const price = typeof priceRaw === 'string' ? priceRaw : Number(priceRaw) || 0;
       return { mealId, image: img, name: name, price: price, size : menuItem.quantity ?? 1 };
     });

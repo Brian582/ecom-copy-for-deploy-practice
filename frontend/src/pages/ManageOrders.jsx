@@ -17,15 +17,9 @@ export default function ManageOrders() {
       auth.user.role === 'worker' || auth.user.isWorker || auth.user.worker
     )
   );
-  // const columns = useRef([
-  //   { key: 'new', title: 'New Order' },
-  //   { key: 'processing', title: 'Processing' },
-  //   { key: 'done', title: 'Done' },
-  // ]);
 
   //Fetch orders for the logged-in user
   useEffect(() => {
-    // fetchOrders: fetch and set the logged-in user's orders.
     const fetchOrders = async () => {
       try {
         if (auth?.isLoggedIn) {
@@ -47,14 +41,6 @@ export default function ManageOrders() {
 
     fetchOrders();
   }, [auth?.isLoggedIn, auth?.user?.userId, auth?.user?.id]);
-
-  //notify user when their order status changes
-  // useEffect(() => {
-  //   const notifyUserOrderStatus = async () => {
-  //     try {
-
-
-  // })
 
   // toggleItem: toggle the checked flag for an item in an order.
   const toggleItem = (orderId, itemIndex) => {

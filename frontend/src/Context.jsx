@@ -1,4 +1,3 @@
-// this file is needed to define useContext
 import {createContext, useState, useEffect, useRef, useContext}  from 'react';
 import axios from 'axios';
 
@@ -56,13 +55,9 @@ export function ThemeProvider({ children }) {
     const getCartItems = async () => {
       try {
         const response = await axios.get(`${host.current}/getCartItems`);
+        
         // normalize response shape: accept either an array or an object with a `cart` array
         const payload = response.data;
-        // let carts = [];
-        // // if (Array.isArray(payload)) carts = payload;
-        // // else if (payload && Array.isArray(payload.cart)) carts = payload.cart;
-        // // else carts = [];
-        ///////////////// if this ternary operator for "carts" doesnt cause an error, then keep it and delete the if else statments for "carts" above
         let carts = Array.isArray(payload) ? payload
         : (payload && Array.isArray(payload?.cart)) ? payload.cart
         : [];
@@ -107,15 +102,6 @@ export function ThemeProvider({ children }) {
         // refresh carts from server
         const resp = await axios.get(`${host.current}/getCartItems`);
         const payload = resp.data;
-        // let carts = [];
-        // if (Array.isArray(payload)) {
-        //   carts = payload;
-        // } else if (payload && Array.isArray(payload.cart)) {
-        //   carts = payload.cart;
-        // } else {
-        //   carts = [];
-        // }
-        ///////////////// if this ternary operator for "carts" doesnt cause an error, then keep it and delete the if else statments for "carts" above
         let carts = Array.isArray(payload) ? payload
         : (payload && Array.isArray(payload?.cart)) ? payload.cart
         : [];
@@ -191,17 +177,10 @@ export function ThemeProvider({ children }) {
     setCartItems(prev => {
       if (!auth?.isLoggedIn) return (prev || []).map(c => ({ ...c, 
         meals: String(c.cartId) === "guest" && c.userId === null ? [] : c.meals }));
-      // [{ cartId: 'guest', userId: null, meals: [],  }, ...prev];
       return (prev || []).map(c => ({ ...c, 
               meals: auth?.isLoggedIn && String(c.userId) === String(auth.user?.userId) ? [] : c.meals }));
     });
     setPriceTotal(0);
-    // try {
-    //   localStorage.setItem('cart-items', []);
-    //   localStorage.setItem('total_price', '0');
-    // } catch (error) {
-    //   console.error('Error parsing data from localStorage:', error)
-    // }
   }
 
   // compute item count for active cart (guest or logged-in user's cart)
@@ -302,7 +281,6 @@ export function AuthProvider({ children }) {
         setAuth({ user: null, isLoggedIn: false });
         try { localStorage.removeItem('auth'); } catch (e) { /* ignore */ }
       }
-      // return response.data;
 
     } catch (err) {
       // axios throws for non-2xx responses (e.g. 401). Handle 401 as authentication failure.
@@ -314,8 +292,6 @@ export function AuthProvider({ children }) {
       console.error('Sign in failed:', err);
       throw err;
     }
-    
-    // sign-in status handled by caller
   }
   
   //change user's status to log them out

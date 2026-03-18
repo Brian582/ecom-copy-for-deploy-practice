@@ -63,7 +63,6 @@ export default function YourCheckoutPage() {
         }
 
         console.warn("Order saved failed", addOrderResult);
-        // alert("Payment succeeded, but saving order failed. Your cart was NOT cleared.");
         return;
       }
 
@@ -87,8 +86,6 @@ export default function YourCheckoutPage() {
           style={{
             shape: "rect",
             layout: "vertical",
-            // disableMaxWidth: true,
-            // width: "300px",
           }}
 
           createOrder={handleCreateOrder}   

@@ -2,12 +2,11 @@
   "cart": [
     {
       "cartId": "guest",
-      "userId": null,
-      "meals": []
+      "meals": [],
+      "userId": null
     },
     {
       "cartId": "cart_70",
-      "userId": "3",
       "meals": [
         {
           "mealId": 1785,
@@ -27,11 +26,11 @@
           "price": "$11.49",
           "quantity": 1
         }
-      ]
+      ],
+      "userId": "3"
     },
     {
       "cartId": "cart_a3ddd548",
-      "userId": "1",
       "meals": [
         {
           "mealId": 5457,
@@ -45,7 +44,8 @@
           "price": "$11.49",
           "quantity": 1
         }
-      ]
+      ],
+      "userId": "1"
     }
   ]
 }

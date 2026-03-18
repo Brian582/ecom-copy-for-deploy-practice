@@ -109,45 +109,6 @@ def add_order():
 		return jsonify({'error': f'unexpected error: {e}'}), 500
 
 
-# @users_orders_bp.route('/deleteUserOrder', methods=['DELETE'], strict_slashes=False)
-# def delete_user_order():
-# 	try:
-# 		payload = request.get_json() or {}
-# 		email = (payload.get('email') or '').strip()
-# 		orderId = payload.get('orderId')
-
-# 		if not email or orderId is None:
-# 			return jsonify({'error': 'email and orderId required'}), 400
-
-# 		path = _users_orders_path()
-# 		with open(path, 'r', encoding='utf-8') as f:
-# 			data = json.load(f)
-
-# 		users_orders = data.get('usersOrders', [])
-# 		modified = False
-# 		for u in users_orders:
-# 			if u.get('email', '').lower() == email.lower():
-# 				orig_len = len(u.get('orders', []))
-# 				u['orders'] = [o for o in u.get('orders', []) if str(u.get('orderId')) != str(orderId)]
-# 				if len(u['orders']) != orig_len:
-# 					modified = True
-# 				break
-
-# 		if not modified:
-# 			return jsonify({'deleted': False, 'reason': 'order not found'}), 404
-
-# 		data['usersOrders'] = users_orders
-# 		with open(path, 'w', encoding='utf-8') as f:
-# 			json.dump(data, f, indent=2)
-
-# 		return jsonify({'deleted': True}), 200
-# 	except FileNotFoundError as e:
-# 		return jsonify({'error': f'users_orders file not found: {e}'}), 404
-# 	except json.JSONDecodeError as e:
-# 		return jsonify({'error': f'invalid users_orders json: {e}'}), 400
-# 	except Exception as e:
-# 		return jsonify({'error': f'unexpected error: {e}'}), 500
-
 @users_orders_bp.route('/deleteOrder/<order_id>', methods=['DELETE'], strict_slashes=False)
 def delete_order(order_id):
 	try:
@@ -173,16 +134,6 @@ def update_order_status(order_id):
 
 	new_status = data.get("status")
 	notify = data.get("notify", True)  # default to True
-
-	# ALLOWED_STATUSES = {
-	# 	"new", 
-	#  	"processing", 
-	# 	"done"
-	# 	}
-	
-	# #Validate that new status is an acceptable value
-	# if new_status not in ALLOWED_STATUSES:
-	# 		return jsonify({"error": "Invalid status"}), 400
 
 	users = readFile('JSON_USERS')
 	orders = readFile('JSON_USERS_ORDERS')

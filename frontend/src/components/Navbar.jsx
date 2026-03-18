@@ -12,7 +12,6 @@ export default function NavBar() {
   const { cartItemcount, cartItems } = useContext(ThemeContext);
   const { auth, logout } = useContext(AuthContext);
   const userRole = auth?.user?.role || auth?.user?.identity || null;
-
   //used to control when the modal appears
   const [isCartOpen, setIsCartOpen] = useState(false);
   // control profile menu visibility
@@ -25,10 +24,6 @@ export default function NavBar() {
         <Link to="/">
           <button>Home</button>
         </Link>
-        {/* Food page no longer needed? */}
-        {/* <Link to="/food">
-          <button>Menu</button>
-        </Link> */}
         { userRole !== "worker" && (
           <Link to="/order">
             <button>Order</button>

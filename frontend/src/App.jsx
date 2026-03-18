@@ -9,10 +9,8 @@ import Layout from './pages/Layout.jsx'
 import NotFound from './pages/Notfound.jsx'
 import { ThemeProvider, AuthProvider } from "./Context";
 
-// import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import CheckoutPage from './pages/Checkout.jsx';
 import ManageOrders from './pages/ManageOrders.jsx'
-// import SignUp from './pages/SignUp.jsx';
 
 import { ToastProvider } from './hooks/useToast';
 import { Toaster } from './components/Toast';
@@ -27,7 +25,6 @@ export default function App() {
       <AuthProvider>
       <ThemeProvider>
       <Layout>
-        {/* <PayPalScriptProvider options={{ clientId: import.meta.env.VITE_PAYPAL_SANDBOX_CLIENT_ID}}> */}
           <Routes>
             <Route exact path="/" element={<Index />} />
             <Route exact path="/food" element={<Food />} />
@@ -47,8 +44,7 @@ export default function App() {
             <Route exact path="/checkout" element={<CheckoutPage />} />
 
             <Route exact path="/payment" element={<Payment />} /> 
-          </Routes> 
-        {/* </PayPalScriptProvider> */}
+          </Routes>
       </Layout> 
       </ThemeProvider> 
       </AuthProvider>

@@ -29,8 +29,7 @@ def _generate_cart_id():
 def get_CartItems():
   try:
     data = readFile("JSON_CARTFILE")
-    # support both 'cart' and legacy 'cart-Items' keys
-    cartItems = data.get('cart') or data.get('cart-Items') or []
+    cartItems = data.get('cart', [])
     return jsonify(cartItems)
 
   except FileNotFoundError as e:
@@ -43,7 +42,7 @@ def get_CartItems():
     return jsonify({"error": f"Unexpected error: {e}"}), 500
 
 
-# replaces the full cart list (keeps same file structure)
+# replaces the full cart list
 @cart_items_bp.route("/updateCartItems", methods=['PUT'], strict_slashes=False)
 def update_cartItems():
   try:
@@ -54,8 +53,6 @@ def update_cartItems():
     if cartItems is not None:
       data['cart'] = cartItems
 
-    # print('cart data ', data , end="\n\n")
-    # print('cartItems ', data , end="\n\n")
     writeFile("JSON_CARTFILE", data)
 
     return jsonify({"success": "Successfully updated cart items"}), 200

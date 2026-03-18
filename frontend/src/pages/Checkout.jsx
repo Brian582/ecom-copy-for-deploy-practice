@@ -88,19 +88,6 @@ export default function Checkout() {
 
                         <div className="cart-item-footer">
                           <p className="cart-item-price">{item.price}</p>
-                          {/* <select
-                            className="quantity-select"
-                            value={item.quantity.toString()}
-                            onChange={(e) =>
-                              handleQuantityChange(item.id, e.target.value)
-                            }
-                          >
-                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                              <option key={num} value={num}>
-                                {num}
-                              </option>
-                            ))}
-                          </select> */}
                         </div>
                       </div>
                     </div>

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { ChefHat, Heart, Leaf, Award } from 'lucide-react';
-// import Navigation from '../components/Navigation';
 import dragonEmblem from '../assets/dragon-emblem.png';
 import '../styles/About.css';
 

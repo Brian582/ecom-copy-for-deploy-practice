@@ -2,7 +2,7 @@ from flask import jsonify, request, Blueprint
 from file_handler import readFile, writeFile
 import json
 
-from send_sms_live import send_order_status_sms
+from send_sms import send_order_status_sms
 
 users_orders_bp = Blueprint("users_orders", __name__)
 

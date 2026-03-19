@@ -7,7 +7,7 @@ from cart_totalprice import totalprice_bp
 
 from users import users_bp
 from users_orders import users_orders_bp
-from send_sms_live import twilio_bp
+from send_sms import twilio_bp
 
 app = Flask(__name__)
 app.register_blueprint(paypal_bp) 

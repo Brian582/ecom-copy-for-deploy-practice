@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import '../styles/ManageOrders.css';
 import axios from 'axios';
 import { AuthContext } from '../Context.jsx';
+import DeleteOrderPrompt from '../components/DeleteOrderPrompt.jsx';
 
 // ManageOrders: displays a kanban board, fetches orders, allows drag/drop, and sends SMS notifications.
 export default function ManageOrders() {
@@ -10,6 +11,8 @@ export default function ManageOrders() {
   const [draggedFrom, setDraggedFrom] = useState(null);
   const [dragOverColumn, setDragOverColumn] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [pendingOrder, setPendingOrder] = useState(null);
   const { auth }  = useContext(AuthContext);
   const host = useRef(import.meta.env.VITE_HOST);
   const isWorker = !!(
@@ -130,17 +133,12 @@ export default function ManageOrders() {
 
     // API calls
     try {
+      // if order is moved to "Done" column
       if (targetColumn === 'done') {
-        const confirmed = window.confirm("Do you want to delete this order?");
-        if (confirmed) {
-          await axios.patch(`${host.current}/updateOrders/${draggedOrder.id}/status`, { status: 'done', notify: true });
-          await axios.delete(`${host.current}/deleteOrder/${draggedOrder.id}`);
-          // Remove from state
-          setOrders((prev) => prev.filter((o) => o.id !== draggedOrder.id));
-        } else {
-          await axios.patch(`${host.current}/updateOrders/${draggedOrder.id}/status`, { status: 'done', notify: false });
-        }
+        setPendingOrder(draggedOrder);
+        setShowDeleteConfirm(true);
       } else {
+        //updates the other columns
         await axios.patch(`${host.current}/updateOrders/${draggedOrder.id}/status`, { status: targetColumn });
       }
     } catch (err) {
@@ -152,6 +150,37 @@ export default function ManageOrders() {
     setDraggedFrom(null);
     setDragOverColumn(null);
     setDragOverIndex(null);
+  };
+
+  // Handle delete confirmation
+  const handleDeleteConfirm = async () => {
+    if (!pendingOrder) return;
+
+    try {
+      await axios.patch(`${host.current}/updateOrders/${pendingOrder.id}/status`, { status: 'done', notify: true });
+      await axios.delete(`${host.current}/deleteOrder/${pendingOrder.id}`);
+      // Remove from state
+      setOrders((prev) => prev.filter((o) => o.id !== pendingOrder.id));
+    } catch (err) {
+      console.error('Error deleting order', pendingOrder.id, err);
+    }
+
+    setPendingOrder(null);
+    setShowDeleteConfirm(false);
+  };
+
+  // Handle delete cancellation
+  const handleDeleteCancel = async () => {
+    if (!pendingOrder) return;
+
+    try {
+      await axios.patch(`${host.current}/updateOrders/${pendingOrder.id}/status`, { status: 'done', notify: false });
+    } catch (err) {
+      console.error('Error updating order status', pendingOrder.id, err);
+    }
+
+    setPendingOrder(null);
+    setShowDeleteConfirm(false);
   };
 
   // renderOrderCard: render a single order card JSX with items and checkboxes.
@@ -215,6 +244,14 @@ export default function ManageOrders() {
           </div>
         </div>
       </main>
+
+      <DeleteOrderPrompt
+        isOpen={showDeleteConfirm}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Order"
+        message="Do you want to delete this order? This action cannot be undone."
+      />
     </div>
   );
 }

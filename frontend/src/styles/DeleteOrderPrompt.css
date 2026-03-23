@@ -21,18 +21,15 @@
   max-height: 80vh;
   overflow-y: auto;
   z-index: 2001;
-  position: relative;
   pointer-events: auto;
-  margin: auto;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.confirm-header {
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.confirm-header h3 {
-  margin: 0;
+.confirm-modal h3{
+  margin: 20px 0 0 20px;
   font-size: 18px;
   font-weight: 600;
   color: #1f2937;
@@ -44,17 +41,17 @@
 
 .confirm-body p {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.5;
   color: #374151;
+  font-weight: 500;
 }
 
-.confirm-footer {
+.buttomContainer{
   padding: 16px 24px 20px;
-  border-top: 1px solid #e5e7eb;
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 25px;
 }
 
 .confirm-btn {

@@ -21,6 +21,7 @@ export default function DeleteOrderPrompt({ isOpen, onClose, onConfirm, message,
   return (
     <>
       {/* Overlay */}
+      {/* the semi-transparent background */}
       <div
         className="confirm-overlay"
         onClick={handleOverlayClick}
@@ -28,15 +29,13 @@ export default function DeleteOrderPrompt({ isOpen, onClose, onConfirm, message,
 
       {/* Modal */}
       <div className="confirm-modal">
-        <div className="confirm-header">
           <h3>{title}</h3>
-        </div>
 
         <div className="confirm-body">
           <p>{message}</p>
         </div>
 
-        <div className="confirm-footer">
+        <div className="buttomContainer">
           <button
             className="confirm-btn cancel-btn"
             onClick={handleCancel}

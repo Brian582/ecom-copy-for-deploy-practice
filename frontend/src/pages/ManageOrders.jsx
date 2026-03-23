@@ -249,8 +249,8 @@ export default function ManageOrders() {
         isOpen={showDeleteConfirm}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        title="Delete Order"
-        message="Do you want to delete this order? This action cannot be undone."
+        title="Confirmation"
+        message="Do you want to delete this order?"
       />
     </div>
   );

@@ -62,7 +62,7 @@ export default function Order() {
   return (
     <>
       <h2>Choose a meal to start your order</h2>
-      <div className="mealContainer">
+      <div>
         {/* loops each row */}
         {mealRows. map((mealRow, rowIndex) => (
           <section className="mealRow" key={rowIndex}>

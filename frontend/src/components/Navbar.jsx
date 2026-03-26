@@ -33,9 +33,11 @@ export default function NavBar() {
         {/* <Link to="/signin">
           <button>Sign in</button>
         </Link> */}
-        <Link to="/SignUpOrSignIn">
-          <button>Sign In</button>
-        </Link>
+        { !auth?.isLoggedIn && (
+          <Link to="/SignUpOrSignIn">
+            <button>Sign In</button>
+          </Link> 
+          )}
         <Link to="/about">
           <button>About</button>
         </Link>

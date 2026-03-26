@@ -2,12 +2,14 @@ import { useState, useContext } from 'react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '../hooks/useToast';
 import { AuthContext } from '../Context.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignInForm() {
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const { signIn }  = useContext(AuthContext);
+  const { signIn, auth }  = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -16,7 +18,7 @@ export default function SignInForm() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
     if (!email.trim() || !password) {
@@ -29,10 +31,13 @@ export default function SignInForm() {
       return;
     }
 
-    signIn(formData) //signs in user if their input is valid
-    toast({ title: 'Signed In', description: 'Welcome back!', variant: 'default' });//greets user with pop up message
-    setFormData({ email: '', password: '' });//resets form's fields
-
+    // logs in user if they aren't already logged in
+    if (!auth?.isLoggedIn) {
+      const loggedIn = await signIn(formData) //signs in user if their input is valid
+      loggedIn && toast({ title: 'Signed In', description: 'Welcome back!', variant: 'default' });//greets user with pop up message
+      setFormData({ email: '', password: '' });//resets form's fields
+    }
+    navigate('/');
   };
 
   return (

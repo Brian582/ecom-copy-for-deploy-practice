@@ -68,7 +68,7 @@ export default function NavBar() {
         </>
         )}
         {auth?.isLoggedIn && (
-          <>
+          <div className="profileSection">
             <button ref={profileButtonRef} 
             className="username"
             onClick={() => setIsProfileOpen(prev => !prev)} 
@@ -77,7 +77,7 @@ export default function NavBar() {
               {"Hi, " + (auth.user?.name || '') }
             </button>
             <ProfileMenu isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} onLogout={() => { logout(); }} triggerRef={profileButtonRef} />
-          </>
+          </div>
         )}
       </nav>
       

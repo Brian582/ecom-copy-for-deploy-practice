@@ -53,3 +53,7 @@ body{
 .username{
   margin-left: 10px;
 }
+
+.profileSection{
+  position: relative;
+}

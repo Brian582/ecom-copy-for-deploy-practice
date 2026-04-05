@@ -10,6 +10,7 @@ from users_orders import users_orders_bp
 from send_sms import twilio_bp
 
 app = Flask(__name__)
+app.json.sort_keys = False
 app.register_blueprint(paypal_bp) 
 
 app.register_blueprint(cart_items_bp)

@@ -156,17 +156,20 @@ export default function ManageOrders() {
   const handleDeleteConfirm = async () => {
     if (!pendingOrder) return;
 
-    try {
-      await axios.patch(`${host.current}/updateOrders/${pendingOrder.id}/status`, { status: 'done', notify: true });
-      await axios.delete(`${host.current}/deleteOrder/${pendingOrder.id}`);
-      // Remove from state
-      setOrders((prev) => prev.filter((o) => o.id !== pendingOrder.id));
-    } catch (err) {
-      console.error('Error deleting order', pendingOrder.id, err);
-    }
+    const orderToDelete = pendingOrder;
+    const previousOrders = orders;
 
     setPendingOrder(null);
     setShowDeleteConfirm(false);
+    setOrders((prev) => prev.filter((o) => o.id !== orderToDelete.id));
+
+    try {
+      await axios.patch(`${host.current}/updateOrders/${orderToDelete.id}/status`, { status: 'done', notify: true });
+      await axios.delete(`${host.current}/deleteOrder/${orderToDelete.id}`);
+    } catch (err) {
+      console.error('Error deleting order', orderToDelete.id, err);
+      setOrders(previousOrders);
+    }
   };
 
   // Handle delete cancellation

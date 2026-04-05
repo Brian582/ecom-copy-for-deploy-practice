@@ -5,7 +5,6 @@ export default function DeleteOrderPrompt({ isOpen, onClose, onConfirm, message,
 
   const handleConfirm = () => {
     onConfirm();
-    onClose();
   };
 
   const handleCancel = () => {

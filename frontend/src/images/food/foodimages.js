@@ -1,5 +1,5 @@
 import dumplings from './dumplings.jpg';
-import kungpaochicken from './kungpaochicken.webp';
+import kungpaochicken from './kungPaoChicken.webp';
 import sweetsourchicken from './sweetsourchicken.webp';
 import chowmein from './chowmein.jpg';
 import lomein from './lomein.jpg';

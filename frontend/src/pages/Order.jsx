@@ -1,4 +1,4 @@
-import '../styles/order.css';
+import '../styles/Order.css';
 import { useContext, useEffect, useState } from 'react';
 import menuData from '../data/menu.json';
 import pricesData from '../data/meal_prices.json';
